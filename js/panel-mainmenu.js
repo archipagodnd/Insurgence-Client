@@ -171,7 +171,7 @@ effectType:'Format'};
 isTeambuilderFormat=false;
 }
 }
-if((_BattleFormats$_id=BattleFormats[_id])==null?void 0:_BattleFormats$_id.isTeambuilderFormat){
+if((_BattleFormats$_id=BattleFormats[_id])!=null&&_BattleFormats$_id.isTeambuilderFormat){
 isTeambuilderFormat=true;
 }
 

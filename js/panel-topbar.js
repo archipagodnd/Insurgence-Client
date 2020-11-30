@@ -44,7 +44,7 @@ var formatid;
 if(idChunks.length<=1){
 if(idChunks[0]==='uploadedreplay')formatid='Uploaded Replay';
 }else{
-formatid=idChunks[idChunks.length-2];
+formatid=idChunks[0];
 }
 if(!title){var _battle$p,_battle$p2;
 var battle=room.battle;
