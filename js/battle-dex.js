@@ -33,9 +33,9 @@ window.exports=window;
 window.nodewebkit=!!(typeof process!=='undefined'&&process.versions&&process.versions['node-webkit']);
 
 function toID(text){var _text,_text2;
-if((_text=text)!=null&&_text.id){
+if((_text=text)==null?void 0:_text.id){
 text=text.id;
-}else if((_text2=text)!=null&&_text2.userid){
+}else if((_text2=text)==null?void 0:_text2.userid){
 text=text.userid;
 }
 if(typeof text!=='string'&&typeof text!=='number')return'';
@@ -182,15 +182,15 @@ pokeballs=null;this.
 resourcePrefix=function(){var _window$document,_window$document$loca;
 var prefix='';
 if(((_window$document=window.document)==null?void 0:(_window$document$loca=_window$document.location)==null?void 0:_window$document$loca.protocol)!=='http:')prefix='https:';
-return prefix+"//"+(window.Config?Config.routes.client:'raw.githubusercontent.com/Poilerwags/Sprites/master/play.pokemonshowdown.com')+"/";
+return prefix+"//"+(window.Config?Config.routes.client:'play.pokemonshowdown.com')+"/";
 }();this.
 
 fxPrefix=function(){var _window$document2,_window$document2$loc;
 if(((_window$document2=window.document)==null?void 0:(_window$document2$loc=_window$document2.location)==null?void 0:_window$document2$loc.protocol)==='file:'){
-if(window.Replays)return"https://"+(window.Config?Config.routes.client:'raw.githubusercontent.com/Poilerwags/Sprites/master/play.pokemonshowdown.com')+"/fx/";
+if(window.Replays)return"https://"+(window.Config?Config.routes.client:'play.pokemonshowdown.com')+"/fx/";
 return"fx/";
 }
-return"//"+(window.Config?Config.routes.client:'raw.githubusercontent.com/Poilerwags/Sprites/master/play.pokemonshowdown.com')+"/fx/";
+return"//"+(window.Config?Config.routes.client:'play.pokemonshowdown.com')+"/fx/";
 }();this.
 
 loadedSpriteData={xy:1,bw:0};this.
@@ -217,7 +217,7 @@ avatar=BattleAvatarNumbers[avatar];
 if(avatar.charAt(0)==='#'){
 return Dex.resourcePrefix+'sprites/trainers-custom/'+toID(avatar.substr(1))+'.png';
 }
-if(avatar.includes('.')&&(_window$Config=window.Config)!=null&&(_window$Config$server=_window$Config.server)!=null&&_window$Config$server.registered){
+if(avatar.includes('.')&&((_window$Config=window.Config)==null?void 0:(_window$Config$server=_window$Config.server)==null?void 0:_window$Config$server.registered)){
 
 var protocol=Config.server.port===443?'https':'http';
 return protocol+'://'+Config.server.host+':'+Config.server.port+
@@ -244,9 +244,9 @@ replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&q
 slice(0,50);
 };_proto2.
 
-prefs=function prefs(prop){var _window$Storage;
+prefs=function prefs(prop,value,save){var _window$Storage;
 
-return(_window$Storage=window.Storage)==null?void 0:_window$Storage.prefs==null?void 0:_window$Storage.prefs(prop);
+return(_window$Storage=window.Storage)==null?void 0:_window$Storage.prefs==null?void 0:_window$Storage.prefs(prop,value,save);
 };_proto2.
 
 getShortName=function getShortName(name){
@@ -475,7 +475,7 @@ var el=document.createElement('script');
 el.src=path+'data/pokedex-mini-bw.js'+qs;
 document.getElementsByTagName('body')[0].appendChild(el);
 };_proto2.
-getSpriteData=function getSpriteData(pokemon,isFront)
+getSpriteData=function getSpriteData(pokemon,siden)
 
 
 
@@ -507,18 +507,18 @@ h:96,
 y:0,
 url:Dex.resourcePrefix+'sprites/',
 pixelated:true,
-isFrontSprite:false,
+isBackSprite:false,
 cryurl:'',
 shiny:options.shiny};
 
 var name=species.spriteid;
 var dir;
 var facing;
-if(isFront){
-spriteData.isFrontSprite=true;
+if(siden){
 dir='';
 facing='front';
 }else{
+spriteData.isBackSprite=true;
 dir='-back';
 facing='back';
 }
@@ -555,7 +555,7 @@ if(!miscData&&window.BattlePokemonSpritesBW)miscData=BattlePokemonSpritesBW[spec
 if(!animationData)animationData={};
 if(!miscData)miscData={};
 
-if(miscData.num!==0&&miscData.num>-5000){
+if(miscData.num>0){
 var baseSpeciesid=toID(species.baseSpecies);
 spriteData.cryurl='audio/cries/'+baseSpeciesid;
 var formeid=species.formeid;
@@ -575,7 +575,7 @@ baseSpeciesid==='zygarde'))
 {
 spriteData.cryurl+=formeid;
 }
-spriteData.cryurl+='.mp3';
+spriteData.cryurl+=window.nodewebkit?'.ogg':'.mp3';
 }
 
 if(options.shiny&&mechanicsGen>1)dir+='-shiny';
@@ -601,7 +601,7 @@ return spriteData;
 
 if(options.mod){
 spriteData.cryurl="sprites/"+options.mod+"/audio/"+toID(species.baseSpecies);
-spriteData.cryurl+='.mp3';
+spriteData.cryurl+=window.nodewebkit?'.ogg':'.mp3';
 }
 
 if(animationData[facing+'f']&&options.gender==='F')facing+='f';
@@ -631,7 +631,7 @@ spriteData.url+=dir+'/'+name+'.png';
 if(!options.noScale){
 if(graphicsGen>4){
 
-}else if(spriteData.isFrontSprite){
+}else if(!spriteData.isBackSprite){
 spriteData.w*=2;
 spriteData.h*=2;
 spriteData.y+=-16;
@@ -658,15 +658,15 @@ return spriteData;
 
 getPokemonIconNum=function getPokemonIconNum(id,isFemale,facingLeft){var _window$BattlePokemon,_window$BattlePokemon2,_window$BattlePokedex,_window$BattlePokedex2,_window$BattlePokemon3;
 var num=0;
-if((_window$BattlePokemon=window.BattlePokemonSprites)!=null&&(_window$BattlePokemon2=_window$BattlePokemon[id])!=null&&_window$BattlePokemon2.num){
+if((_window$BattlePokemon=window.BattlePokemonSprites)==null?void 0:(_window$BattlePokemon2=_window$BattlePokemon[id])==null?void 0:_window$BattlePokemon2.num){
 num=BattlePokemonSprites[id].num;
-}else if((_window$BattlePokedex=window.BattlePokedex)!=null&&(_window$BattlePokedex2=_window$BattlePokedex[id])!=null&&_window$BattlePokedex2.num){
+}else if((_window$BattlePokedex=window.BattlePokedex)==null?void 0:(_window$BattlePokedex2=_window$BattlePokedex[id])==null?void 0:_window$BattlePokedex2.num){
 num=BattlePokedex[id].num;
 }
 if(num<0)num=0;
-if(num>898)num=0;
+if(num>893)num=0;
 
-if((_window$BattlePokemon3=window.BattlePokemonIconIndexes)!=null&&_window$BattlePokemon3[id]){
+if((_window$BattlePokemon3=window.BattlePokemonIconIndexes)==null?void 0:_window$BattlePokemon3[id]){
 num=BattlePokemonIconIndexes[id];
 }
 
@@ -697,11 +697,11 @@ return"background:transparent url("+Dex.resourcePrefix+"sprites/pokemonicons-pok
 var id=toID(pokemon);
 if(!pokemon||typeof pokemon==='string')pokemon=null;
 
-if((_pokemon=pokemon)!=null&&_pokemon.speciesForme)id=toID(pokemon.speciesForme);
+if((_pokemon=pokemon)==null?void 0:_pokemon.speciesForme)id=toID(pokemon.speciesForme);
 
-if((_pokemon2=pokemon)!=null&&_pokemon2.species)id=toID(pokemon.species);
+if((_pokemon2=pokemon)==null?void 0:_pokemon2.species)id=toID(pokemon.species);
 
-if((_pokemon3=pokemon)!=null&&(_pokemon3$volatiles=_pokemon3.volatiles)!=null&&_pokemon3$volatiles.formechange&&!pokemon.volatiles.transform){
+if(((_pokemon3=pokemon)==null?void 0:(_pokemon3$volatiles=_pokemon3.volatiles)==null?void 0:_pokemon3$volatiles.formechange)&&!pokemon.volatiles.transform){
 
 id=toID(pokemon.volatiles.formechange[1]);
 }
@@ -709,8 +709,8 @@ var num=this.getPokemonIconNum(id,((_pokemon4=pokemon)==null?void 0:_pokemon4.ge
 
 var top=Math.floor(num/12)*30;
 var left=num%12*40;
-var fainted=(_pokemon5=pokemon)!=null&&_pokemon5.fainted?";opacity:.3;filter:grayscale(100%) brightness(.5)":"";
-return"background:transparent url("+Dex.resourcePrefix+"sprites/pokemonicons-sheet.png?v4) no-repeat scroll -"+left+"px -"+top+"px"+fainted;
+var fainted=((_pokemon5=pokemon)==null?void 0:_pokemon5.fainted)?";opacity:.3;filter:grayscale(100%) brightness(.5)":"";
+return"background:transparent url("+Dex.resourcePrefix+"sprites/pokemonicons-sheet.png?v2) no-repeat scroll -"+left+"px -"+top+"px"+fainted;
 };_proto2.
 
 getTeambuilderSpriteData=function getTeambuilderSpriteData(pokemon){var gen=arguments.length>1&&arguments[1]!==undefined?arguments[1]:0;
@@ -769,7 +769,7 @@ return'background-image:url('+Dex.resourcePrefix+data.spriteDir+shiny+'/'+data.s
 getItemIcon=function getItemIcon(item){var _item;
 var num=0;
 if(typeof item==='string'&&exports.BattleItems)item=exports.BattleItems[toID(item)];
-if((_item=item)!=null&&_item.spritenum)num=item.spritenum;
+if((_item=item)==null?void 0:_item.spritenum)num=item.spritenum;
 
 var top=Math.floor(num/16)*24;
 var left=num%16*24;

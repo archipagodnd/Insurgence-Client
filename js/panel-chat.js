@@ -410,7 +410,7 @@ render=function render(){
 var room=this.props.room;
 var userList=Object.entries(room.users);
 PSUtils.sortBy(userList,function(_ref){var id=_ref[0],name=_ref[1];return(
-[PS.server.getGroup(name.charAt(0)).order,!name.endsWith('@!'),id]);});
+[name==='#Zarel',PS.server.getGroup(name.charAt(0)).order,!name.endsWith('@!'),id]);});
 
 return preact.h("ul",{"class":'userlist'+(this.props.minimized?this.state.expanded?' userlist-maximized':' userlist-minimized':''),style:{left:this.props.left||0}},
 preact.h("li",{"class":"userlist-count",style:"text-align:center;padding:2px 0",onClick:this.toggleExpanded},preact.h("small",null,room.userCount," users")),

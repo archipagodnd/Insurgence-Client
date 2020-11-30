@@ -388,10 +388,10 @@ var moveTarget=choices.getChosenMove(choices.current,choices.index()).target;
 var moveChoice=choices.stringChoice(choices.current);
 
 var userSlot=choices.index();
-var userSlotCross=battle.farSide.active.length-1-userSlot;
+var userSlotCross=battle.yourSide.active.length-1-userSlot;
 
 return[
-battle.farSide.active.map(function(pokemon,i){var _pokemon;
+battle.yourSide.active.map(function(pokemon,i){var _pokemon;
 var disabled=false;
 if(moveTarget==='adjacentAlly'||moveTarget==='adjacentAllyOrSelf'){
 disabled=true;
@@ -399,14 +399,14 @@ disabled=true;
 if(Math.abs(userSlotCross-i)>1)disabled=true;
 }
 
-if((_pokemon=pokemon)!=null&&_pokemon.fainted)pokemon=null;
+if((_pokemon=pokemon)==null?void 0:_pokemon.fainted)pokemon=null;
 return preact.h(PokemonButton,{
 pokemon:pokemon,
 cmd:disabled?"":"/"+moveChoice+" +"+(i+1),disabled:disabled&&'fade',tooltip:"activepokemon|1|"+i});
 
 }).reverse(),
 preact.h("div",{style:"clear: left"}),
-battle.nearSide.active.map(function(pokemon,i){var _pokemon2;
+battle.mySide.active.map(function(pokemon,i){var _pokemon2;
 var disabled=false;
 if(moveTarget==='adjacentFoe'){
 disabled=true;
@@ -415,7 +415,7 @@ if(Math.abs(userSlot-i)>1)disabled=true;
 }
 if(moveTarget!=='adjacentAllyOrSelf'&&userSlot===i)disabled=true;
 
-if((_pokemon2=pokemon)!=null&&_pokemon2.fainted)pokemon=null;
+if((_pokemon2=pokemon)==null?void 0:_pokemon2.fainted)pokemon=null;
 return preact.h(PokemonButton,{
 pokemon:pokemon,
 cmd:disabled?"":"/"+moveChoice+" -"+(i+1),disabled:disabled&&'fade',tooltip:"activepokemon|0|"+i});
@@ -488,17 +488,17 @@ if(choice.choiceType==='move'){
 buf.push(pokemon.name+" will ");
 if(choice.mega)buf.push("Mega Evolve and ");
 if(choice.ultra)buf.push("Ultra Burst and ");
-if(choice.max&&active!=null&&active.canDynamax)buf.push(active!=null&&active.canGigantamax?"Gigantamax and ":"Dynamax and ");
+if(choice.max&&(active==null?void 0:active.canDynamax))buf.push((active==null?void 0:active.canGigantamax)?"Gigantamax and ":"Dynamax and ");
 buf.push("use ",preact.h("strong",null,choices.getChosenMove(choice,i).name));
 if(choice.targetLoc>0){
-var target=battle.farSide.active[choice.targetLoc-1];
+var target=battle.yourSide.active[choice.targetLoc-1];
 if(!target){
 buf.push(" at slot "+choice.targetLoc);
 }else{
 buf.push(" at "+target.name);
 }
 }else if(choice.targetLoc<0){
-var _target=battle.nearSide.active[-choice.targetLoc-1];
+var _target=battle.mySide.active[-choice.targetLoc-1];
 if(!_target){
 buf.push(" at ally slot "+choice.targetLoc);
 }else{

@@ -813,7 +813,7 @@ return preact.h(PSPanelWrapper,{room:room,width:width},
 columns.map(function(column){return preact.h("ul",{"class":"options",onClick:_this5.click},
 column.map(function(format){return format.id?
 preact.h("li",null,preact.h("button",{value:format.name,"class":"option"},
-format.name.replace('[Gen 8 ','[').replace('[Gen 8] ','').replace('[Gen 7 ','['))):
+format.name.replace('[Gen 8] ','').replace('[Gen 7 ','['))):
 
 
 preact.h("li",null,preact.h("h3",null,

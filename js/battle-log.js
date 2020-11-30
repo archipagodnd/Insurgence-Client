@@ -73,7 +73,7 @@ destroy=function destroy(){
 this.elem.onscroll=null;
 };_proto.
 add=function add(args,kwArgs,preempt){var _this$scene,_window$app,_window$app$ignore,_window$app2,_window$app2$rooms;
-if(kwArgs!=null&&kwArgs.silent)return;
+if(kwArgs==null?void 0:kwArgs.silent)return;
 var divClass='chat';
 var divHTML='';
 var noNotify;
@@ -92,11 +92,11 @@ name=args[1];
 message=args[2];
 }
 var rank=name.charAt(0);
-if(battle!=null&&battle.ignoreSpects&&' +'.includes(rank))return;
-if(battle!=null&&battle.ignoreOpponent){
+if((battle==null?void 0:battle.ignoreSpects)&&' +'.includes(rank))return;
+if(battle==null?void 0:battle.ignoreOpponent){
 if("\u2605\u2606".includes(rank)&&toUserid(name)!==app.user.get('userid'))return;
 }
-if((_window$app=window.app)!=null&&(_window$app$ignore=_window$app.ignore)!=null&&_window$app$ignore[toUserid(name)]&&" +\u2605\u2606".includes(rank))return;
+if(((_window$app=window.app)==null?void 0:(_window$app$ignore=_window$app.ignore)==null?void 0:_window$app$ignore[toUserid(name)])&&" +\u2605\u2606".includes(rank))return;
 var isHighlighted=(_window$app2=window.app)==null?void 0:(_window$app2$rooms=_window$app2.rooms)==null?void 0:_window$app2$rooms[battle.roomid].getHighlight(message);var _this$parseChatMessag=
 this.parseChatMessage(message,name,'',isHighlighted);divClass=_this$parseChatMessag[0];divHTML=_this$parseChatMessag[1];noNotify=_this$parseChatMessag[2];
 if(!noNotify&&isHighlighted){
@@ -107,7 +107,7 @@ break;
 
 case'join':case'j':case'leave':case'l':{
 var user=BattleTextParser.parseNameParts(args[1]);
-if(battle!=null&&battle.ignoreSpects&&' +'.includes(user.group))return;
+if((battle==null?void 0:battle.ignoreSpects)&&' +'.includes(user.group))return;
 var formattedUser=user.group+user.name;
 var isJoin=args[0].charAt(0)==='j';
 if(!this.joinLeave){
@@ -540,7 +540,7 @@ return{R:R,G:G,B:B};
 
 prefs=function prefs(name){var _window$Storage;
 
-if((_window$Storage=window.Storage)!=null&&_window$Storage.prefs)return Storage.prefs(name);
+if((_window$Storage=window.Storage)==null?void 0:_window$Storage.prefs)return Storage.prefs(name);
 
 if(window.PS)return PS.prefs[name];
 return undefined;
@@ -549,7 +549,7 @@ return undefined;
 parseChatMessage=function parseChatMessage(
 message,name,timestamp,isHighlighted)
 {var _BattleLog$prefs,_window$app3,_window$app3$user,_window$PS;
-var showMe=!((_BattleLog$prefs=BattleLog.prefs('chatformatting'))!=null&&_BattleLog$prefs.hideme);
+var showMe=!((_BattleLog$prefs=BattleLog.prefs('chatformatting'))==null?void 0:_BattleLog$prefs.hideme);
 var group=' ';
 if(!/[A-Za-z0-9]/.test(name.charAt(0))){
 
@@ -614,7 +614,7 @@ return['chat message-error','[outdated code no longer supported]'];
 case'text':
 return['chat',BattleLog.parseMessage(target)];
 case'error':
-return['chat message-error',formatText(target,true)];
+return['chat message-error',BattleLog.escapeHTML(target)];
 case'html':
 return[
 'chat chatmessage-'+toID(name)+hlClass+mineClass,
@@ -645,12 +645,12 @@ timestamp+"<strong"+colorStyle+">"+clickableName+":</strong> <em>"+BattleLog.par
 
 };BattleLog.
 
-parseMessage=function parseMessage(str){var isTrusted=arguments.length>1&&arguments[1]!==undefined?arguments[1]:false;
+parseMessage=function parseMessage(str){
 
 if(str.substr(0,3)==='>> '||str.substr(0,4)==='>>> ')return this.escapeHTML(str);
 
 if(str.substr(0,3)==='<< ')return this.escapeHTML(str);
-str=formatText(str,isTrusted);
+str=formatText(str);
 
 var options=BattleLog.prefs('chatformatting')||{};
 
@@ -690,23 +690,16 @@ return str;
 
 
 
-initSanitizeHTML=function initSanitizeHTML(){var _this2=this;
+initSanitizeHTML=function initSanitizeHTML(){
 if(this.tagPolicy)return;
 if(!('html4'in window)){
 throw new Error('sanitizeHTML requires caja');
 }
 
-
-
 Object.assign(html4.ELEMENTS,{
 marquee:0,
 blink:0,
-psicon:html4.eflags['OPTIONAL_ENDTAG']|html4.eflags['EMPTY'],
-username:0,
-youtube:0});
-
-
-
+psicon:html4.eflags['OPTIONAL_ENDTAG']|html4.eflags['EMPTY']});
 
 Object.assign(html4.ATTRIBS,{
 
@@ -725,144 +718,114 @@ Object.assign(html4.ATTRIBS,{
 'psicon::item':0,
 'psicon::type':0,
 'psicon::category':0,
-'username::name':0,
-'form::data-send':0,
-'button::data-send':0,
 '*::aria-label':0,
 '*::aria-hidden':0});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 this.tagPolicy=function(tagName,attribs){
 if(html4.ELEMENTS[tagName]&html4.eflags['UNSAFE']){
 return;
 }
-
-function getAttrib(key){
-for(var i=0;i<attribs.length-1;i+=2){
-if(attribs[i]===key){
-return attribs[i+1];
-}
-}
-return undefined;
-}
-function setAttrib(key,value){
-for(var i=0;i<attribs.length-1;i+=2){
-if(attribs[i]===key){
-attribs[i+1]=value;
-return;
-}
-}
-attribs.push(key,value);
-}
-function deleteAttrib(key){
-for(var i=0;i<attribs.length-1;i+=2){
-if(attribs[i]===key){
-attribs.splice(i,2);
-return;
-}
-}
-}
-
-var dataUri='';
-var targetReplace=false;
-
+var targetIdx=0;
+var srcIdx=0;
 if(tagName==='a'){
-if(getAttrib('target')==='replace'){
-targetReplace=true;
+
+
+for(var i=0;i<attribs.length-1;i+=2){
+switch(attribs[i]){
+case'target':
+targetIdx=i+1;
+break;}
+
 }
-}else if(tagName==='img'){
-var src=getAttrib('src')||'';
-if(src.startsWith('data:image/')){
-dataUri=src;
 }
-if(src.startsWith('//')){
+var dataUri='';
+if(tagName==='img'){
+for(var _i11=0;_i11<attribs.length-1;_i11+=2){
+if(attribs[_i11]==='src'&&attribs[_i11+1].substr(0,11)==='data:image/'){
+srcIdx=_i11;
+dataUri=attribs[_i11+1];
+}
+if(attribs[_i11]==='src'&&attribs[_i11+1].substr(0,2)==='//'){
 if(location.protocol!=='http:'&&location.protocol!=='https:'){
-
-setAttrib('src','https:'+src);
+attribs[_i11+1]='http:'+attribs[_i11+1];
 }
 }
-}else if(tagName==='username'){
-
-tagName='strong';
-var color=_this2.usernameColor(toID(getAttrib('name')));
-var style=getAttrib('style');
-setAttrib('style',style+";color:"+color);
-}else if(tagName==='youtube'){var _$exec;
-
-
-var _src=getAttrib('src')||'';
-var videoId=(_$exec=/(?:\?v=|\/embed\/)([A-Za-z0-9]+)/.exec(_src))==null?void 0:_$exec[1];
-
-return{
-tagName:'iframe',
-attribs:['width','320','height','180','src',"https://www.youtube.com/embed/"+videoId,'frameborder','0','allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture','allowfullscreen','allowfullscreen']};
-
+}
 }else if(tagName==='psicon'){
 
 
-var iconType=null;
-var iconValue=null;
-for(var i=0;i<attribs.length-1;i+=2){
-if(attribs[i]==='pokemon'||attribs[i]==='item'||attribs[i]==='type'||attribs[i]==='category'){var _attribs$slice=
-attribs.slice(i,i+2);iconType=_attribs$slice[0];iconValue=_attribs$slice[1];
-break;
+var classValueIndex=-1;
+var styleValueIndex=-1;
+var iconAttrib=null;
+for(var _i12=0;_i12<attribs.length-1;_i12+=2){
+if(attribs[_i12]==='pokemon'||attribs[_i12]==='item'||attribs[_i12]==='type'||attribs[_i12]==='category'){
+
+iconAttrib=attribs.slice(_i12,_i12+2);
+}else if(attribs[_i12]==='class'){
+classValueIndex=_i12+1;
+}else if(attribs[_i12]==='style'){
+styleValueIndex=_i12+1;
 }
 }
 tagName='span';
 
-if(iconType){
-var className=getAttrib('class');
-var _style=getAttrib('style');
-
-if(iconType==='pokemon'){
-setAttrib('class','picon'+(className?' '+className:''));
-setAttrib('style',Dex.getPokemonIcon(iconValue)+(_style?'; '+_style:''));
-}else if(iconType==='item'){
-setAttrib('class','itemicon'+(className?' '+className:''));
-setAttrib('style',Dex.getItemIcon(iconValue)+(_style?'; '+_style:''));
-}else if(iconType==='type'){
-tagName=Dex.getTypeIcon(iconValue).slice(1,-3);
-}else if(iconType==='category'){
-tagName=Dex.getCategoryIcon(iconValue).slice(1,-3);
+if(iconAttrib){
+if(classValueIndex<0){
+attribs.push('class','');
+classValueIndex=attribs.length-1;
 }
-}
+if(styleValueIndex<0){
+attribs.push('style','');
+styleValueIndex=attribs.length-1;
 }
 
+
+if(iconAttrib[0]==='pokemon'){
+attribs[classValueIndex]=attribs[classValueIndex]?'picon '+attribs[classValueIndex]:'picon';
+attribs[styleValueIndex]=attribs[styleValueIndex]?
+Dex.getPokemonIcon(iconAttrib[1])+'; '+attribs[styleValueIndex]:
+Dex.getPokemonIcon(iconAttrib[1]);
+}else if(iconAttrib[0]==='item'){
+attribs[classValueIndex]=attribs[classValueIndex]?'itemicon '+attribs[classValueIndex]:'itemicon';
+attribs[styleValueIndex]=attribs[styleValueIndex]?
+Dex.getItemIcon(iconAttrib[1])+'; '+attribs[styleValueIndex]:
+Dex.getItemIcon(iconAttrib[1]);
+}else if(iconAttrib[0]==='type'){
+tagName=Dex.getTypeIcon(iconAttrib[1]).slice(1,-3);
+}else if(iconAttrib[0]==='category'){
+tagName=Dex.getCategoryIcon(iconAttrib[1]).slice(1,-3);
+}
+}
+}
+
+if(attribs[targetIdx]==='replace'){
+targetIdx=-targetIdx;
+}
 attribs=html.sanitizeAttribs(tagName,attribs,function(urlData){
 if(urlData.scheme_==='geo'||urlData.scheme_==='sms'||urlData.scheme_==='tel')return null;
 return urlData;
 });
+if(targetIdx<0){
+targetIdx=-targetIdx;
+attribs[targetIdx-1]='data-target';
+attribs[targetIdx]='replace';
+targetIdx=0;
+}
 
 if(dataUri&&tagName==='img'){
-setAttrib('src',dataUri);
+attribs[srcIdx+1]=dataUri;
 }
 if(tagName==='a'||tagName==='form'){
-if(targetReplace){
-setAttrib('data-target','replace');
-deleteAttrib('target');
+if(targetIdx){
+attribs[targetIdx]='_blank';
 }else{
-setAttrib('target','_blank');
+attribs.push('target');
+attribs.push('_blank');
 }
 if(tagName==='a'){
-setAttrib('rel','noopener');
+attribs.push('rel');
+attribs.push('noopener');
 }
 }
 return{tagName:tagName,attribs:attribs};
@@ -877,7 +840,7 @@ if(!parsedTime.getTime())return full;
 
 var formattedTime;
 
-if((_Intl=window.Intl)!=null&&_Intl.DateTimeFormat){
+if((_Intl=window.Intl)==null?void 0:_Intl.DateTimeFormat){
 formattedTime=new Intl.DateTimeFormat(undefined,{
 month:'long',day:'numeric',hour:'numeric',minute:'numeric'}).
 format(parsedTime);
@@ -890,19 +853,8 @@ return'<time>'+BattleLog.escapeHTML(formattedTime)+'</time>';
 };BattleLog.
 sanitizeHTML=function sanitizeHTML(input){
 if(typeof input!=='string')return'';
-
 this.initSanitizeHTML();
-
-input=input.replace(/<username([^>]*)>([^<]*)<\/username>/gi,function(match,attrs,username){
-if(/\bname\s*=\s*"/.test(attrs))return match;
-var escapedUsername=username.replace(/"/g,'&quot;').replace(/>/g,'&gt;');
-return"<username"+attrs+" name=\""+escapedUsername+"\">"+username+"</username>";
-});
-
-
-
 var sanitized=html.sanitizeWithPolicy(input,this.tagPolicy);
-
 
 
 
@@ -991,4 +943,4 @@ createReplayFileHref=function createReplayFileHref(room){
 
 
 return'data:text/plain;base64,'+encodeURIComponent(btoa(unescape(encodeURIComponent(BattleLog.createReplayFile(room)))));
-};return BattleLog;}();BattleLog.colorCache={};BattleLog.interstice=function(){var whitelist=Config.whitelist;var patterns=whitelist.map(function(entry){return new RegExp("^(https?:)?//([A-Za-z0-9-]*\\.)?"+entry.replace(/\./g,'\\.')+"(/.*)?",'i');});return{isWhitelisted:function(uri){if(uri[0]==='/'&&uri[1]!=='/'){return true;}for(var _i11=0;_i11<patterns.length;_i11++){var pattern=patterns[_i11];if(pattern.test(uri))return true;}return false;},getURI:function(uri){return"http://"+Config.routes.root+"/interstice?uri="+encodeURIComponent(uri);}};}();BattleLog.tagPolicy=null;
+};return BattleLog;}();BattleLog.colorCache={};BattleLog.interstice=function(){var whitelist=Config.whitelist;var patterns=whitelist.map(function(entry){return new RegExp("^(https?:)?//([A-Za-z0-9-]*\\.)?"+entry.replace(/\./g,'\\.')+"(/.*)?",'i');});return{isWhitelisted:function(uri){if(uri[0]==='/'&&uri[1]!=='/'){return true;}for(var _i13=0;_i13<patterns.length;_i13++){var pattern=patterns[_i13];if(pattern.test(uri))return true;}return false;},getURI:function(uri){return"http://"+Config.routes.root+"/interstice?uri="+encodeURIComponent(uri);}};}();BattleLog.tagPolicy=null;

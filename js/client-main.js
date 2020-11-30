@@ -304,20 +304,20 @@ port=Config.defaultserver.port;this.
 altport=Config.defaultserver.altport;this.
 registered=Config.defaultserver.registered;this.
 prefix='/showdown';this.
-protocol=Config.defaultserver.httpport?'https':'http';this.
+protocol=Config.defaultserver.https?'https':'http';this.
 groups={
 '~':{
 name:"Administrator (~)",
 type:'leadership',
 order:101},
 
-'#':{
-name:"Room Owner (#)",
+'&':{
+name:"Administrator (&)",
 type:'leadership',
 order:102},
 
-'&':{
-name:"Administrator (&)",
+'#':{
+name:"Room Owner (#)",
 type:'leadership',
 order:103},
 
@@ -893,7 +893,7 @@ if(options.id.startsWith('pm-'))options.location='mini-window';
 }
 
 var roomType=this.roomTypes[options.type];
-if(roomType!=null&&roomType.title)options.title=roomType.title;
+if(roomType==null?void 0:roomType.title)options.title=roomType.title;
 var Model=roomType?roomType.Model||PSRoom:PlaceholderRoom;
 return new Model(options);
 };_proto7.
