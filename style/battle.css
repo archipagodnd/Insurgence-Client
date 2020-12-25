@@ -429,6 +429,10 @@ License: GPLv2
 	background: #AADDEE url(../fx/weather-hail.png) no-repeat scroll left top;
 	color: #114455;
 }
+.darknessweather {
+	background: #A6A6A6 url(../fx/weather-darkness.png) no-repeat scroll left top;
+	color: #545454;
+}
 .deltastreamweather {
 	background: #AAAAAA url(../fx/weather-strongwind.png) no-repeat scroll left top;
 	color: #666666;
