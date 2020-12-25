@@ -844,6 +844,7 @@ class BattleScene {
 				sandstorm: 'Sandstorm',
 				hail: 'Hail',
 				deltastream: 'Strong Winds',
+        newmoon: 'Darkness',
 			};
 			weatherhtml = `${weatherNameTable[this.battle.weather] || this.battle.weather}`;
 			if (this.battle.weatherMinTimeLeft !== 0) {

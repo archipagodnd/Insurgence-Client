@@ -633,6 +633,9 @@ const BattleMoveAnims: AnimTable = {
 	sandstorm: {
 		anim: BattleOtherAnims.dance.anim,
 	},
+	newmoon: {
+		anim: BattleOtherAnims.dance.anim,
+	},
 	gravity: {
 		anim() {
 			// do not give Gravity an animation,
@@ -32460,3 +32463,27 @@ BattleMoveAnims['lashout'] = {anim: BattleMoveAnims['nightslash'].anim};
 BattleMoveAnims['steelroller'] = {anim: BattleMoveAnims['steamroller'].anim};
 BattleMoveAnims['surgingstrikes'] = {anim: BattleMoveAnims['aquajet'].anim};
 BattleMoveAnims['eeriespell'] = {anim: BattleMoveAnims['psyshock'].anim};
+
+BattleMoveAnims['jetstream'] = {anim: BattleMoveAnims['tailwind'].anim};
+BattleMoveAnims['wormhole'] = {anim: BattleMoveAnims['psychoboost'].anim};
+BattleMoveAnims['crystalrush'] = {anim: BattleMoveAnims['iceshard'].anim};
+BattleMoveAnims['dracojet'] = {anim: BattleMoveAnims['dragonbreath'].anim};
+BattleMoveAnims['dragonify'] = {anim: BattleMoveAnims['dragonpulse'].anim};
+BattleMoveAnims['nanorepair'] = {anim: BattleMoveAnims['recover'].anim};
+BattleMoveAnims['medusaray'] = {anim: BattleMoveAnims['meanlook'].anim};
+BattleMoveAnims['corrode'] = {anim: BattleMoveAnims['sludgewave'].anim};
+BattleMoveAnims['ancientroar'] = {anim: BattleMoveAnims['hypervoice'].anim};
+BattleMoveAnims['drakonvoice'] = {anim: BattleMoveAnims['hypervoice'].anim};
+BattleMoveAnims['achillesheel'] = {anim: BattleMoveAnims['slam'].anim};
+BattleMoveAnims['darkmatter'] = {anim: BattleMoveAnims['darkpulse'].anim};
+BattleMoveAnims['wildfire'] = {anim: BattleMoveAnims['shelltrap'].anim};
+
+BattleMoveAnims['lunarcannon'] = {
+  anim: BattleMoveAnims['moongeistbeam'].anim,
+  prepareAnim: BattleMoveAnims['solarbeam'].prepareAnim,
+};
+
+BattleMoveAnims['spiritaway'] = {
+  anim: BattleMoveAnims['skydrop'].anim,
+  prepareAnim: BattleMoveAnims['skydrop'].prepareAnim,
+};
