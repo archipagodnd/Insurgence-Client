@@ -17,13 +17,17 @@ BattleBGM=function(){
 
 
 
-function BattleBGM(url,loopstart,loopend){this.timer=undefined;this.isPlaying=false;this.isActuallyPlaying=false;
+
+
+
+
+function BattleBGM(url,loopstart,loopend){this.timer=undefined;this.isPlaying=false;this.isActuallyPlaying=false;this.willRewind=true;
 this.url=url;
 this.loopstart=loopstart;
 this.loopend=loopend;
 }var _proto=BattleBGM.prototype;_proto.
 play=function play(){
-if(this.sound)this.sound.currentTime=0;
+this.willRewind=true;
 this.resume();
 };_proto.
 resume=function resume(){
@@ -37,7 +41,7 @@ BattleBGM.update();
 };_proto.
 stop=function stop(){
 this.pause();
-if(this.sound)this.sound.currentTime=0;
+this.willRewind=true;
 };_proto.
 destroy=function destroy(){
 BattleSound.deleteBgm(this);
@@ -50,6 +54,8 @@ if(this.isActuallyPlaying)return;
 
 if(!this.sound)this.sound=BattleSound.getSound(this.url);
 if(!this.sound)return;
+if(this.willRewind)this.sound.currentTime=0;
+this.willRewind=false;
 this.isActuallyPlaying=true;
 this.sound.volume=BattleSound.bgmVolume/100;
 this.sound.play();
