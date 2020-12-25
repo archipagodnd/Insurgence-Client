@@ -1144,6 +1144,49 @@ class BattleScene {
 			this.$spritesFront[spriteIndex].append(rock4.$el!);
 			this.sideConditions[siden][id] = [rock1, rock2, rock3, rock4];
 			break;
+		case 'stealthcoal':
+			const coal1 = new Sprite(BattleEffects.coal1, {
+				display: 'block',
+				x: side.leftof(25),
+				y: side.y - 35,
+				z: side.z,
+				opacity: 0.5,
+				scale: 0.2,
+			}, this);
+
+			const coal2 = new Sprite(BattleEffects.coal2, {
+				display: 'block',
+				x: side.leftof(-5),
+				y: side.y - 15,
+				z: side.z,
+				opacity: 0.5,
+				scale: 0.2,
+			}, this);
+
+			const coal3 = new Sprite(BattleEffects.coal1, {
+				display: 'block',
+				x: side.leftof(-15),
+				y: side.y - 20,
+				z: side.z,
+				opacity: 0.5,
+				scale: 0.2,
+			}, this);
+
+			const coal4 = new Sprite(BattleEffects.coal2, {
+				display: 'block',
+				x: side.leftof(10),
+				y: side.y - 10,
+				z: side.z,
+				opacity: 0.5,
+				scale: 0.2,
+			}, this);
+
+			this.$spritesFront[spriteIndex].append(coal1.$el!);
+			this.$spritesFront[spriteIndex].append(coal2.$el!);
+			this.$spritesFront[spriteIndex].append(coal3.$el!);
+			this.$spritesFront[spriteIndex].append(coal4.$el!);
+			this.sideConditions[siden][id] = [coal1, coal2, coal3, coal4];
+			break;
 		case 'gmaxsteelsurge':
 			const surge1 = new Sprite(BattleEffects.greenmetal1, {
 				display: 'block',
