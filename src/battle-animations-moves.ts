@@ -32536,6 +32536,8 @@ BattleMoveAnims['drakonvoice'] = {anim: BattleMoveAnims['hypervoice'].anim};
 BattleMoveAnims['achillesheel'] = {anim: BattleMoveAnims['slam'].anim};
 BattleMoveAnims['darkmatter'] = {anim: BattleMoveAnims['darkpulse'].anim};
 BattleMoveAnims['wildfire'] = {anim: BattleMoveAnims['shelltrap'].anim};
+BattleMoveAnims['livewire'] = {anim: BattleMoveAnims['electroweb'].anim};
+BattleMoveAnims['permafrost'] = {anim: BattleMoveAnims['freezedry'].anim};
 
 BattleMoveAnims['lunarcannon'] = {
   anim: BattleMoveAnims['moongeistbeam'].anim,

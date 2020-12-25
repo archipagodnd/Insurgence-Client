@@ -1187,6 +1187,132 @@ class BattleScene {
 			this.$spritesFront[spriteIndex].append(coal4.$el!);
 			this.sideConditions[siden][id] = [coal1, coal2, coal3, coal4];
 			break;
+		case 'livewire':
+			let wireArray = this.sideConditions[siden]['livewire'];
+			if (!wireArray) {
+				wireArray = [];
+				this.sideConditions[siden]['livewire'] = wireArray;
+			}
+			let levels = this.battle.sides[siden].sideConditions['livewire'][1];
+			if (wireArray.length < 1 && levels >= 1) {
+				const wire1 = new Sprite(BattleEffects.wire, {
+					display: 'block',
+					x: side.x - 40,
+					y: side.y - 40,
+					z: side.z,
+					scale: 0.3,
+				}, this);
+				this.$spritesFront[spriteIndex].append(wire1.$el!);
+				wireArray.push(wire1);
+			}
+			if (wireArray.length < 2 && levels >= 2) {
+				const wire2 = new Sprite(BattleEffects.wire, {
+					display: 'block',
+					x: side.x - 20,
+					y: side.y - 40,
+					z: side.z,
+					scale: .3,
+				}, this);
+				this.$spritesFront[spriteIndex].append(wire2.$el!);
+				wireArray.push(wire2);
+			}
+			if (wireArray.length < 3 && levels >= 3) {
+				const wire3 = new Sprite(BattleEffects.wire, {
+					display: 'block',
+					x: side.x,
+					y: side.y - 40,
+					z: side.z,
+					scale: .3,
+				}, this);
+				this.$spritesFront[spriteIndex].append(wire3.$el!);
+				wireArray.push(wire3);
+			}
+			if (wireArray.length < 4 && levels >= 4) {
+				const wire4 = new Sprite(BattleEffects.wire, {
+					display: 'block',
+					x: side.x + 20,
+					y: side.y - 40,
+					z: side.z,
+					scale: .3,
+				}, this);
+				this.$spritesFront[spriteIndex].append(wire4.$el!);
+				wireArray.push(wire4);
+			}
+			if (wireArray.length < 5 && levels >= 5) {
+				const wire5 = new Sprite(BattleEffects.wire, {
+					display: 'block',
+					x: side.x + 40,
+					y: side.y - 40,
+					z: side.z,
+					scale: .3,
+				}, this);
+				this.$spritesFront[spriteIndex].append(wire5.$el!);
+				wireArray.push(wire5);
+			}
+			break;
+		case 'permafrost':
+			let frostArray = this.sideConditions[siden]['permafrost'];
+			if (!frostArray) {
+				frostArray = [];
+				this.sideConditions[siden]['permafrost'] = frostArray;
+			}
+			let levels = this.battle.sides[siden].sideConditions['permafrost'][1];
+			if (frostArray.length < 1 && levels >= 1) {
+				const frost1 = new Sprite(BattleEffects.frost, {
+					display: 'block',
+					x: side.x - 40,
+					y: side.y - 35,
+					z: side.z,
+					scale: 0.3,
+				}, this);
+				this.$spritesFront[spriteIndex].append(frost1.$el!);
+				frostArray.push(frost1);
+			}
+			if (frostArray.length < 2 && levels >= 2) {
+				const frost2 = new Sprite(BattleEffects.frost, {
+					display: 'block',
+					x: side.x - 20,
+					y: side.y - 35,
+					z: side.z,
+					scale: .3,
+				}, this);
+				this.$spritesFront[spriteIndex].append(frost2.$el!);
+				frostArray.push(frost2);
+			}
+			if (frostArray.length < 3 && levels >= 3) {
+				const frost3 = new Sprite(BattleEffects.frost, {
+					display: 'block',
+					x: side.x,
+					y: side.y - 35,
+					z: side.z,
+					scale: .3,
+				}, this);
+				this.$spritesFront[spriteIndex].append(frost3.$el!);
+				frostArray.push(frost3);
+			}
+			if (frostArray.length < 4 && levels >= 4) {
+				const frost4 = new Sprite(BattleEffects.frost, {
+					display: 'block',
+					x: side.x + 20,
+					y: side.y - 35,
+					z: side.z,
+					scale: .3,
+				}, this);
+				this.$spritesFront[spriteIndex].append(frost4.$el!);
+				frostArray.push(frost4);
+			}
+			if (frostArray.length < 5 && levels >= 5) {
+				const frost5 = new Sprite(BattleEffects.frost, {
+					display: 'block',
+					x: side.x + 40,
+					y: side.y - 35,
+					z: side.z,
+					scale: .3,
+				}, this);
+				this.$spritesFront[spriteIndex].append(frost5.$el!);
+				frostArray.push(frost5);
+			}
+			break;
 		case 'gmaxsteelsurge':
 			const surge1 = new Sprite(BattleEffects.greenmetal1, {
 				display: 'block',
