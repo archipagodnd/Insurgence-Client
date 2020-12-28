@@ -699,6 +699,12 @@ text+="<p class=\"movetag\">&#x2713; Pulse <small>(boosted by Mega Launcher)</sm
 if(move.flags.bite&&ability==='strongjaw'){
 text+="<p class=\"movetag\">&#x2713; Bite <small>(boosted by Strong Jaw)</small></p>";
 }
+if(move.flags.bite&&ability==='spectraljaws'){
+text+="<p class=\"movetag\">&#x2713; Bite <small>(boosted by Spectral Jaws)</small></p>";
+}
+if(move.flags.sound&&ability==='amplifier'){
+text+="<p class=\"movetag\">&#x2713; Sound <small>(boosted by Amplifier)</small></p>";
+}
 if((move.recoil||move.hasCrashDamage)&&ability==='reckless'){
 text+="<p class=\"movetag\">&#x2713; Recoil <small>(boosted by Reckless)</small></p>";
 }
@@ -1031,6 +1037,9 @@ stats.atk=Math.floor(stats.atk*1.5);
 if(ability==='purepower'||ability==='hugepower'){
 stats.atk*=2;
 }
+if(ability==='athenian'){
+stats.spa*=2;
+}
 if(ability==='hustle'||ability==='gorillatactics'&&!(clientPokemon!=null&&clientPokemon.volatiles['dynamax'])){
 stats.atk=Math.floor(stats.atk*1.5);
 }
@@ -1042,6 +1051,9 @@ if(ability==='sandrush'&&weather==='sandstorm'){
 stats.spe*=2;
 }
 if(ability==='slushrush'&&weather==='hail'){
+stats.spe*=2;
+}
+if(ability==='shadowdance'&&weather==='newmoon'){
 stats.spe*=2;
 }
 if(item!=='utilityumbrella'){
@@ -1060,6 +1072,12 @@ stats.spd=Math.floor(stats.spd*1.5);
 }
 }
 }
+}
+if(ability==='supercell'&&(weather==='raindance'||weather==='primordialsea'||weather==='newmoon')){
+stats.spa*=1.5;
+}
+if(ability==='absolution'&&weather==='newmoon'){
+stats.spa*=1.5;
 }
 if(ability==='chlorophyll'&&(weather==='sunnyday'||weather==='desolateland')){
 stats.spe*=2;
@@ -1325,6 +1343,10 @@ if(value.abilityModify(0,'Aerilate'))moveType='Flying';
 if(value.abilityModify(0,'Galvanize'))moveType='Electric';
 if(value.abilityModify(0,'Pixilate'))moveType='Fairy';
 if(value.abilityModify(0,'Refrigerate'))moveType='Ice';
+if(value.abilityModify(0,'Intoxicate'))moveType='Poison';
+}
+if(moveType==='Rock'){
+if(value.abilityModify(0,'Foundry'))moveType='Fire';
 }
 if(value.abilityModify(0,'Normalize'))moveType='Normal';
 }
@@ -1336,6 +1358,7 @@ moveType='Water';
 if(this.battle.gen<=3&&category!=='Status'){
 category=Dex.getGen3Category(moveType);
 }
+if(value.abilityModify(0,'Spectral Jaws'))category='Special';
 return[moveType,category];
 };_proto2.
 
@@ -1640,6 +1663,10 @@ value.abilityModify(this.battle.gen>6?1.2:1.3,"Aerilate");
 value.abilityModify(this.battle.gen>6?1.2:1.3,"Galvanize");
 value.abilityModify(this.battle.gen>6?1.2:1.3,"Pixilate");
 value.abilityModify(this.battle.gen>6?1.2:1.3,"Refrigerate");
+value.abilityModify(this.battle.gen>6?1.2:1.3,"Intoxicate");
+}
+if(move.type==='Rock'){
+value.abilityModify(this.battle.gen>6?1.2:1.3,"Foundry");
 }
 if(this.battle.gen>6){
 value.abilityModify(1.2,"Normalize");
