@@ -1440,3 +1440,4 @@ global.Ability=Ability;
 global.Item=Item;
 global.Move=Move;
 }
+//# sourceMappingURL=battle-dex-data.js.map

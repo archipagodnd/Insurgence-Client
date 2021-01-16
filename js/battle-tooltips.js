@@ -2570,3 +2570,4 @@ if(typeof require==='function'){
 
 global.BattleStatGuesser=BattleStatGuesser;
 }
+//# sourceMappingURL=battle-tooltips.js.map

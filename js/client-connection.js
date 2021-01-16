@@ -93,3 +93,4 @@ xhr.send(urlencodedData);
 xhr.send();
 }
 };return _class;}())();
+//# sourceMappingURL=client-connection.js.map

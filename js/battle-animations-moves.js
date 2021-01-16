@@ -32547,3 +32547,4 @@ prepareAnim:BattleMoveAnims['solarbeam'].prepareAnim};
 BattleMoveAnims['spiritaway']={
 anim:BattleMoveAnims['skydrop'].anim,
 prepareAnim:BattleMoveAnims['skydrop'].prepareAnim};
+//# sourceMappingURL=battle-animations-moves.js.map

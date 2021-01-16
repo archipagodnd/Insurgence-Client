@@ -6141,3 +6141,4 @@ time:300},
 
 
 BattleStatusAnims['focuspunch']={anim:BattleStatusAnims['flinch'].anim};
+//# sourceMappingURL=battle-animations.js.map

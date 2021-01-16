@@ -476,3 +476,4 @@ Component:NewsPanel};
 PS.roomTypes['mainmenu']={
 Model:MainMenuRoom,
 Component:MainMenuPanel};
+//# sourceMappingURL=panel-mainmenu.js.map

@@ -371,3 +371,4 @@ _this2.renderRow(result));}));
 
 
 };return PSSearchResults;}(preact.Component);
+//# sourceMappingURL=battle-searchresults.js.map

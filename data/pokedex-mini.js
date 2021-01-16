@@ -1409,7 +1409,7 @@ exports.BattlePokemonSprites = {
 	meltan:{num:808},
 	melmetal:{num:809},
 	melmetalgmax:{num:809},
-	ufi:{num:2000},
+	ufi:{num:-100},
 	grookey:{num:810},
 	thwackey:{num:811},
 	rillaboom:{num:812},

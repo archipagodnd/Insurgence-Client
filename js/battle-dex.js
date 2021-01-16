@@ -997,3 +997,4 @@ if(typeof require==='function'){
 global.Dex=Dex;
 global.toID=toID;
 }
+//# sourceMappingURL=battle-dex.js.map

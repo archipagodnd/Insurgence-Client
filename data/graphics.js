@@ -6141,6 +6141,7 @@ time:300},
 
 
 BattleStatusAnims['focuspunch']={anim:BattleStatusAnims['flinch'].anim};
+//# sourceMappingURL=battle-animations.js.map
 
 /**
  * Pokemon Showdown Move Animations
@@ -38691,3 +38692,4 @@ prepareAnim:BattleMoveAnims['solarbeam'].prepareAnim};
 BattleMoveAnims['spiritaway']={
 anim:BattleMoveAnims['skydrop'].anim,
 prepareAnim:BattleMoveAnims['skydrop'].prepareAnim};
+//# sourceMappingURL=battle-animations-moves.js.map

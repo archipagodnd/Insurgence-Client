@@ -675,3 +675,4 @@ Model:BattlesRoom,
 Component:BattlesPanel};
 
 PS.updateRoomTypes();
+//# sourceMappingURL=panel-battle.js.map

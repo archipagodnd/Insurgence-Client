@@ -1560,3 +1560,4 @@ throw new Error("invalid filter");
 sort=function sort(results,sortCol){
 throw new Error("invalid sortcol");
 };return BattleTypeSearch;}(BattleTypedSearch);
+//# sourceMappingURL=battle-dex-search.js.map
