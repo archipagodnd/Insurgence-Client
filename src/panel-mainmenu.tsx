@@ -31,7 +31,7 @@ class MainMenuRoom extends PSRoom {
 			PSLoginServer.query({
 				act: 'upkeep',
 				challstr,
-			}, res => {
+			}).then(res => {
 				if (!res) return;
 				if (!res.loggedin) return;
 				this.send(`/trn ${res.username},0,${res.assertion}`);
@@ -257,6 +257,13 @@ class MainMenuRoom extends PSRoom {
 				battlesRoom.battles = battles;
 				battlesRoom.update(null);
 			}
+			break;
+		case 'laddertop':
+			const ladderRoomEntries = Object.entries(PS.rooms).filter(entry => entry[0].startsWith('ladder'));
+			for (const [, ladderRoom] of ladderRoomEntries) {
+				(ladderRoom as LadderRoom).update(response);
+			}
+			break;
 		}
 	}
 }
@@ -276,6 +283,10 @@ class MainMenuPanel extends PSRoomPanel<MainMenuRoom> {
 	submit = (e: Event) => {
 		alert('todo: implement');
 	};
+	handleDragStart = (e: DragEvent) => {
+		const roomid = (e.currentTarget as HTMLElement).getAttribute('data-roomid') as RoomID;
+		PS.dragging = {type: 'room', roomid};
+	};
 	renderMiniRoom(room: PSRoom) {
 		const roomType = PS.roomTypes[room.type];
 		const Panel = roomType ? roomType.Component : PSRoomPanel;
@@ -286,7 +297,7 @@ class MainMenuPanel extends PSRoomPanel<MainMenuRoom> {
 			const room = PS.rooms[roomid]!;
 			return <div class="pmbox">
 				<div class="mini-window">
-					<h3>
+					<h3 draggable onDragStart={this.handleDragStart} data-roomid={roomid}>
 						<button class="closebutton" name="closeRoom" value={roomid} aria-label="Close" tabIndex={-1}><i class="fa fa-times-circle"></i></button>
 						<button class="minimizebutton" tabIndex={-1}><i class="fa fa-minus-circle"></i></button>
 						{room.title}
