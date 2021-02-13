@@ -282,7 +282,6 @@ var search=this.props.search;
 
 var tierTable={
 uber:"Uber",
-lcuber:"LC Uber",
 caplc:"CAP LC",
 capnfe:"CAP NFE"};
 

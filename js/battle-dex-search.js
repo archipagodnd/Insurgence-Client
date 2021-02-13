@@ -885,12 +885,11 @@ if(format==='ru')tierSet=tierSet.slice(slices.RU||slices.UU);else
 if(format==='nu')tierSet=tierSet.slice(slices.NU||slices.UU);else
 if(format==='pu')tierSet=tierSet.slice(slices.PU||slices.NU);else
 if(format==='zu')tierSet=tierSet.slice(slices.ZU||slices.PU||slices.NU);else
-if(format==='lc'||format==='lcuu')tierSet=tierSet.slice(slices.LC);else
+if(format==='lc'||format==='lcuu'||format.startsWith('lc')||format!=='caplc'&&format.endsWith('lc'))tierSet=tierSet.slice(slices.LC);else
 if(format==='cap')tierSet=tierSet.slice(0,slices.Uber).concat(tierSet.slice(slices.OU));else
 if(format==='caplc')tierSet=tierSet.slice(slices['CAP LC'],slices.Uber).concat(tierSet.slice(slices.LC));else
-if(format.startsWith('lc')||format.endsWith('lc'))tierSet=tierSet.slice(slices["LC Uber"]);else
-if(format==='anythinggoes'||format.endsWith('ag'))tierSet=tierSet.slice(dex.gen===8?slices.Uber:slices.AG||slices.Uber);else
-if(format==='balancedhackmons'||format.endsWith('bh'))tierSet=tierSet.slice(dex.gen===8?slices.Uber:slices.AG||slices.Uber);else
+if(format==='anythinggoes'||format.endsWith('ag'))tierSet=tierSet.slice(slices.AG);else
+if(format==='balancedhackmons'||format.endsWith('bh'))tierSet=tierSet.slice(slices.AG);else
 if(format==='doublesubers')tierSet=tierSet.slice(slices.DUber);else
 if(format==='doublesou'&&dex.gen>4)tierSet=tierSet.slice(slices.DOU);else
 if(format==='doublesuu')tierSet=tierSet.slice(slices.DUU);else
@@ -900,7 +899,7 @@ if(this.formatType==='letsgo')tierSet=tierSet.slice(slices.Uber);else
 if(!isDoublesOrBS){
 tierSet=[].concat(
 tierSet.slice(slices.OU,slices.UU),
-dex.gen===8?[]:tierSet.slice(slices.AG,slices.Uber),
+tierSet.slice(slices.AG,slices.Uber),
 tierSet.slice(slices.Uber,slices.OU),
 tierSet.slice(slices.UU));
 
@@ -913,18 +912,26 @@ tierSet.slice(slices.DUU));
 }
 
 if(format==='zu'&&dex.gen>=7){
-tierSet=tierSet.filter(function(r){
-if(r[1]in table.zuBans)return false;
+tierSet=tierSet.filter(function(_ref4){var type=_ref4[0],id=_ref4[1];
+if(id in table.zuBans)return false;
 return true;
 });
 }
 
 if(format==='vgc2016'){
-tierSet=tierSet.filter(function(_ref4){var type=_ref4[0],id=_ref4[1];
+tierSet=tierSet.filter(function(_ref5){var type=_ref5[0],id=_ref5[1];
 var banned=[
 'deoxys','deoxysattack','deoxysdefense','deoxysspeed','mew','celebi','shaymin','shayminsky','darkrai','victini','keldeo','keldeoresolute','meloetta','arceus','genesect','jirachi','manaphy','phione','hoopa','hoopaunbound','diancie','dianciemega'];
 
 return!(banned.includes(id)||id.startsWith('arceus'));
+});
+}
+
+
+if(!/^(battlestadium|vgc|doublesubers)/g.test(format)){
+tierSet=tierSet.filter(function(_ref6){var type=_ref6[0],id=_ref6[1];
+if(type==='pokemon')return!id.endsWith('gmax');
+return true;
 });
 }
 
@@ -934,7 +941,7 @@ filter=function filter(row,filters){
 if(!filters)return true;
 if(row[0]!=='pokemon')return true;
 var species=this.dex.getSpecies(row[1]);for(var _i5=0;_i5<
-filters.length;_i5++){var _ref5=filters[_i5];var filterType=_ref5[0];var value=_ref5[1];
+filters.length;_i5++){var _ref7=filters[_i5];var filterType=_ref7[0];var value=_ref7[1];
 switch(filterType){
 case'type':
 if(species.types[0]!==value&&species.types[1]!==value)return false;
@@ -956,13 +963,13 @@ return true;
 };_proto3.
 sort=function sort(results,sortCol){
 if(['hp','atk','def','spa','spd','spe'].includes(sortCol)){
-return results.sort(function(_ref6,_ref7){var rowType1=_ref6[0],id1=_ref6[1];var rowType2=_ref7[0],id2=_ref7[1];
+return results.sort(function(_ref8,_ref9){var rowType1=_ref8[0],id1=_ref8[1];var rowType2=_ref9[0],id2=_ref9[1];
 var stat1=BattlePokedex[id1].baseStats[sortCol];
 var stat2=BattlePokedex[id2].baseStats[sortCol];
 return stat2-stat1;
 });
 }else if(sortCol==='bst'){
-return results.sort(function(_ref8,_ref9){var rowType1=_ref8[0],id1=_ref8[1];var rowType2=_ref9[0],id2=_ref9[1];
+return results.sort(function(_ref10,_ref11){var rowType1=_ref10[0],id1=_ref10[1];var rowType2=_ref11[0],id2=_ref11[1];
 var base1=BattlePokedex[id1].baseStats;
 var base2=BattlePokedex[id2].baseStats;
 var bst1=base1.hp+base1.atk+base1.def+base1.spa+base1.spd+base1.spe;
@@ -970,7 +977,7 @@ var bst2=base2.hp+base2.atk+base2.def+base2.spa+base2.spd+base2.spe;
 return bst2-bst1;
 });
 }else if(sortCol==='name'){
-return results.sort(function(_ref10,_ref11){var rowType1=_ref10[0],id1=_ref10[1];var rowType2=_ref11[0],id2=_ref11[1];
+return results.sort(function(_ref12,_ref13){var rowType1=_ref12[0],id1=_ref12[1];var rowType2=_ref13[0],id2=_ref13[1];
 var name1=id1;
 var name2=id2;
 return name1<name2?-1:name1>name2?1:0;
@@ -1053,7 +1060,7 @@ filter=function filter(row,filters){
 if(!filters)return true;
 if(row[0]!=='ability')return true;
 var ability=this.dex.getAbility(row[1]);for(var _i7=0;_i7<
-filters.length;_i7++){var _ref12=filters[_i7];var filterType=_ref12[0];var value=_ref12[1];
+filters.length;_i7++){var _ref14=filters[_i7];var filterType=_ref14[0];var value=_ref14[1];
 switch(filterType){
 case'pokemon':
 if(!Dex.hasAbility(this.dex.getSpecies(value),ability.name))return false;
@@ -1115,7 +1122,7 @@ filter=function filter(row,filters){
 if(!filters)return true;
 if(row[0]!=='ability')return true;
 var ability=this.dex.getAbility(row[1]);for(var _i9=0;_i9<
-filters.length;_i9++){var _ref13=filters[_i9];var filterType=_ref13[0];var value=_ref13[1];
+filters.length;_i9++){var _ref15=filters[_i9];var filterType=_ref15[0];var value=_ref15[1];
 switch(filterType){
 case'pokemon':
 if(!Dex.hasAbility(this.dex.getSpecies(value),ability.name))return false;
@@ -1466,7 +1473,7 @@ filter=function filter(row,filters){
 if(!filters)return true;
 if(row[0]!=='move')return true;
 var move=this.dex.getMove(row[1]);for(var _i13=0;_i13<
-filters.length;_i13++){var _ref14=filters[_i13];var filterType=_ref14[0];var value=_ref14[1];
+filters.length;_i13++){var _ref16=filters[_i13];var filterType=_ref16[0];var value=_ref16[1];
 switch(filterType){
 case'type':
 if(move.type!==value)return false;
@@ -1492,7 +1499,7 @@ beatup:24,punishment:1020,psywave:1250,nightshade:1200,seismictoss:1200,
 dragonrage:1140,sonicboom:1120,superfang:1350,endeavor:1399,sheercold:1501,
 fissure:1500,horndrill:1500,guillotine:1500};
 
-return results.sort(function(_ref15,_ref16){var rowType1=_ref15[0],id1=_ref15[1];var rowType2=_ref16[0],id2=_ref16[1];
+return results.sort(function(_ref17,_ref18){var rowType1=_ref17[0],id1=_ref17[1];var rowType2=_ref18[0],id2=_ref18[1];
 var move1=BattleMovedex[id1];
 var move2=BattleMovedex[id2];
 var pow1=move1.basePower||powerTable[id1]||(move1.category==='Status'?-1:1400);
@@ -1500,7 +1507,7 @@ var pow2=move2.basePower||powerTable[id2]||(move2.category==='Status'?-1:1400);
 return pow2-pow1;
 });
 case'accuracy':
-return results.sort(function(_ref17,_ref18){var rowType1=_ref17[0],id1=_ref17[1];var rowType2=_ref18[0],id2=_ref18[1];
+return results.sort(function(_ref19,_ref20){var rowType1=_ref19[0],id1=_ref19[1];var rowType2=_ref20[0],id2=_ref20[1];
 var accuracy1=BattleMovedex[id1].accuracy||0;
 var accuracy2=BattleMovedex[id2].accuracy||0;
 if(accuracy1===true)accuracy1=101;
@@ -1508,7 +1515,7 @@ if(accuracy2===true)accuracy2=101;
 return accuracy2-accuracy1;
 });
 case'pp':
-return results.sort(function(_ref19,_ref20){var rowType1=_ref19[0],id1=_ref19[1];var rowType2=_ref20[0],id2=_ref20[1];
+return results.sort(function(_ref21,_ref22){var rowType1=_ref21[0],id1=_ref21[1];var rowType2=_ref22[0],id2=_ref22[1];
 var pp1=BattleMovedex[id1].pp||0;
 var pp2=BattleMovedex[id2].pp||0;
 return pp2-pp1;

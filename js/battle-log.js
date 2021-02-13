@@ -704,7 +704,8 @@ blink:0,
 psicon:html4.eflags['OPTIONAL_ENDTAG']|html4.eflags['EMPTY'],
 username:0,
 spotify:0,
-youtube:0});
+youtube:0,
+twitch:0});
 
 
 
@@ -800,25 +801,36 @@ if(location.protocol!=='http:'&&location.protocol!=='https:'){
 setAttrib('src','https:'+src);
 }
 }
+}else if(tagName==='twitch'){var _$exec;
+
+var _src=getAttrib('src')||"";
+var channelId=(_$exec=/(https?:\/\/)?twitch.tv\/([A-Za-z0-9]+)/i.exec(_src))==null?void 0:_$exec[2];
+return{
+tagName:'iframe',
+attribs:[
+'src',"https://player.twitch.tv/?channel="+channelId+"&parent="+location.hostname,
+'allowfullscreen','true','height',"400",'width',"340"]};
+
+
 }else if(tagName==='username'){
 
 tagName='strong';
 var color=_this2.usernameColor(toID(getAttrib('name')));
 var style=getAttrib('style');
 setAttrib('style',style+";color:"+color);
-}else if(tagName==='spotify'){var _$exec;
+}else if(tagName==='spotify'){var _$exec2;
 
-var _src=getAttrib('src')||'';
-var songId=(_$exec=/(?:\?v=|\/track\/)([A-Za-z0-9]+)/.exec(_src))==null?void 0:_$exec[1];
+var _src2=getAttrib('src')||'';
+var songId=(_$exec2=/(?:\?v=|\/track\/)([A-Za-z0-9]+)/.exec(_src2))==null?void 0:_$exec2[1];
 
 return{
 tagName:'iframe',
 attribs:['src',"https://open.spotify.com/embed/track/"+songId,'width','300','height','380','frameborder','0','allowtransparency','true','allow','encrypted-media']};
 
-}else if(tagName==='youtube'){var _$exec2;
+}else if(tagName==='youtube'){var _$exec3;
 
 
-var _src2=getAttrib('src')||'';
+var _src3=getAttrib('src')||'';
 
 var width='320';
 var height='200';
@@ -826,7 +838,7 @@ if(window.innerWidth>=400){
 width='400';
 height='225';
 }
-var videoId=(_$exec2=/(?:\?v=|\/embed\/)([A-Za-z0-9_\-]+)/.exec(_src2))==null?void 0:_$exec2[1];
+var videoId=(_$exec3=/(?:\?v=|\/embed\/)([A-Za-z0-9_\-]+)/.exec(_src3))==null?void 0:_$exec3[1];
 if(!videoId)return{tagName:'img',attribs:['alt',"invalid src for <youtube>"]};
 
 return{
@@ -983,7 +995,7 @@ replayid=Config.server.id+'-'+replayid;
 
 replayid=room.fragment;
 }
-battle.fastForwardTo(-1);
+battle.seekTurn(Infinity);
 var buf='<!DOCTYPE html>\n';
 buf+='<meta charset="utf-8" />\n';
 buf+='<!-- version 1 -->\n';
@@ -995,7 +1007,7 @@ buf+='<div class="wrapper replay-wrapper" style="max-width:1180px;margin:0 auto"
 buf+='<input type="hidden" name="replayid" value="'+replayid+'" />\n';
 buf+='<div class="battle"></div><div class="battle-log"></div><div class="replay-controls"></div><div class="replay-controls-2"></div>\n';
 buf+="<h1 style=\"font-weight:normal;text-align:center\"><strong>"+BattleLog.escapeHTML(battle.tier)+"</strong><br /><a href=\"http://"+Config.routes.users+"/"+toID(battle.p1.name)+"\" class=\"subtle\" target=\"_blank\">"+BattleLog.escapeHTML(battle.p1.name)+"</a> vs. <a href=\"http://"+Config.routes.users+"/"+toID(battle.p2.name)+"\" class=\"subtle\" target=\"_blank\">"+BattleLog.escapeHTML(battle.p2.name)+"</a></h1>\n";
-buf+='<script type="text/plain" class="battle-log-data">'+battle.activityQueue.join('\n').replace(/\//g,'\\/')+'</script>\n';
+buf+='<script type="text/plain" class="battle-log-data">'+battle.stepQueue.join('\n').replace(/\//g,'\\/')+'</script>\n';
 buf+='</div>\n';
 buf+='<div class="battle-log battle-log-inline"><div class="inner">'+battle.scene.log.elem.innerHTML+'</div></div>\n';
 buf+='</div>\n';

@@ -81,7 +81,7 @@ this.challengedFormat=null;
 this.update(null);
 return false;
 }}
-return false;
+return _PSRoom.prototype.handleMessage.call(this,line);
 };_proto.
 openChallenge=function openChallenge(){
 if(!this.pmTarget){

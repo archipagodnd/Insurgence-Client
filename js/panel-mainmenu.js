@@ -30,8 +30,8 @@ case'challstr':{var
 challstr=args[1];
 PSLoginServer.query({
 act:'upkeep',
-challstr:challstr},
-function(res){
+challstr:challstr}).
+then(function(res){
 if(!res)return;
 if(!res.loggedin)return;
 _this2.send("/trn "+res.username+",0,"+res.assertion);
@@ -256,7 +256,14 @@ battles.push(battleTable[battleid]);
 }
 battlesRoom.battles=battles;
 battlesRoom.update(null);
-}}
+}
+break;
+case'laddertop':
+var ladderRoomEntries=Object.entries(PS.rooms).filter(function(entry){return entry[0].startsWith('ladder');});for(var _i=0;_i<
+ladderRoomEntries.length;_i++){var _ref=ladderRoomEntries[_i];var ladderRoom=_ref[1];
+ladderRoom.update(response);
+}
+break;}
 
 };return MainMenuRoom;}(PSRoom);var
 
@@ -275,6 +282,10 @@ MainMenuPanel=function(_PSRoomPanel2){_inheritsLoose(MainMenuPanel,_PSRoomPanel2
 
 submit=function(e){
 alert('todo: implement');
+};_this3.
+handleDragStart=function(e){
+var roomid=e.currentTarget.getAttribute('data-roomid');
+PS.dragging={type:'room',roomid:roomid};
 };return _this3;}var _proto3=MainMenuPanel.prototype;_proto3.focus=function focus(){this.base.querySelector('button.big').focus();};_proto3.
 renderMiniRoom=function renderMiniRoom(room){
 var roomType=PS.roomTypes[room.type];
@@ -286,7 +297,7 @@ return PS.miniRoomList.map(function(roomid){
 var room=PS.rooms[roomid];
 return preact.h("div",{"class":"pmbox"},
 preact.h("div",{"class":"mini-window"},
-preact.h("h3",null,
+preact.h("h3",{draggable:true,onDragStart:_this4.handleDragStart,"data-roomid":roomid},
 preact.h("button",{"class":"closebutton",name:"closeRoom",value:roomid,"aria-label":"Close",tabIndex:-1},preact.h("i",{"class":"fa fa-times-circle"})),
 preact.h("button",{"class":"minimizebutton",tabIndex:-1},preact.h("i",{"class":"fa fa-minus-circle"})),
 room.title),
@@ -296,9 +307,9 @@ _this4.renderMiniRoom(room)));
 
 });
 };_proto3.
-render=function render(){
-var onlineButton=' button'+(PS.isOffline?' disabled':'');
-var searchButton=PS.down?preact.h("div",{"class":"menugroup",style:"background: rgba(10,10,10,.6)"},
+renderSearchButton=function renderSearchButton(){
+if(PS.down){
+return preact.h("div",{"class":"menugroup",style:"background: rgba(10,10,10,.6)"},
 PS.down==='ddos'?
 preact.h("p",{"class":"error"},preact.h("strong",null,"Pok\xE9mon Showdown is offline due to a DDoS attack!")):
 
@@ -310,13 +321,27 @@ preact.h("img",{width:"96",height:"96",src:"//"+Config.routes.client+"/sprites/g
 
 
 
-preact.h("p",null,"(We'll be back up in a few hours.)")):
-preact.h(TeamForm,{"class":"menugroup",onSubmit:this.submit},
-preact.h("button",{"class":"mainmenu1 big"+onlineButton,name:"search"},
+preact.h("p",null,"(We'll be back up in a few hours.)"));
+
+}
+
+if(!PS.user.userid||PS.isOffline){
+return preact.h(TeamForm,{"class":"menugroup",onSubmit:this.submit},
+preact.h("button",{"class":"mainmenu1 big button disabled",name:"search"},
+preact.h("em",null,PS.isOffline?"Disconnected":"Connecting...")));
+
+
+}
+
+return preact.h(TeamForm,{"class":"menugroup",onSubmit:this.submit},
+preact.h("button",{"class":"mainmenu1 big button",name:"search"},
 preact.h("strong",null,"Battle!"),preact.h("br",null),
 preact.h("small",null,"Find a random opponent")));
 
 
+};_proto3.
+render=function render(){
+var onlineButton=' button'+(PS.isOffline?' disabled':'');
 return preact.h(PSPanelWrapper,{room:this.props.room,scrollable:true},
 preact.h("div",{"class":"mainmenuwrapper"},
 preact.h("div",{"class":"leftmenu"},
@@ -324,7 +349,7 @@ preact.h("div",{"class":"activitymenu"},
 this.renderMiniRooms()),
 
 preact.h("div",{"class":"mainmenu"},
-searchButton,
+this.renderSearchButton(),
 
 preact.h("div",{"class":"menugroup"},
 preact.h("p",null,preact.h("button",{"class":"mainmenu2 button",name:"joinRoom",value:"teambuilder"},"Teambuilder")),
@@ -405,7 +430,7 @@ TeamDropdown=function(_preact$Component2){_inheritsLoose(TeamDropdown,_preact$Co
 
 
 
-change=function(){return _this6.forceUpdate();};return _this6;}var _proto5=TeamDropdown.prototype;_proto5.getTeam=function getTeam(){if(this.base){var key=this.base.value;return PS.teams.byKey[key]||null;}var formatid=PS.teams.teambuilderFormat(this.props.format);for(var _i=0,_PS$teams$list=PS.teams.list;_i<_PS$teams$list.length;_i++){var _team2=_PS$teams$list[_i];if(_team2.format===formatid)return _team2;}return null;};_proto5.componentDidMount=function componentDidMount(){var team=this.getTeam();if(team){this.base.value=team.key;}};_proto5.
+change=function(){return _this6.forceUpdate();};return _this6;}var _proto5=TeamDropdown.prototype;_proto5.getTeam=function getTeam(){if(this.base){var key=this.base.value;return PS.teams.byKey[key]||null;}var formatid=PS.teams.teambuilderFormat(this.props.format);for(var _i2=0,_PS$teams$list=PS.teams.list;_i2<_PS$teams$list.length;_i2++){var _team2=_PS$teams$list[_i2];if(_team2.format===formatid)return _team2;}return null;};_proto5.componentDidMount=function componentDidMount(){var team=this.getTeam();if(team){this.base.value=team.key;}};_proto5.
 render=function render(){var _window$BattleFormats;
 var formatid=PS.teams.teambuilderFormat(this.props.format);
 var formatData=(_window$BattleFormats=window.BattleFormats)==null?void 0:_window$BattleFormats[formatid];

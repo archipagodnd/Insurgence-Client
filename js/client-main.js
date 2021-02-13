@@ -263,9 +263,9 @@ key:''};
 
 
 PSUser=function(_PSModel){_inheritsLoose(PSUser,_PSModel);function PSUser(){var _this3;for(var _len=arguments.length,args=new Array(_len),_key2=0;_key2<_len;_key2++){args[_key2]=arguments[_key2];}_this3=_PSModel.call.apply(_PSModel,[this].concat(args))||this;_this3.
-name="Guest";_this3.
+name="";_this3.
 group='';_this3.
-userid="guest";_this3.
+userid="";_this3.
 named=false;_this3.
 registered=false;_this3.
 avatar="1";return _this3;}var _proto3=PSUser.prototype;_proto3.
@@ -284,6 +284,22 @@ var room=PS.rooms[_roomid2];
 if(room.connectWhenLoggedIn)room.connect();
 }
 }
+};_proto3.
+logOut=function logOut(){var _PS$connection;
+PSLoginServer.query({
+act:'logout',
+userid:this.userid});
+
+PS.send('|/logout');
+(_PS$connection=PS.connection)==null?void 0:_PS$connection.disconnect();
+
+alert("You have been logged out and disconnected.\n\nIf you wanted to change your name while staying connected, use the 'Change Name' button or the '/nick' command.");
+this.name="";
+this.group='';
+this.userid="";
+this.named=false;
+this.registered=false;
+this.update();
 };return PSUser;}(PSModel);var
 
 
@@ -507,7 +523,16 @@ throw new Error("This room is not designed to receive messages");
 }
 }}
 };_proto5.
-handleMessage=function handleMessage(msg){
+handleMessage=function handleMessage(line){
+if(!line.startsWith('/')||line.startsWith('//'))return false;
+var spaceIndex=line.indexOf(' ');
+var cmd=spaceIndex>=0?line.slice(1,spaceIndex):line.slice(1);
+
+switch(cmd){
+case'logout':{
+PS.user.logOut();
+return true;
+}}
 return false;
 };_proto5.
 send=function send(msg,direct){
@@ -641,8 +666,19 @@ var PS=new(_temp=function(_PSModel2){_inheritsLoose(_temp,_PSModel2);
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 function _temp(){var _document$querySelect;var _this6;
-_this6=_PSModel2.call(this)||this;_this6.down=false;_this6.prefs=new PSPrefs();_this6.teams=new PSTeams();_this6.user=new PSUser();_this6.server=new PSServer();_this6.connection=null;_this6.connected=false;_this6.isOffline=false;_this6.router=null;_this6.rooms={};_this6.roomTypes={};_this6.leftRoomList=[];_this6.rightRoomList=[];_this6.miniRoomList=[];_this6.popups=[];_this6.leftRoom=null;_this6.rightRoom=null;_this6.room=null;_this6.activePanel=null;_this6.onePanelMode=false;_this6.leftRoomWidth=0;_this6.mainmenu=null;_this6.arrowKeysUsed=false;_this6.newsHTML=((_document$querySelect=document.querySelector('.news-embed .pm-log'))==null?void 0:_document$querySelect.innerHTML)||'';
+_this6=_PSModel2.call(this)||this;_this6.down=false;_this6.prefs=new PSPrefs();_this6.teams=new PSTeams();_this6.user=new PSUser();_this6.server=new PSServer();_this6.connection=null;_this6.connected=false;_this6.isOffline=false;_this6.router=null;_this6.rooms={};_this6.roomTypes={};_this6.leftRoomList=[];_this6.rightRoomList=[];_this6.miniRoomList=[];_this6.popups=[];_this6.leftRoom=null;_this6.rightRoom=null;_this6.room=null;_this6.activePanel=null;_this6.onePanelMode=false;_this6.leftRoomWidth=0;_this6.mainmenu=null;_this6.dragging=null;_this6.arrowKeysUsed=false;_this6.newsHTML=((_document$querySelect=document.querySelector('.news-embed .pm-log'))==null?void 0:_document$querySelect.innerHTML)||'';
 
 _this6.addRoom({
 id:'',
@@ -797,6 +833,10 @@ var pipeIndex=fullMsg.indexOf('|');
 var roomid=fullMsg.slice(0,pipeIndex);
 var msg=fullMsg.slice(pipeIndex+1);
 console.log("\u25B6\uFE0F "+(roomid?'['+roomid+'] ':'')+'%c'+msg,"color: #776677");
+if(!this.connection){
+alert("You are not connected and cannot send "+msg+".");
+return;
+}
 this.connection.send(fullMsg);
 };_proto7.
 isVisible=function isVisible(room){
@@ -855,7 +895,7 @@ case'options':case'volume':case'teamdropdown':case'formatdropdown':
 case'news':
 options.type=options.id;
 break;
-case'battle-':case'user-':case'team-':
+case'battle-':case'user-':case'team-':case'ladder-':
 options.type=options.id.slice(0,hyphenIndex);
 break;
 case'view-':

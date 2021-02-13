@@ -3,7 +3,7 @@ function _inheritsLoose(subClass,superClass){subClass.prototype=Object.create(su
  *
  * Main view - sets up the frame, and the generic panels.
  *
- * Also sets up global event listeners.
+ * Also sets up most global event listeners.
  *
  * @author Guangcong Luo <guangcongluo@gmail.com>
  * @license AGPLv3
@@ -20,6 +20,34 @@ this.subscribeHistory();
 this.subscribeHash();
 }
 }var _proto=PSRouter.prototype;_proto.
+extractRoomID=function extractRoomID(url){
+if(url.startsWith(document.location.origin)){
+url=url.slice(document.location.origin.length);
+}else{
+if(url.startsWith('http://')){
+url=url.slice(7);
+}else if(url.startsWith('https://')){
+url=url.slice(8);
+}
+if(url.startsWith(document.location.host)){
+url=url.slice(document.location.host.length);
+}else if(PS.server.id==='showdown'&&url.startsWith('play.pokemonshowdown.com')){
+url=url.slice(24);
+}else if(PS.server.id==='showdown'&&url.startsWith('psim.us')){
+url=url.slice(7);
+}else if(url.startsWith('replay.pokemonshowdown.com')){
+url=url.slice(26).replace('/','/battle-');
+}
+}
+if(url.startsWith('/'))url=url.slice(1);
+
+if(!/^[a-z0-9-]*$/.test(url))return null;
+
+var redirects=/^(appeals?|rooms?suggestions?|suggestions?|adminrequests?|bugs?|bugreports?|rules?|faq|credits?|privacy|contact|dex|insecure)$/;
+if(redirects.test(url))return null;
+
+return url;
+};_proto.
 subscribeHash=function subscribeHash(){
 if(location.hash){
 var currentRoomid=location.hash.slice(1);
@@ -196,8 +224,14 @@ e.stopImmediatePropagation();
 return;
 }
 if(elem.tagName==='A'||elem.getAttribute('data-href')){
-var _roomid=_this4.roomidFromLink(elem);
+var href=elem.getAttribute('data-href')||elem.href;
+var _roomid=PS.router.extractRoomID(href);
+
 if(_roomid!==null){
+if(elem.getAttribute('data-target')==='replace'){
+var room=_this4.getRoom(elem);
+if(room)PS.leave(room.id);
+}
 PS.addRoom({
 id:_roomid,
 parentElem:elem});
@@ -212,8 +246,19 @@ if(elem.tagName==='BUTTON'){
 if(_this4.handleButtonClick(elem)){
 e.preventDefault();
 e.stopImmediatePropagation();
-}
 return;
+}else if(!elem.getAttribute('type')){
+
+
+
+
+
+
+e.preventDefault();
+}else{
+
+return;
+}
 }
 if(elem.id.startsWith('room-')){
 clickedRoom=PS.rooms[elem.id.slice(5)];
@@ -293,29 +338,6 @@ room.send(elem.value,elem.name==='send');
 return true;}
 
 return false;
-};_proto3.
-roomidFromLink=function roomidFromLink(elem){
-var href=elem.getAttribute('data-href');
-if(href){
-
-}else if(PS.server.id==='showdown'){
-if(elem.host&&elem.host!==Config.routes.client&&elem.host!=='psim.us'){
-return null;
-}
-href=elem.pathname;
-}else{
-if(elem.host!==location.host){
-return null;
-}
-href=elem.pathname;
-}
-var roomid=href.slice(1);
-if(!/^[a-z0-9-]*$/.test(roomid)){
-return null;
-}
-var redirects=/^(appeals?|rooms?suggestions?|suggestions?|adminrequests?|bugs?|bugreports?|rules?|faq|credits?|news|privacy|contact|dex|insecure)$/;
-if(redirects.test(roomid))return null;
-return roomid;
 };PSMain.
 containingRoomid=function containingRoomid(elem){
 var curElem=elem;
@@ -475,4 +497,11 @@ rooms,
 PS.popups.map(function(roomid){return _this5.renderPopup(PS.rooms[roomid]);}));
 
 };return PSMain;}(preact.Component);
+
+
+
+
+function SanitizedHTML(props){
+return preact.h("div",{dangerouslySetInnerHTML:{__html:BattleLog.sanitizeHTML(props.children)}});
+}
 //# sourceMappingURL=panels.js.map

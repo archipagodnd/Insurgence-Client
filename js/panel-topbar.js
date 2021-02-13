@@ -3,13 +3,122 @@ function _inheritsLoose(subClass,superClass){subClass.prototype=Object.create(su
  *
  * Topbar view - handles the topbar and some generic popups.
  *
- * Also sets up global event listeners.
+ * Also handles global drag-and-drop support.
  *
  * @author Guangcong Luo <guangcongluo@gmail.com>
  * @license AGPLv3
- */var
+ */
 
-PSHeader=function(_preact$Component){_inheritsLoose(PSHeader,_preact$Component);function PSHeader(){return _preact$Component.apply(this,arguments)||this;}var _proto=PSHeader.prototype;_proto.
+window.addEventListener('drop',function(e){
+console.log('drop '+e.dataTransfer.dropEffect);
+var target=e.target;
+if(/^text/.test(target.type)){
+PS.dragging=null;
+return;
+}
+
+
+
+
+
+e.preventDefault();
+PS.dragging=null;
+});
+window.addEventListener('dragend',function(e){
+e.preventDefault();
+PS.dragging=null;
+});
+window.addEventListener('dragover',function(e){
+
+e.preventDefault();
+});var
+
+PSHeader=function(_preact$Component){_inheritsLoose(PSHeader,_preact$Component);function PSHeader(){var _this;for(var _len=arguments.length,args=new Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}_this=_preact$Component.call.apply(_preact$Component,[this].concat(args))||this;_this.
+handleDragEnter=function(e){
+console.log('dragenter '+e.dataTransfer.dropEffect);
+e.preventDefault();
+if(!PS.dragging)return;
+
+var target=e.currentTarget;
+
+var draggingRoom=PS.dragging.roomid;
+if(draggingRoom===null)return;
+
+var draggedOverRoom=PS.router.extractRoomID(target.href);
+if(draggedOverRoom===null)return;
+if(draggingRoom===draggedOverRoom)return;
+
+var leftIndex=PS.leftRoomList.indexOf(draggedOverRoom);
+if(leftIndex>=0){
+_this.dragOnto(draggingRoom,'leftRoomList',leftIndex);
+}else{
+var rightIndex=PS.rightRoomList.indexOf(draggedOverRoom);
+if(rightIndex>=0){
+_this.dragOnto(draggingRoom,'rightRoomList',rightIndex);
+}else{
+return;
+}
+}
+
+
+
+
+};_this.
+handleDragStart=function(e){
+var roomid=PS.router.extractRoomID(e.currentTarget.href);
+if(!roomid)return;
+
+PS.dragging={type:'room',roomid:roomid};
+};return _this;}var _proto=PSHeader.prototype;_proto.
+dragOnto=function dragOnto(fromRoom,toRoomList,toIndex){
+
+if(fromRoom===''||fromRoom==='rooms')return;
+
+if(fromRoom===PS[toRoomList][toIndex])return;
+if(fromRoom===''&&toRoomList==='miniRoomList')return;
+
+var roomLists=['leftRoomList','rightRoomList','miniRoomList'];
+var fromRoomList;
+var fromIndex=-1;for(var _i=0;_i<
+roomLists.length;_i++){var roomList=roomLists[_i];
+fromIndex=PS[roomList].indexOf(fromRoom);
+if(fromIndex>=0){
+fromRoomList=roomList;
+break;
+}
+}
+if(!fromRoomList)return;
+
+if(toRoomList==='leftRoomList'&&toIndex===0)toIndex=1;
+if(toRoomList==='rightRoomList'&&toIndex===PS.rightRoomList.length-1)toIndex--;
+
+PS[fromRoomList].splice(fromIndex,1);
+
+
+
+
+PS[toRoomList].splice(toIndex,0,fromRoom);
+
+var room=PS.rooms[fromRoom];
+switch(toRoomList){
+case'leftRoomList':room.location='left';break;
+case'rightRoomList':room.location='right';break;
+case'miniRoomList':room.location='mini-window';break;}
+
+if(fromRoomList!==toRoomList){
+if(fromRoom===PS.leftRoom.id){
+PS.leftRoom=PS.mainmenu;
+}else if(PS.rightRoom&&fromRoom===PS.rightRoom.id){
+PS.rightRoom=PS.rooms['rooms'];
+}
+if(toRoomList==='rightRoomList'){
+PS.rightRoom=room;
+}else if(toRoomList==='leftRoomList'){
+PS.leftRoom=room;
+}
+}
+PS.update();
+};_proto.
 renderRoomTab=function renderRoomTab(id){
 var room=PS.rooms[id];
 var closable=id===''||id==='rooms'?'':' closable';
@@ -28,6 +137,7 @@ case'teambuilder':
 icon=preact.h("i",{"class":"fa fa-pencil-square-o"});
 break;
 case'ladder':
+case'ladderformat':
 icon=preact.h("i",{"class":"fa fa-list-ol"});
 break;
 case'battles':
@@ -81,10 +191,32 @@ closeButton=preact.h("button",{"class":"closebutton",name:"closeRoom",value:id,"
 preact.h("i",{"class":"fa fa-times-circle"}));
 
 }
-return preact.h("li",null,preact.h("a",{"class":className,href:"/"+id,draggable:true},icon," ",preact.h("span",null,title)),closeButton);
+return preact.h("li",null,
+preact.h("a",{
+"class":className,href:"/"+id,draggable:true,
+onDragEnter:this.handleDragEnter,onDragStart:this.handleDragStart},
+
+icon," ",preact.h("span",null,title)),
+
+closeButton);
+
 };_proto.
-render=function render(){var _this=this;
+renderUser=function renderUser(){
+if(!PS.connected){
+return preact.h("button",{"class":"button disabled",disabled:true},preact.h("em",null,"Offline"));
+}
+if(!PS.user.userid){
+return preact.h("button",{"class":"button disabled",disabled:true},preact.h("em",null,"Connecting..."));
+}
+if(!PS.user.named){
+return preact.h("a",{"class":"button",href:"login"},"Choose name");
+}
 var userColor=window.BattleLog&&{color:BattleLog.usernameColor(PS.user.userid)};
+return preact.h("span",{"class":"username","data-name":PS.user.name,style:userColor},
+preact.h("i",{"class":"fa fa-user",style:"color:#779EC5"})," ",PS.user.name);
+
+};_proto.
+render=function render(){var _this2=this;
 return preact.h("div",{id:"header","class":"header",style:this.props.style},
 preact.h("img",{
 "class":"logo",
@@ -96,19 +228,17 @@ width:"146",height:"44"}),
 preact.h("div",{"class":"maintabbarbottom"}),
 preact.h("div",{"class":"tabbar maintabbar"},preact.h("div",{"class":"inner"},
 preact.h("ul",null,
-this.renderRoomTab('')),
+this.renderRoomTab(PS.leftRoomList[0])),
 
 preact.h("ul",null,
-PS.leftRoomList.slice(1).map(function(roomid){return _this.renderRoomTab(roomid);})),
+PS.leftRoomList.slice(1).map(function(roomid){return _this2.renderRoomTab(roomid);})),
 
 preact.h("ul",{"class":"siderooms",style:{"float":'none',marginLeft:PS.leftRoomWidth-144}},
-PS.rightRoomList.map(function(roomid){return _this.renderRoomTab(roomid);})))),
+PS.rightRoomList.map(function(roomid){return _this2.renderRoomTab(roomid);})))),
 
 
 preact.h("div",{"class":"userbar"},
-preact.h("span",{"class":"username","data-name":PS.user.name,style:userColor},
-preact.h("i",{"class":"fa fa-user",style:"color:#779EC5"})," ",PS.user.name)," ",
-
+this.renderUser()," ",
 preact.h("button",{"class":"icon button",name:"joinRoom",value:"volume",title:"Sound","aria-label":"Sound"},
 preact.h("i",{"class":PS.prefs.mute?'fa fa-volume-off':'fa fa-volume-up'}))," ",
 
@@ -131,13 +261,13 @@ UserRoom=function(_PSRoom){_inheritsLoose(UserRoom,_PSRoom);
 
 
 
-function UserRoom(options){var _this2;
-_this2=_PSRoom.call(this,options)||this;_this2.classType='user';
-_this2.userid=_this2.id.slice(5);
-_this2.isSelf=_this2.userid===PS.user.userid;
-_this2.name=options.username||_this2.userid;
-if(/[a-zA-Z0-9]/.test(_this2.name.charAt(0)))_this2.name=' '+_this2.name;
-PS.send("|/cmd userdetails "+_this2.userid);return _this2;
+function UserRoom(options){var _this3;
+_this3=_PSRoom.call(this,options)||this;_this3.classType='user';
+_this3.userid=_this3.id.slice(5);
+_this3.isSelf=_this3.userid===PS.user.userid;
+_this3.name=options.username||_this3.userid;
+if(/[a-zA-Z0-9]/.test(_this3.name.charAt(0)))_this3.name=' '+_this3.name;
+PS.send("|/cmd userdetails "+_this3.userid);return _this3;
 }return UserRoom;}(PSRoom);var
 
 
@@ -248,7 +378,7 @@ preact.h("button",{"class":"button disabled",name:"userOptions"},"\u2026")),
 isSelf&&preact.h("hr",null),
 isSelf&&preact.h("p",{"class":"buttonbar",style:"text-align: right"},
 preact.h("button",{"class":"button disabled",name:"login"},preact.h("i",{"class":"fa fa-pencil"})," Change name")," ",
-preact.h("button",{"class":"button disabled",name:"logout"},preact.h("i",{"class":"fa fa-power-off"})," Log out")));
+preact.h("button",{"class":"button",name:"cmd",value:"/logout"},preact.h("i",{"class":"fa fa-power-off"})," Log out")));
 
 
 };return UserPanel;}(PSRoomPanel);
@@ -259,21 +389,21 @@ Model:UserRoom,
 Component:UserPanel};var
 
 
-VolumePanel=function(_PSRoomPanel2){_inheritsLoose(VolumePanel,_PSRoomPanel2);function VolumePanel(){var _this3;for(var _len=arguments.length,args=new Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}_this3=_PSRoomPanel2.call.apply(_PSRoomPanel2,[this].concat(args))||this;_this3.
+VolumePanel=function(_PSRoomPanel2){_inheritsLoose(VolumePanel,_PSRoomPanel2);function VolumePanel(){var _this4;for(var _len2=arguments.length,args=new Array(_len2),_key2=0;_key2<_len2;_key2++){args[_key2]=arguments[_key2];}_this4=_PSRoomPanel2.call.apply(_PSRoomPanel2,[this].concat(args))||this;_this4.
 setVolume=function(e){
 var slider=e.currentTarget;
 PS.prefs.set(slider.name,Number(slider.value));
-_this3.forceUpdate();
-};_this3.
+_this4.forceUpdate();
+};_this4.
 setMute=function(e){
 var checkbox=e.currentTarget;
 PS.prefs.set('mute',!!checkbox.checked);
 PS.update();
-};return _this3;}var _proto3=VolumePanel.prototype;_proto3.
-componentDidMount=function componentDidMount(){var _this4=this;
+};return _this4;}var _proto3=VolumePanel.prototype;_proto3.
+componentDidMount=function componentDidMount(){var _this5=this;
 _PSRoomPanel2.prototype.componentDidMount.call(this);
 this.subscriptions.push(PS.prefs.subscribe(function(){
-_this4.forceUpdate();
+_this5.forceUpdate();
 }));
 };_proto3.
 render=function render(){
@@ -318,12 +448,12 @@ PS.roomTypes['volume']={
 Component:VolumePanel};var
 
 
-OptionsPanel=function(_PSRoomPanel3){_inheritsLoose(OptionsPanel,_PSRoomPanel3);function OptionsPanel(){var _this5;for(var _len2=arguments.length,args=new Array(_len2),_key2=0;_key2<_len2;_key2++){args[_key2]=arguments[_key2];}_this5=_PSRoomPanel3.call.apply(_PSRoomPanel3,[this].concat(args))||this;_this5.
+OptionsPanel=function(_PSRoomPanel3){_inheritsLoose(OptionsPanel,_PSRoomPanel3);function OptionsPanel(){var _this6;for(var _len3=arguments.length,args=new Array(_len3),_key3=0;_key3<_len3;_key3++){args[_key3]=arguments[_key3];}_this6=_PSRoomPanel3.call.apply(_PSRoomPanel3,[this].concat(args))||this;_this6.
 setCheckbox=function(e){
 var checkbox=e.currentTarget;
 PS.prefs.set(checkbox.name,!!checkbox.checked);
-_this5.forceUpdate();
-};return _this5;}var _proto4=OptionsPanel.prototype;_proto4.
+_this6.forceUpdate();
+};return _this6;}var _proto4=OptionsPanel.prototype;_proto4.
 render=function render(){
 var room=this.props.room;
 return preact.h(PSPanelWrapper,{room:room},

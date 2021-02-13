@@ -186,10 +186,6 @@ preact.h(PSSearchResults,{search:this.search})));
 
 
 TeamPanel=function(_PSRoomPanel){_inheritsLoose(TeamPanel,_PSRoomPanel);function TeamPanel(){var _this4;for(var _len3=arguments.length,args=new Array(_len3),_key3=0;_key3<_len3;_key3++){args[_key3]=arguments[_key3];}_this4=_PSRoomPanel.call.apply(_PSRoomPanel,[this].concat(args))||this;_this4.
-backToList=function(){
-PS.removeRoom(_this4.props.room);
-PS.join('teambuilder');
-};_this4.
 rename=function(e){
 var textbox=e.currentTarget;
 var room=_this4.props.room;
@@ -202,7 +198,7 @@ var room=this.props.room;
 var team=PS.teams.byKey[room.id.slice(5)];
 if(!team){
 return preact.h(PSPanelWrapper,{room:room},
-preact.h("button",{"class":"button",onClick:this.backToList},
+preact.h("button",{"class":"button","data-href":"teambuilder","data-target":"replace"},
 preact.h("i",{"class":"fa fa-chevron-left"})," List"),
 
 preact.h("p",{"class":"error"},"Team doesn't exist"));
@@ -214,7 +210,7 @@ preact.h("p",{"class":"error"},"Team doesn't exist"));
 if(!room.team)room.team=team;
 return preact.h(PSPanelWrapper,{room:room,scrollable:true},
 preact.h("div",{"class":"pad"},
-preact.h("button",{"class":"button",onClick:this.backToList},
+preact.h("button",{"class":"button","data-href":"teambuilder","data-target":"replace"},
 preact.h("i",{"class":"fa fa-chevron-left"})," List"),
 
 preact.h("label",{"class":"label teamname"},"Team name:",
