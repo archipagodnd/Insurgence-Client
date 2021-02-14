@@ -544,6 +544,9 @@ zMove=this.battle.dex.getMove(BattleTooltips.zMoveTable['Rock']);
 break;
 case'hail':
 zMove=this.battle.dex.getMove(BattleTooltips.zMoveTable['Ice']);
+break;
+case'newmoon':
+zMove=this.battle.dex.getMove(BattleTooltips.zMoveTable['Dark']);
 break;}
 
 }
@@ -1311,6 +1314,9 @@ moveType='Rock';
 break;
 case'hail':
 moveType='Ice';
+break;
+case'darkness':
+moveType='Dark';
 break;}
 
 }

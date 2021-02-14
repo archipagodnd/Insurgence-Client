@@ -683,6 +683,7 @@ case'luckychant':
 this.sideConditions[condition]=[effect.name,1,5,0];
 break;
 case'stealthrock':
+case'stealthcoal':
 case'spikes':
 case'toxicspikes':
 case'stickyweb':
