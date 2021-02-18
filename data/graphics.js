@@ -2958,6 +2958,22 @@ rock3:{
 url:'rock3.png',
 w:66,h:72},
 
+coal1:{
+url:'coal1.png',
+w:64,h:80},
+
+coal2:{
+url:'coal2.png',
+w:66,h:72},
+
+frost:{
+url:'coal1.png',
+w:20,h:5},
+
+wire:{
+url:'coal2.png',
+w:20,h:5},
+
 leaf1:{
 url:'leaf1.png',
 w:32,h:26},
