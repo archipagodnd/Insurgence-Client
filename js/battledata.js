@@ -187,10 +187,10 @@ return prefix+"//raw.githubusercontent.com/Poilerwags/Sprites/master/play.pokemo
 
 fxPrefix=function(){var _window$document2,_window$document2$loc;
 if(((_window$document2=window.document)==null?void 0:(_window$document2$loc=_window$document2.location)==null?void 0:_window$document2$loc.protocol)==='file:'){
-if(window.Replays)return"https://"+(window.Config?Config.routes.client:'play.pokemonshowdown.com')+"/fx/";
+if(window.Replays)return"https://raw.githubusercontent.com/Poilerwags/Sprites/master/play.pokemonshowdown.com/fx/";
 return"fx/";
 }
-return"//"+(window.Config?Config.routes.client:'play.pokemonshowdown.com')+"/fx/";
+return"//raw.githubusercontent.com/Poilerwags/Sprites/master/play.pokemonshowdown.com/fx/";
 }();this.
 
 loadedSpriteData={xy:1,bw:0};this.
