@@ -585,7 +585,7 @@ if((_kwArgs$from2=kwArgs.from)!=null&&_kwArgs$from2.startsWith('item:')){
 _template14=this.template('endFromItem',_effect4);
 }
 if(!_template14)_template14=this.template(_templateId,_effect4);
-return _line5+_template14.replace('[POKEMON]',this.pokemon(_pokemon11)).replace('[EFFECT]',this.effect(_effect4)).replace('[SOURCE]',this.pokemon(kwArgs.of));
+return _line5+_template14.replace('[POKEMON]',this.pokemon(_pokemon11)).replace('[EFFECT]',this.effect(_effect4)).replace('[SOURCE]',this.pokemon(kwArgs.of)).replace('[ITEM]',this.effect(kwArgs.from));
 }
 
 case'-ability':{var

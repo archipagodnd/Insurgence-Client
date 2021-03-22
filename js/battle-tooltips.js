@@ -1603,10 +1603,10 @@ if(targetWeight>=25)_basePower3=60;else
 if(targetWeight>=10)_basePower3=40;
 }else{
 _basePower3=40;
-if(pokemonWeight>targetWeight*5)_basePower3=120;else
-if(pokemonWeight>targetWeight*4)_basePower3=100;else
-if(pokemonWeight>targetWeight*3)_basePower3=80;else
-if(pokemonWeight>targetWeight*2)_basePower3=60;
+if(pokemonWeight>=targetWeight*5)_basePower3=120;else
+if(pokemonWeight>=targetWeight*4)_basePower3=100;else
+if(pokemonWeight>=targetWeight*3)_basePower3=80;else
+if(pokemonWeight>=targetWeight*2)_basePower3=60;
 }
 if(target.volatiles['dynamax']){
 value.set(0,'blocked by target\'s Dynamax');
