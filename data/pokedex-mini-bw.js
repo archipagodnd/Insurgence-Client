@@ -1602,6 +1602,7 @@ exports.BattlePokemonSpritesBW = {
 	astrolotl:{num:-57},
 	miasmite:{num:-58},
 	miasmaw:{num:-59},
+	chromera:{num:-60},
 	pokestarsmeargle:{num:-5000},
 	pokestarufo:{num:-5001},
 	pokestarufopropu1:{num:-5001},
