@@ -5,7 +5,7 @@
  * @license AGPLv3
  */
 
-type RoomInfo = {title: string, desc?: string, userCount?: number, subRooms?: string[]};
+type RoomInfo = {title: string, desc?: string, userCount?: number, section?: string, spotlight?: string, subRooms?: string[]};
 
 class MainMenuRoom extends PSRoom {
 	readonly classType: string = 'mainmenu';
@@ -14,14 +14,14 @@ class MainMenuRoom extends PSRoom {
 		avatar?: string | number,
 		status?: string,
 		group?: string,
+		customgroup?: string,
 		rooms?: {[roomid: string]: {isPrivate?: true, p1?: string, p2?: string}},
 	}} = {};
 	roomsCache: {
 		battleCount?: number,
 		userCount?: number,
 		chat?: RoomInfo[],
-		official?: RoomInfo[],
-		pspl?: RoomInfo[],
+		sectionTitles?: string[],
 	} = {};
 	receiveLine(args: Args) {
 		const [cmd] = args;
@@ -241,6 +241,16 @@ class MainMenuRoom extends PSRoom {
 			if (userRoom) userRoom.update(null);
 			break;
 		case 'rooms':
+			if (response.pspl) {
+				for (const roomInfo of response.pspl) roomInfo.spotlight = "Spotlight";
+				response.chat = [...response.pspl, ...response.chat];
+				response.pspl = null;
+			}
+			if (response.official) {
+				for (const roomInfo of response.official) roomInfo.section = "Official";
+				response.chat = [...response.official, ...response.chat];
+				response.official = null;
+			}
 			this.roomsCache = response;
 			const roomsRoom = PS.rooms[`rooms`] as RoomsRoom;
 			if (roomsRoom) roomsRoom.update(null);

@@ -168,8 +168,13 @@
 
 		addPM: function (name, message, target) {
 			var userid = toUserid(name);
-			if (app.ignore[userid] && name.substr(0, 1) in {' ': 1, '+': 1, '!': 1, '✖': 1, '‽': 1}) return;
-
+			if (app.ignore[userid] && " +\u2606\u203D\u2716!".includes(name.charAt(0))) {
+				if (!app.ignoreNotified) {
+					message = '/nonotify A message from ' + BattleLog.escapeHTML(name) + ' was ignored.';
+					app.ignoreNotified = true;
+				}
+				return;
+			}
 			var isSelf = (toID(name) === app.user.get('userid'));
 			var oName = isSelf ? target : name;
 			Storage.logChat('pm-' + toID(oName), '' + name + ': ' + message);
@@ -396,6 +401,7 @@
 				} else {
 					app.ignore[userid] = 1;
 					$chat.append('<div class="chat">User ' + userid + ' ignored. (Moderator messages will not be ignored.)</div>');
+					app.saveIgnore();
 				}
 				break;
 			case 'unignore':
@@ -404,6 +410,7 @@
 				} else {
 					delete app.ignore[userid];
 					$chat.append('<div class="chat">User ' + userid + ' no longer ignored.</div>');
+					app.saveIgnore();
 				}
 				break;
 			case 'nick':
@@ -445,6 +452,10 @@
 				text = ('\n' + text).replace(/\n/g, '\n/pm ' + userid + ', ').slice(1);
 				if (text.length > 80000) {
 					app.addPopupMessage("Your message is too long.");
+					return;
+				}
+				if (!(text.startsWith('/') || text.startsWith('!')) && app.ignore[userid]) {
+					app.addPopupMessage("You can't PM a user you've ignored. Use /unignore to remove them from your ignore list.");
 					return;
 				}
 				this.send(text);

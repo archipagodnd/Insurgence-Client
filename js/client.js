@@ -455,6 +455,7 @@ function toId() {
 					if (Object.keys(settings).length) app.user.set('settings', settings);
 					// HTML5 history throws exceptions when running on file://
 					Backbone.history.start({pushState: !Config.testclient});
+					app.ignore = app.loadIgnore();
 				});
 			}
 
@@ -837,8 +838,9 @@ function toId() {
 			var out = [];
 			for (var i = 0; i < elements.length; i++) {
 				var element = elements[i];
-				// TODO: values are a mess in the DOM; checkboxes/select probably need special handling
-				out.push([element.name, element.value]);
+				if (!['checkbox', 'radio'].includes(element.type) || element.checked) {
+					out.push([element.name, element.value]);
+				}
 			}
 			return out;
 		},
@@ -937,7 +939,7 @@ function toId() {
 					var replayLink = 'https://' + Config.routes.replays + '/' + replayid;
 					$.ajax(replayLink + '.json', {dataType: 'json'}).done(function (replay) {
 						if (replay) {
-							var title = BattleLog.escapeHTML(replay.p1) + ' vs. ' + BattleLog.escapeHTML(replay.p2);
+							var title = replay.p1 + ' vs. ' + replay.p2;
 							app.receive('>battle-' + replayid + '\n|init|battle\n|title|' + title + '\n' + replay.log);
 							app.receive('>battle-' + replayid + '\n|expire|<a href=' + replayLink + ' target="_blank" class="no-panel-intercept">Open replay in new tab</a>');
 						} else {
@@ -1058,6 +1060,7 @@ function toId() {
 				}
 				if (app.ignore[userid]) {
 					delete app.ignore[userid];
+					app.saveIgnore();
 				}
 				break;
 
@@ -1158,6 +1161,18 @@ function toId() {
 				break;
 			}
 		},
+		saveIgnore: function () {
+			Storage.prefs('ignorelist', Object.keys(this.ignore));
+		},
+		loadIgnore: function () {
+			var ignoreList = Storage.prefs('ignorelist');
+			if (!ignoreList) return {};
+			var ignore = {};
+			for (var i = 0; i < ignoreList.length; i++) {
+				ignore[ignoreList[i]] = 1;
+			}
+			return ignore;
+		},
 		parseGroups: function (groupsList) {
 			var data = null;
 			try {
@@ -1257,6 +1272,8 @@ function toId() {
 						}
 						if (teambuilderFormatName !== name) {
 							teambuilderFormat = toID(teambuilderFormatName);
+							if (teambuilderFormat.startsWith('gen8nd')) teambuilderFormat = 'gen8nationaldex' + teambuilderFormat.slice(6);
+							if (teambuilderFormat.startsWith('gen8natdex')) teambuilderFormat = 'gen8nationaldex' + teambuilderFormat.slice(10);
 							if (BattleFormats[teambuilderFormat]) {
 								BattleFormats[teambuilderFormat].isTeambuilderFormat = true;
 							} else {
@@ -2594,6 +2611,10 @@ function toId() {
 			if (globalGroupName) {
 				buf += '<small class="usergroup globalgroup">' + globalGroupName + '</small>';
 			}
+			if (data.customgroup) {
+				if (groupName || globalGroupName) buf += '<br />';
+				buf += '<small class="usergroup globalgroup">' + BattleLog.escapeHTML(data.customgroup) + '</small>';
+			}
 			if (data.rooms) {
 				var battlebuf = '';
 				var chatbuf = '';
@@ -2712,6 +2733,7 @@ function toId() {
 				app.ignore[this.userid] = 1;
 				buf += " ignored. (Moderator messages will not be ignored.)";
 			}
+			app.saveIgnore();
 			var $pm = $('.pm-window-' + this.userid);
 			if ($pm.length && $pm.css('display') !== 'none') {
 				$pm.find('.inner').append('<div class="chat">' + BattleLog.escapeHTML(buf) + '</div>');
