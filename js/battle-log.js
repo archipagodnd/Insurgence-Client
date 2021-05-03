@@ -490,9 +490,9 @@ hash=MD5(name);
 }
 var H=parseInt(hash.substr(4,4),16)%360;
 var S=parseInt(hash.substr(0,4),16)%50+40;
-var L=Math.floor(parseInt(hash.substr(8,4),16)%20+30);var _this$HSLToRGB=
+var L=Math.floor(parseInt(hash.substr(8,4),16)%20+30);
 
-this.HSLToRGB(H,S,L),R=_this$HSLToRGB.R,G=_this$HSLToRGB.G,B=_this$HSLToRGB.B;
+var _this$HSLToRGB=this.HSLToRGB(H,S,L),R=_this$HSLToRGB.R,G=_this$HSLToRGB.G,B=_this$HSLToRGB.B;
 var lum=R*R*R*0.2126+G*G*G*0.7152+B*B*B*0.0722;
 
 var HLmod=(lum-0.2)*-150;
@@ -505,9 +505,9 @@ if(Hdist<15){
 HLmod+=(15-Hdist)/3;
 }
 
-L+=HLmod;var _this$HSLToRGB2=
+L+=HLmod;
 
-this.HSLToRGB(H,S,L),r=_this$HSLToRGB2.R,g=_this$HSLToRGB2.G,b=_this$HSLToRGB2.B;
+var _this$HSLToRGB2=this.HSLToRGB(H,S,L),r=_this$HSLToRGB2.R,g=_this$HSLToRGB2.G,b=_this$HSLToRGB2.B;
 var toHex=function(x){
 var hex=Math.round(x*255).toString(16);
 return hex.length===1?'0'+hex:hex;
@@ -728,8 +728,10 @@ Object.assign(html4.ATTRIBS,{
 'psicon::type':0,
 'psicon::category':0,
 'username::name':0,
-'form::data-send':0,
+'form::data-submitsend':0,
 'button::data-send':0,
+'form::data-delimiter':0,
+'button::data-delimiter':0,
 '*::aria-label':0,
 '*::aria-hidden':0});
 
@@ -827,7 +829,7 @@ return{
 tagName:'iframe',
 attribs:['src',"https://open.spotify.com/embed/track/"+songId,'width','300','height','380','frameborder','0','allowtransparency','true','allow','encrypted-media']};
 
-}else if(tagName==='youtube'){var _$exec3;
+}else if(tagName==='youtube'){var _$exec3,_$exec4;
 
 
 var _src3=getAttrib('src')||'';
@@ -841,9 +843,15 @@ height='225';
 var videoId=(_$exec3=/(?:\?v=|\/embed\/)([A-Za-z0-9_\-]+)/.exec(_src3))==null?void 0:_$exec3[1];
 if(!videoId)return{tagName:'img',attribs:['alt',"invalid src for <youtube>"]};
 
+var time=(_$exec4=/(?:\?|&)(?:t|start)=([0-9]+)/.exec(_src3))==null?void 0:_$exec4[1];
+
 return{
 tagName:'iframe',
-attribs:['width',width,'height',height,'src',"https://www.youtube.com/embed/"+videoId,'frameborder','0','allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture','allowfullscreen','allowfullscreen']};
+attribs:[
+'width',width,'height',height,
+'src',"https://www.youtube.com/embed/"+videoId+(time?"?start="+time:''),
+'frameborder','0','allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture','allowfullscreen','allowfullscreen']};
+
 
 }else if(tagName==='psicon'){
 
@@ -884,7 +892,7 @@ return urlData;
 if(dataUri&&tagName==='img'){
 setAttrib('src',dataUri);
 }
-if(tagName==='a'||tagName==='form'){
+if(tagName==='a'||tagName==='form'&&!getAttrib('data-submitsend')){
 if(targetReplace){
 setAttrib('data-target','replace');
 deleteAttrib('target');

@@ -42,7 +42,7 @@ preact.h("button",{"class":"sortcol ppsortcol"+(sortCol==='pp'?' cur':''),"data-
 
 renderPokemonRow=function renderPokemonRow(id,matchStart,matchEnd,errorMessage){
 var search=this.props.search;
-var pokemon=search.dex.getSpecies(id);
+var pokemon=search.dex.species.get(id);
 if(!pokemon)return preact.h("li",{"class":"result"},"Unrecognized pokemon");
 
 var tagStart=pokemon.forme?pokemon.name.length-pokemon.forme.length-1:0;
@@ -141,7 +141,7 @@ return output;
 
 renderItemRow=function renderItemRow(id,matchStart,matchEnd,errorMessage){
 var search=this.props.search;
-var item=search.dex.getItem(id);
+var item=search.dex.items.get(id);
 if(!item)return preact.h("li",{"class":"result"},"Unrecognized item");
 
 return preact.h("li",{"class":"result"},preact.h("a",{href:this.URL_ROOT+"items/"+id,"data-target":"push","data-entry":"item|"+item.name},
@@ -159,7 +159,7 @@ errorMessage,
 
 renderAbilityRow=function renderAbilityRow(id,matchStart,matchEnd,errorMessage){
 var search=this.props.search;
-var ability=search.dex.getAbility(id);
+var ability=search.dex.abilities.get(id);
 if(!ability)return preact.h("li",{"class":"result"},"Unrecognized ability");
 
 return preact.h("li",{"class":"result"},preact.h("a",{href:this.URL_ROOT+"abilitys/"+id,"data-target":"push","data-entry":"ability|"+ability.name},
@@ -173,7 +173,7 @@ errorMessage,
 
 renderMoveRow=function renderMoveRow(id,matchStart,matchEnd,errorMessage){
 var search=this.props.search;
-var move=search.dex.getMove(id);
+var move=search.dex.moves.get(id);
 if(!move)return preact.h("li",{"class":"result"},"Unrecognized move");
 
 var tagStart=move.name.startsWith('Hidden Power')?12:0;
@@ -297,8 +297,8 @@ errorMessage));
 };_proto.
 
 renderRow=function renderRow(row){
-var search=this.props.search;var
-type=row[0],id=row[1];
+var search=this.props.search;
+var type=row[0],id=row[1];
 var matchStart=0;
 var matchEnd=0;
 if(row.length>3){

@@ -12,6 +12,8 @@ function _inheritsLoose(subClass,superClass){subClass.prototype=Object.create(su
 
 
 
+
+
 BattlesRoom=function(_PSRoom){_inheritsLoose(BattlesRoom,_PSRoom);
 
 
@@ -302,9 +304,7 @@ BattleChoiceBuilder.fixRequest(request,room.battle);
 
 if(request.side){
 room.battle.myPokemon=request.side.pokemon;
-if(room.battle.sidesSwitched!==!!(request.side.id==='p2')){
-room.battle.switchSides();
-}
+room.battle.setPerspective(request.side.id);
 room.side=request.side;
 }
 
@@ -349,7 +349,7 @@ if(!active.maxMoves){
 return preact.h("div",{"class":"message-error"},"Maxed with no max moves");
 }
 return active.moves.map(function(moveData,i){
-var move=dex.getMove(moveData.name);
+var move=dex.moves.get(moveData.name);
 var maxMoveData=active.maxMoves[i];
 var gmaxTooltip=maxMoveData.id.startsWith('gmax')?"|"+maxMoveData.id:"";
 var tooltip="maxmove|"+moveData.name+"|"+pokemonIndex+gmaxTooltip;
@@ -364,7 +364,7 @@ if(!active.zMoves){
 return preact.h("div",{"class":"message-error"},"No Z moves");
 }
 return active.moves.map(function(moveData,i){
-var move=dex.getMove(moveData.name);
+var move=dex.moves.get(moveData.name);
 var zMoveData=active.zMoves[i];
 if(!zMoveData){
 return preact.h("button",{disabled:true},"\xA0");
@@ -377,7 +377,7 @@ zMoveData.name);
 }
 
 return active.moves.map(function(moveData,i){
-var move=dex.getMove(moveData.name);
+var move=dex.moves.get(moveData.name);
 var tooltip="move|"+moveData.name+"|"+pokemonIndex;
 return preact.h(MoveButton,{cmd:"/move "+(i+1),type:move.type,tooltip:tooltip,moveData:moveData},
 move.name);

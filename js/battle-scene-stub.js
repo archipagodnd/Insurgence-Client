@@ -42,7 +42,7 @@ runResidualAnim=function runResidualAnim(moveid,pokemon){};_proto.
 runStatusAnim=function runStatusAnim(moveid,participants){};_proto.
 startAnimations=function startAnimations(){};_proto.
 teamPreview=function teamPreview(){};_proto.
-teamPreviewEnd=function teamPreviewEnd(){};_proto.
+resetSides=function resetSides(){};_proto.
 updateGen=function updateGen(){};_proto.
 updateSidebar=function updateSidebar(side){};_proto.
 updateSidebars=function updateSidebars(){};_proto.
@@ -68,7 +68,6 @@ animReset=function animReset(pokemon){};_proto.
 anim=function anim(pokemon,end,transition){};_proto.
 beforeMove=function beforeMove(pokemon){};_proto.
 afterMove=function afterMove(pokemon){};_proto.
-updateSpritesForSide=function updateSpritesForSide(side){};_proto.
 unlink=function unlink(userid){var showRevealButton=arguments.length>1&&arguments[1]!==undefined?arguments[1]:false;};return BattleSceneStub;}();
 
 

@@ -377,7 +377,7 @@ curMatchLevel=9;
 curMatchLevel=8;
 }else if(choiceid===toID(serverPokemon.speciesForme)){
 curMatchLevel=7;
-}else if(choiceid===toID(Dex.getSpecies(serverPokemon.speciesForme).baseSpecies)){
+}else if(choiceid===toID(Dex.species.get(serverPokemon.speciesForme).baseSpecies)){
 curMatchLevel=6;
 }
 if(curMatchLevel>matchLevel){
@@ -473,7 +473,7 @@ active.canGigantamax=active.maxMoves.gigantamax;
 active.maxMoves=active.maxMoves.maxMoves;
 }for(var _i8=0,_active$maxMoves=
 active.maxMoves;_i8<_active$maxMoves.length;_i8++){var _move=_active$maxMoves[_i8];
-if(_move.move)_move.name=Dex.getMove(_move.move).name;
+if(_move.move)_move.name=Dex.moves.get(_move.move).name;
 _move.id=toID(_move.name);
 }
 }

@@ -361,6 +361,7 @@ preact.h("strong",null,preact.h("a",{href:"//"+Config.routes.users+"/"+user.user
 status&&preact.h("div",{"class":"userstatus"},status),
 groupName&&preact.h("div",{"class":"usergroup roomgroup"},groupName),
 globalGroupName&&preact.h("div",{"class":"usergroup globalgroup"},globalGroupName),
+user.customgroup&&preact.h("div",{"class":"usergroup globalgroup"},user.customgroup),
 roomsList),
 
 isSelf||!PS.user.named?

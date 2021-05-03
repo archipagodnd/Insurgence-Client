@@ -1,4 +1,4 @@
-var _temp;/**
+/**
  * Pokemon Showdown Dex
  *
  * Roughly equivalent to sim/dex.js in a Pokemon Showdown server, but
@@ -169,7 +169,7 @@ return name;
 
 
 
-var Dex=new(_temp=function(){function _temp(){this.
+var Dex=new(function(){function _class3(){var _this=this;this.
 gen=8;this.
 modid='gen8';this.
 cache=null;this.
@@ -194,37 +194,7 @@ return"//"+(window.Config?Config.routes.client:'play.pokemonshowdown.com')+"/fx/
 }();this.
 
 loadedSpriteData={xy:1,bw:0};this.
-moddedDexes={};}var _proto2=_temp.prototype;_proto2.
-
-mod=function mod(modid){
-if(modid==='gen8')return this;
-if(!window.BattleTeambuilderTable)return this;
-if(modid in this.moddedDexes){
-return this.moddedDexes[modid];
-}
-this.moddedDexes[modid]=new ModdedDex(modid);
-return this.moddedDexes[modid];
-};_proto2.
-forGen=function forGen(gen){
-if(!gen)return this;
-return this.mod("gen"+gen);
-};_proto2.
-
-resolveAvatar=function resolveAvatar(avatar){var _window$Config,_window$Config$server;
-if(window.BattleAvatarNumbers&&avatar in BattleAvatarNumbers){
-avatar=BattleAvatarNumbers[avatar];
-}
-if(avatar.charAt(0)==='#'){
-return Dex.resourcePrefix+'sprites/trainers-custom/'+toID(avatar.substr(1))+'.png';
-}
-if(avatar.includes('.')&&(_window$Config=window.Config)!=null&&(_window$Config$server=_window$Config.server)!=null&&_window$Config$server.registered){
-
-var protocol=Config.server.port===443?'https':'http';
-return protocol+'://'+Config.server.host+':'+Config.server.port+
-'/avatars/'+encodeURIComponent(avatar).replace(/\%3F/g,'?');
-}
-return Dex.resourcePrefix+'sprites/trainers/'+Dex.sanitizeName(avatar||'unknown')+'.png';
-};_proto2.
+moddedDexes={};this.
 
 
 
@@ -237,40 +207,71 @@ return Dex.resourcePrefix+'sprites/trainers/'+Dex.sanitizeName(avatar||'unknown'
 
 
 
-sanitizeName=function sanitizeName(name){
-if(!name)return'';
-return(''+name).
-replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').
-slice(0,50);
-};_proto2.
 
-prefs=function prefs(prop){var _window$Storage;
 
-return(_window$Storage=window.Storage)==null?void 0:_window$Storage.prefs==null?void 0:_window$Storage.prefs(prop);
-};_proto2.
 
-getShortName=function getShortName(name){
-var shortName=name.replace(/[^A-Za-z0-9]+$/,'');
-if(shortName.indexOf('(')>=0){
-shortName+=name.slice(shortName.length).replace(/[^\(\)]+/g,'').replace(/\(\)/g,'');
-}
-return shortName;
-};_proto2.
 
-getEffect=function getEffect(name){
-name=(name||'').trim();
-if(name.substr(0,5)==='item:'){
-return Dex.getItem(name.substr(5).trim());
-}else if(name.substr(0,8)==='ability:'){
-return Dex.getAbility(name.substr(8).trim());
-}else if(name.substr(0,5)==='move:'){
-return Dex.getMove(name.substr(5).trim());
-}
-var id=toID(name);
-return new PureEffect(id,name);
-};_proto2.
 
-getMove=function getMove(nameOrMove){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+moves={
+get:function(nameOrMove){
 if(nameOrMove&&typeof nameOrMove!=='string'){
 
 return nameOrMove;
@@ -285,8 +286,8 @@ if(!window.BattleMovedex)window.BattleMovedex={};
 var data=window.BattleMovedex[id];
 if(data&&typeof data.exists==='boolean')return data;
 
-if(!data&&id.substr(0,11)==='hiddenpower'&&id.length>11){var _ref=
-/([a-z]*)([0-9]*)/.exec(id),hpWithType=_ref[1],hpPower=_ref[2];
+if(!data&&id.substr(0,11)==='hiddenpower'&&id.length>11){
+var _ref=/([a-z]*)([0-9]*)/.exec(id),hpWithType=_ref[1],hpPower=_ref[2];
 data=Object.assign({},
 window.BattleMovedex[hpWithType]||{},{
 basePower:Number(hpPower)||60});
@@ -309,15 +310,17 @@ if(!data)data={exists:false};
 var move=new Move(id,name,data);
 window.BattleMovedex[id]=move;
 return move;
-};_proto2.
+}};this.
 
-getGen3Category=function getGen3Category(type){
-return[
-'Fire','Water','Grass','Electric','Ice','Psychic','Dark','Dragon'].
-includes(type)?'Special':'Physical';
-};_proto2.
 
-getItem=function getItem(nameOrItem){
+
+
+
+
+
+
+items={
+get:function(nameOrItem){
 if(nameOrItem&&typeof nameOrItem!=='string'){
 
 return nameOrItem;
@@ -335,9 +338,11 @@ if(!data)data={exists:false};
 var item=new Item(id,name,data);
 window.BattleItems[id]=item;
 return item;
-};_proto2.
+}};this.
 
-getAbility=function getAbility(nameOrAbility){
+
+abilities={
+get:function(nameOrAbility){
 if(nameOrAbility&&typeof nameOrAbility!=='string'){
 
 return nameOrAbility;
@@ -355,9 +360,11 @@ if(!data)data={exists:false};
 var ability=new Ability(id,name,data);
 window.BattleAbilities[id]=ability;
 return ability;
-};_proto2.
+}};this.
 
-getSpecies=function getSpecies(nameOrSpecies){
+
+species={
+get:function(nameOrSpecies){
 if(nameOrSpecies&&typeof nameOrSpecies!=='string'){
 
 return nameOrSpecies;
@@ -387,10 +394,10 @@ species=data;
 }else{
 if(!data)data={exists:false};
 if(!data.tier&&id.slice(-5)==='totem'){
-data.tier=this.getSpecies(id.slice(0,-5)).tier;
+data.tier=_this.species.get(id.slice(0,-5)).tier;
 }
 if(!data.tier&&data.baseSpecies&&toID(data.baseSpecies)!==id){
-data.tier=this.getSpecies(data.baseSpecies).tier;
+data.tier=_this.species.get(data.baseSpecies).tier;
 }
 species=new Species(id,name,data);
 window.BattlePokedex[id]=species;
@@ -414,46 +421,40 @@ break;
 }
 
 return species;
-};_proto2.
+}};this.
 
 
-getTier=function getTier(pokemon){var genNum=arguments.length>1&&arguments[1]!==undefined?arguments[1]:8;var mod=arguments.length>2?arguments[2]:undefined;
-var species=this.getSpecies(pokemon);
-if(genNum<8)species=this.forGen(genNum).getSpecies(pokemon);
-var table=window.BattleTeambuilderTable;
-if(!table)return species.tier;
-if(mod==='doubles'){
-table=table["gen"+genNum+"doubles"];
-}else if(genNum<8){
-table=table["gen"+genNum];
-}else if(mod&&table[toID(mod)]){
-table=table[toID(mod)];
-}
-
-if(!table.overrideTier)return species.tier;
-
-var id=species.id;
-if(id in table.overrideTier){
-return table.overrideTier[id];
-}
-
-return species.tier;
-};_proto2.
-
-getType=function getType(type){
+types={
+allCache:null,
+get:function(type){
 if(!type||typeof type==='string'){
 var id=toID(type);
-id=id.substr(0,1).toUpperCase()+id.substr(1);
+var name=id.substr(0,1).toUpperCase()+id.substr(1);
 type=window.BattleTypeChart&&window.BattleTypeChart[id]||{};
 if(type.damageTaken)type.exists=true;
 if(!type.id)type.id=id;
-if(!type.name)type.name=id;
+if(!type.name)type.name=name;
 if(!type.effectType){
 type.effectType='Type';
 }
 }
 return type;
-};_proto2.
+},
+all:function(){
+if(_this.types.allCache)return _this.types.allCache;
+var types=[];
+for(var id in window.BattleTypeChart||{}){
+types.push(Dex.types.get(id));
+}
+if(types.length)_this.types.allCache=types;
+return types;
+},
+isName:function(name){
+var id=toID(name);
+if(name!==id.substr(0,1).toUpperCase()+id.substr(1))return false;
+return(window.BattleTypeChart||{}).hasOwnProperty(id);
+}};}var _proto2=_class3.prototype;_proto2.mod=function mod(modid){if(modid==='gen8')return this;if(!window.BattleTeambuilderTable)return this;if(modid in this.moddedDexes){return this.moddedDexes[modid];}this.moddedDexes[modid]=new ModdedDex(modid);return this.moddedDexes[modid];};_proto2.forGen=function forGen(gen){if(!gen)return this;return this.mod("gen"+gen);};_proto2.resolveAvatar=function resolveAvatar(avatar){var _window$Config,_window$Config$server;if(window.BattleAvatarNumbers&&avatar in BattleAvatarNumbers){avatar=BattleAvatarNumbers[avatar];}if(avatar.charAt(0)==='#'){return Dex.resourcePrefix+'sprites/trainers-custom/'+toID(avatar.substr(1))+'.png';}if(avatar.includes('.')&&(_window$Config=window.Config)!=null&&(_window$Config$server=_window$Config.server)!=null&&_window$Config$server.registered){var protocol=Config.server.port===443?'https':'http';return protocol+'://'+Config.server.host+':'+Config.server.port+'/avatars/'+encodeURIComponent(avatar).replace(/\%3F/g,'?');}return Dex.resourcePrefix+'sprites/trainers/'+Dex.sanitizeName(avatar||'unknown')+'.png';};_proto2.sanitizeName=function sanitizeName(name){if(!name)return'';return(''+name).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').slice(0,50);};_proto2.prefs=function prefs(prop){var _window$Storage;return(_window$Storage=window.Storage)==null?void 0:_window$Storage.prefs==null?void 0:_window$Storage.prefs(prop);};_proto2.getShortName=function getShortName(name){var shortName=name.replace(/[^A-Za-z0-9]+$/,'');if(shortName.indexOf('(')>=0){shortName+=name.slice(shortName.length).replace(/[^\(\)]+/g,'').replace(/\(\)/g,'');}return shortName;};_proto2.getEffect=function getEffect(name){name=(name||'').trim();if(name.substr(0,5)==='item:'){return Dex.items.get(name.substr(5).trim());}else if(name.substr(0,8)==='ability:'){return Dex.abilities.get(name.substr(8).trim());}else if(name.substr(0,5)==='move:'){return Dex.moves.get(name.substr(5).trim());}var id=toID(name);return new PureEffect(id,name);};_proto2.getGen3Category=function getGen3Category(type){return['Fire','Water','Grass','Electric','Ice','Psychic','Dark','Dragon'].includes(type)?'Special':'Physical';};_proto2.
+
 
 hasAbility=function hasAbility(species,ability){
 for(var i in species.abilities){
@@ -497,7 +498,7 @@ options.gender=pokemon.gender;
 if(pokemon.volatiles.dynamax)isDynamax=true;
 pokemon=pokemon.getSpeciesForme();
 }
-var species=Dex.getSpecies(pokemon);
+var species=Dex.species.get(pokemon);
 
 if(species.name.endsWith('-Gmax'))isDynamax=false;
 var spriteData={
@@ -721,13 +722,13 @@ var num=this.getPokemonIconNum(id,((_pokemon4=pokemon)==null?void 0:_pokemon4.ge
 var top=Math.floor(num/12)*30;
 var left=num%12*40;
 var fainted=(_pokemon5=pokemon)!=null&&_pokemon5.fainted?";opacity:.3;filter:grayscale(100%) brightness(.5)":"";
-return"background:transparent url("+Dex.resourcePrefix+"sprites/pokemonicons-sheet.png?v4) no-repeat scroll -"+left+"px -"+top+"px"+fainted;
+return"background:transparent url("+Dex.resourcePrefix+"sprites/pokemonicons-sheet.png?v5) no-repeat scroll -"+left+"px -"+top+"px"+fainted;
 };_proto2.
 
 getTeambuilderSpriteData=function getTeambuilderSpriteData(pokemon){var gen=arguments.length>1&&arguments[1]!==undefined?arguments[1]:0;
 var id=toID(pokemon.species);
 var spriteid=pokemon.spriteid;
-var species=Dex.getSpecies(pokemon.species);
+var species=Dex.species.get(pokemon.species);
 if(pokemon.species&&!spriteid){
 spriteid=species.spriteid||toID(pokemon.species);
 }
@@ -788,7 +789,7 @@ return'background:transparent url('+Dex.resourcePrefix+'sprites/itemicons-sheet.
 };_proto2.
 
 getTypeIcon=function getTypeIcon(type,b){
-type=this.getType(type).name;
+type=this.types.get(type).name;
 if(!type)type='???';
 var sanitizedType=type.replace(/\?/g,'%3f');
 return"<img src=\""+Dex.resourcePrefix+"sprites/types/"+sanitizedType+".png\" alt=\""+type+"\" height=\"14\" width=\"32\" class=\"pixelated"+(b?' b':'')+"\" />";
@@ -819,7 +820,7 @@ if(!data.isPokeball)continue;
 this.pokeballs.push(data.name);
 }
 return this.pokeballs;
-};return _temp;}(),_temp)();var
+};return _class3;}())();var
 
 
 ModdedDex=function(){
@@ -833,52 +834,56 @@ ModdedDex=function(){
 
 
 
-function ModdedDex(modid){this.cache={Moves:{},Items:{},Abilities:{},Species:{},Types:{}};this.pokeballs=null;
-this.modid=modid;
-var gen=parseInt(modid.slice(3),10);
-if(!modid.startsWith('gen')||!gen)throw new Error("Unsupported modid");
-this.gen=gen;
-}var _proto3=ModdedDex.prototype;_proto3.
-getMove=function getMove(name){
+function ModdedDex(modid){var _this2=this;this.cache={Moves:{},Items:{},Abilities:{},Species:{},Types:{}};this.pokeballs=null;this.
+
+
+
+
+
+moves={
+get:function(name){
 var id=toID(name);
 if(window.BattleAliases&&id in BattleAliases){
 name=BattleAliases[id];
 id=toID(name);
 }
-if(this.cache.Moves.hasOwnProperty(id))return this.cache.Moves[id];
+if(_this2.cache.Moves.hasOwnProperty(id))return _this2.cache.Moves[id];
 
-var data=Object.assign({},Dex.getMove(name));
+var data=Object.assign({},Dex.moves.get(name));
 
-var table=window.BattleTeambuilderTable[this.modid];
+var table=window.BattleTeambuilderTable[_this2.modid];
 if(id in table.overrideAcc)data.accuracy=table.overrideAcc[id];
 if(id in table.overrideBP)data.basePower=table.overrideBP[id];
 if(id in table.overridePP)data.pp=table.overridePP[id];
 if(id in table.overrideMoveType)data.type=table.overrideMoveType[id];
-for(var i=this.gen;i<8;i++){
+for(var i=_this2.gen;i<8;i++){
 if(id in window.BattleTeambuilderTable['gen'+i].overrideMoveDesc){
 data.shortDesc=window.BattleTeambuilderTable['gen'+i].overrideMoveDesc[id];
 break;
 }
 }
-if(this.gen<=3&&data.category!=='Status'){
+if(_this2.gen<=3&&data.category!=='Status'){
 data.category=Dex.getGen3Category(data.type);
 }
 
 var move=new Move(id,name,data);
-this.cache.Moves[id]=move;
+_this2.cache.Moves[id]=move;
 return move;
-};_proto3.
-getItem=function getItem(name){
+}};this.
+
+
+items={
+get:function(name){
 var id=toID(name);
 if(window.BattleAliases&&id in BattleAliases){
 name=BattleAliases[id];
 id=toID(name);
 }
-if(this.cache.Items.hasOwnProperty(id))return this.cache.Items[id];
+if(_this2.cache.Items.hasOwnProperty(id))return _this2.cache.Items[id];
 
-var data=Object.assign({},Dex.getItem(name));
+var data=Object.assign({},Dex.items.get(name));
 
-for(var i=this.gen;i<8;i++){
+for(var i=_this2.gen;i<8;i++){
 if(id in window.BattleTeambuilderTable['gen'+i].overrideItemDesc){
 data.shortDesc=window.BattleTeambuilderTable['gen'+i].overrideItemDesc[id];
 break;
@@ -886,20 +891,23 @@ break;
 }
 
 var item=new Item(id,name,data);
-this.cache.Items[id]=item;
+_this2.cache.Items[id]=item;
 return item;
-};_proto3.
-getAbility=function getAbility(name){
+}};this.
+
+
+abilities={
+get:function(name){
 var id=toID(name);
 if(window.BattleAliases&&id in BattleAliases){
 name=BattleAliases[id];
 id=toID(name);
 }
-if(this.cache.Abilities.hasOwnProperty(id))return this.cache.Abilities[id];
+if(_this2.cache.Abilities.hasOwnProperty(id))return _this2.cache.Abilities[id];
 
-var data=Object.assign({},Dex.getAbility(name));
+var data=Object.assign({},Dex.abilities.get(name));
 
-for(var i=this.gen;i<8;i++){
+for(var i=_this2.gen;i<8;i++){
 if(id in window.BattleTeambuilderTable['gen'+i].overrideAbilityDesc){
 data.shortDesc=window.BattleTeambuilderTable['gen'+i].overrideAbilityDesc[id];
 break;
@@ -907,21 +915,24 @@ break;
 }
 
 var ability=new Ability(id,name,data);
-this.cache.Abilities[id]=ability;
+_this2.cache.Abilities[id]=ability;
 return ability;
-};_proto3.
-getSpecies=function getSpecies(name){
+}};this.
+
+
+species={
+get:function(name){
 var id=toID(name);
 if(window.BattleAliases&&id in BattleAliases){
 name=BattleAliases[id];
 id=toID(name);
 }
-if(this.cache.Species.hasOwnProperty(id))return this.cache.Species[id];
+if(_this2.cache.Species.hasOwnProperty(id))return _this2.cache.Species[id];
 
-var data=Object.assign({},Dex.getSpecies(name));
+var data=Object.assign({},Dex.species.get(name));
 
-var table=window.BattleTeambuilderTable[this.modid];
-if(this.gen<3){
+var table=window.BattleTeambuilderTable[_this2.modid];
+if(_this2.gen<3){
 data.abilities={0:"None"};
 }else{
 var abilities=Object.assign({},data.abilities);
@@ -934,8 +945,8 @@ delete abilities['1'];
 if(id in table.overrideHiddenAbility){
 abilities['H']=table.overrideHiddenAbility[id];
 }
-if(this.gen<5)delete abilities['H'];
-if(this.gen<7)delete abilities['S'];
+if(_this2.gen<5)delete abilities['H'];
+if(_this2.gen<7)delete abilities['S'];
 
 data.abilities=abilities;
 }
@@ -946,26 +957,29 @@ if(id in table.overrideType)data.types=table.overrideType[id].split('/');
 
 if(id in table.overrideTier)data.tier=table.overrideTier[id];
 if(!data.tier&&id.slice(-5)==='totem'){
-data.tier=this.getSpecies(id.slice(0,-5)).tier;
+data.tier=_this2.species.get(id.slice(0,-5)).tier;
 }
 if(!data.tier&&data.baseSpecies&&toID(data.baseSpecies)!==id){
-data.tier=this.getSpecies(data.baseSpecies).tier;
+data.tier=_this2.species.get(data.baseSpecies).tier;
 }
-if(data.gen>this.gen)data.tier='Illegal';
+if(data.gen>_this2.gen)data.tier='Illegal';
 
 var species=new Species(id,name,data);
-this.cache.Species[id]=species;
+_this2.cache.Species[id]=species;
 return species;
-};_proto3.
-getType=function getType(name){
+}};this.
+
+
+types={
+get:function(name){
 var id=toID(name);
-id=id.substr(0,1).toUpperCase()+id.substr(1);
+name=id.substr(0,1).toUpperCase()+id.substr(1);
 
-if(this.cache.Types.hasOwnProperty(id))return this.cache.Types[id];
+if(_this2.cache.Types.hasOwnProperty(id))return _this2.cache.Types[id];
 
-var data=Object.assign({},Dex.getType(name));
+var data=Object.assign({},Dex.types.get(name));
 
-for(var i=7;i>=this.gen;i--){
+for(var i=7;i>=_this2.gen;i--){
 if(id in window.BattleTeambuilderTable['gen'+i].removeType){
 data.exists=false;
 
@@ -976,9 +990,11 @@ data=Object.assign({},data,window.BattleTeambuilderTable['gen'+i].overrideTypeCh
 }
 }
 
-this.cache.Types[id]=data;
+_this2.cache.Types[id]=data;
 return data;
-};_proto3.
+}};this.modid=modid;var gen=parseInt(modid.slice(3),10);if(!modid.startsWith('gen')||!gen)throw new Error("Unsupported modid");this.gen=gen;}var _proto3=ModdedDex.prototype;_proto3.
+
+
 getPokeballs=function getPokeballs(){
 if(this.pokeballs)return this.pokeballs;
 this.pokeballs=[];

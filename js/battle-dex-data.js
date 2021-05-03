@@ -479,6 +479,7 @@ snaelstrom:1308+27,
 equilibra:1308+28,
 astrolotl:1308+29,
 miasmaw:1308+30,
+chromera:1308+31,
 
 syclar:1344+0,
 embirch:1344+1,
@@ -1229,6 +1230,7 @@ this.zMove.basePower=120;
 }else{
 this.zMove.basePower=100;
 }
+if(data.zMove)this.zMove.basePower=data.zMove.basePower;
 }
 
 this.num=data.num||0;
@@ -1432,6 +1434,12 @@ this.gen=1;
 }
 }
 };
+
+
+
+
+
+
 
 
 if(typeof require==='function'){

@@ -57,7 +57,7 @@ var searchid=toID(this.search);
 var exactMatch=false;
 
 var rooms=PS.mainmenu.roomsCache;
-var roomList=[].concat(rooms.official||[],rooms.pspl||[],rooms.chat||[]);for(var _i=0,_roomList=
+var roomList=[].concat(rooms.chat||[]);for(var _i=0,_roomList=
 roomList;_i<_roomList.length;_i++){var room=_roomList[_i];
 if(!room.subRooms)continue;for(var _i2=0,_room$subRooms=
 room.subRooms;_i2<_room$subRooms.length;_i2++){var title=_room$subRooms[_i2];
@@ -125,8 +125,6 @@ this.renderRoomList("Possible hidden room",search.hidden)];
 
 }else{
 roomList=[
-this.renderRoomList("Official chat rooms",rooms.official),
-this.renderRoomList("PSPL winner",rooms.pspl),
 this.renderRoomList("Chat rooms",rooms.chat)];
 
 }

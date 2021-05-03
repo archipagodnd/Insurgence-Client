@@ -15,19 +15,19 @@ userdetailsCache=
 
 
 
+
 {};_this.
 roomsCache=
 
 
 
 
-
 {};return _this;}var _proto=MainMenuRoom.prototype;_proto.
-receiveLine=function receiveLine(args){var _this2=this;var
-cmd=args[0];
+receiveLine=function receiveLine(args){var _this2=this;
+var cmd=args[0];
 switch(cmd){
-case'challstr':{var
-challstr=args[1];
+case'challstr':{
+var challstr=args[1];
 PSLoginServer.query({
 act:'upkeep',
 challstr:challstr}).
@@ -37,27 +37,27 @@ if(!res.loggedin)return;
 _this2.send("/trn "+res.username+",0,"+res.assertion);
 });
 return;
-}case'updateuser':{var
-fullName=args[1],namedCode=args[2],avatar=args[3];
+}case'updateuser':{
+var fullName=args[1],namedCode=args[2],avatar=args[3];
 PS.user.setName(fullName,namedCode==='1',avatar);
 return;
-}case'updatechallenges':{var
-challengesBuf=args[1];
+}case'updatechallenges':{
+var challengesBuf=args[1];
 this.receiveChallenges(challengesBuf);
 return;
-}case'queryresponse':{var
-queryId=args[1],responseJSON=args[2];
+}case'queryresponse':{
+var queryId=args[1],responseJSON=args[2];
 this.handleQueryResponse(queryId,JSON.parse(responseJSON));
 return;
-}case'pm':{var
-user1=args[1],user2=args[2],message=args[3];
+}case'pm':{
+var user1=args[1],user2=args[2],message=args[3];
 this.handlePM(user1,user2,message);
 return;
 }case'formats':{
 this.parseFormats(args);
 return;
-}case'popup':{var
-_message=args[1];
+}case'popup':{
+var _message=args[1];
 alert(_message.replace(/\|\|/g,'\n'));
 return;
 }}
@@ -241,6 +241,16 @@ var userRoom=PS.rooms["user-"+_userid2];
 if(userRoom)userRoom.update(null);
 break;
 case'rooms':
+if(response.pspl){for(var _i=0,_response$pspl=
+response.pspl;_i<_response$pspl.length;_i++){var roomInfo=_response$pspl[_i];roomInfo.spotlight="Spotlight";}
+response.chat=[].concat(response.pspl,response.chat);
+response.pspl=null;
+}
+if(response.official){for(var _i2=0,_response$official=
+response.official;_i2<_response$official.length;_i2++){var _roomInfo=_response$official[_i2];_roomInfo.section="Official";}
+response.chat=[].concat(response.official,response.chat);
+response.official=null;
+}
 this.roomsCache=response;
 var roomsRoom=PS.rooms["rooms"];
 if(roomsRoom)roomsRoom.update(null);
@@ -259,8 +269,8 @@ battlesRoom.update(null);
 }
 break;
 case'laddertop':
-var ladderRoomEntries=Object.entries(PS.rooms).filter(function(entry){return entry[0].startsWith('ladder');});for(var _i=0;_i<
-ladderRoomEntries.length;_i++){var _ref=ladderRoomEntries[_i];var ladderRoom=_ref[1];
+var ladderRoomEntries=Object.entries(PS.rooms).filter(function(entry){return entry[0].startsWith('ladder');});for(var _i3=0;_i3<
+ladderRoomEntries.length;_i3++){var _ref=ladderRoomEntries[_i3];var ladderRoom=_ref[1];
 ladderRoom.update(response);
 }
 break;}
@@ -430,7 +440,7 @@ TeamDropdown=function(_preact$Component2){_inheritsLoose(TeamDropdown,_preact$Co
 
 
 
-change=function(){return _this6.forceUpdate();};return _this6;}var _proto5=TeamDropdown.prototype;_proto5.getTeam=function getTeam(){if(this.base){var key=this.base.value;return PS.teams.byKey[key]||null;}var formatid=PS.teams.teambuilderFormat(this.props.format);for(var _i2=0,_PS$teams$list=PS.teams.list;_i2<_PS$teams$list.length;_i2++){var _team2=_PS$teams$list[_i2];if(_team2.format===formatid)return _team2;}return null;};_proto5.componentDidMount=function componentDidMount(){var team=this.getTeam();if(team){this.base.value=team.key;}};_proto5.
+change=function(){return _this6.forceUpdate();};return _this6;}var _proto5=TeamDropdown.prototype;_proto5.getTeam=function getTeam(){if(this.base){var key=this.base.value;return PS.teams.byKey[key]||null;}var formatid=PS.teams.teambuilderFormat(this.props.format);for(var _i4=0,_PS$teams$list=PS.teams.list;_i4<_PS$teams$list.length;_i4++){var _team2=_PS$teams$list[_i4];if(_team2.format===formatid)return _team2;}return null;};_proto5.componentDidMount=function componentDidMount(){var team=this.getTeam();if(team){this.base.value=team.key;}};_proto5.
 render=function render(){var _window$BattleFormats;
 var formatid=PS.teams.teambuilderFormat(this.props.format);
 var formatData=(_window$BattleFormats=window.BattleFormats)==null?void 0:_window$BattleFormats[formatid];
