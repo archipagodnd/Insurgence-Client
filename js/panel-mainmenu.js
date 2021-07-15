@@ -7,6 +7,8 @@ function _inheritsLoose(subClass,superClass){subClass.prototype=Object.create(su
 
 
 
+
+
 MainMenuRoom=function(_PSRoom){_inheritsLoose(MainMenuRoom,_PSRoom);function MainMenuRoom(){var _this;for(var _len=arguments.length,args=new Array(_len),_key=0;_key<_len;_key++){args[_key]=arguments[_key];}_this=_PSRoom.call.apply(_PSRoom,[this].concat(args))||this;_this.
 classType='mainmenu';_this.
 userdetailsCache=
@@ -94,6 +96,7 @@ var section='';
 
 var column=0;
 
+window.NonBattleGames={rps:'Rock Paper Scissors'};
 window.BattleFormats={};
 for(var j=1;j<formatsList.length;j++){
 var entry=formatsList[j];
@@ -398,74 +401,70 @@ preact.h("a",{href:"//smogon.com/forums/",target:"_blank"},"Forum")))));
 
 FormatDropdown=function(_preact$Component){_inheritsLoose(FormatDropdown,_preact$Component);function FormatDropdown(){var _this5;for(var _len3=arguments.length,args=new Array(_len3),_key3=0;_key3<_len3;_key3++){args[_key3]=arguments[_key3];}_this5=_preact$Component.call.apply(_preact$Component,[this].concat(args))||this;_this5.
 
-
-
-
-
-
-
+format='[Gen 7] Random Battle';_this5.
 change=function(e){
+if(!_this5.base)return;
+_this5.format=_this5.base.value;
 _this5.forceUpdate();
 if(_this5.props.onChange)_this5.props.onChange(e);
-};return _this5;}var _proto4=FormatDropdown.prototype;_proto4.getFormat=function getFormat(){var _this$base;return((_this$base=this.base)==null?void 0:_this$base.value)||'[Gen 7] Random Battle';};_proto4.componentDidMount=function componentDidMount(){this.base.value=this.getFormat();};_proto4.
+};return _this5;}var _proto4=FormatDropdown.prototype;_proto4.
 render=function render(){
 if(this.props.format){
 return preact.h("button",{
-"class":"select formatselect preselected",name:"format",value:this.props.format,disabled:true},
+name:"format",value:this.props.format,"class":"select formatselect preselected",disabled:true},
 this.props.format);
 }
-var format=this.getFormat();
-return preact.h("button",{"class":"select formatselect",name:"format","data-href":"/formatdropdown",onChange:this.change},
-format);
+return preact.h("button",{
+name:"format",value:this.format,
+"class":"select formatselect","data-href":"/formatdropdown",onChange:this.change},
+
+this.format);
 
 };return FormatDropdown;}(preact.Component);var
 
 
 TeamDropdown=function(_preact$Component2){_inheritsLoose(TeamDropdown,_preact$Component2);function TeamDropdown(){var _this6;for(var _len4=arguments.length,args=new Array(_len4),_key4=0;_key4<_len4;_key4++){args[_key4]=arguments[_key4];}_this6=_preact$Component2.call.apply(_preact$Component2,[this].concat(args))||this;_this6.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-change=function(){return _this6.forceUpdate();};return _this6;}var _proto5=TeamDropdown.prototype;_proto5.getTeam=function getTeam(){if(this.base){var key=this.base.value;return PS.teams.byKey[key]||null;}var formatid=PS.teams.teambuilderFormat(this.props.format);for(var _i4=0,_PS$teams$list=PS.teams.list;_i4<_PS$teams$list.length;_i4++){var _team2=_PS$teams$list[_i4];if(_team2.format===formatid)return _team2;}return null;};_proto5.componentDidMount=function componentDidMount(){var team=this.getTeam();if(team){this.base.value=team.key;}};_proto5.
+teamFormat='';_this6.
+teamKey='';_this6.
+change=function(){
+if(!_this6.base)return;
+_this6.teamKey=_this6.base.value;
+_this6.forceUpdate();
+};return _this6;}var _proto5=TeamDropdown.prototype;_proto5.
+getDefaultTeam=function getDefaultTeam(teambuilderFormat){for(var _i4=0,_PS$teams$list=
+PS.teams.list;_i4<_PS$teams$list.length;_i4++){var _team2=_PS$teams$list[_i4];
+if(_team2.format===teambuilderFormat)return _team2.key;
+}
+return'';
+};_proto5.
 render=function render(){var _window$BattleFormats;
-var formatid=PS.teams.teambuilderFormat(this.props.format);
-var formatData=(_window$BattleFormats=window.BattleFormats)==null?void 0:_window$BattleFormats[formatid];
+var teamFormat=PS.teams.teambuilderFormat(this.props.format);
+var formatData=(_window$BattleFormats=window.BattleFormats)==null?void 0:_window$BattleFormats[teamFormat];
 if(formatData&&formatData.team){
 return preact.h("button",{"class":"select teamselect preselected",name:"team",value:"random",disabled:true},
 preact.h("div",{"class":"team"},
 preact.h("strong",null,"Random team"),
 preact.h("small",null,
-preact.h("span",{"class":"picon",style:"float:left;background:transparent url(https://"+Config.routes.client+"/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px"}),
-preact.h("span",{"class":"picon",style:"float:left;background:transparent url(https://"+Config.routes.client+"/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px"}),
-preact.h("span",{"class":"picon",style:"float:left;background:transparent url(https://"+Config.routes.client+"/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px"}),
-preact.h("span",{"class":"picon",style:"float:left;background:transparent url(https://"+Config.routes.client+"/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px"}),
-preact.h("span",{"class":"picon",style:"float:left;background:transparent url(https://"+Config.routes.client+"/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px"}),
-preact.h("span",{"class":"picon",style:"float:left;background:transparent url(https://"+Config.routes.client+"/sprites/pokemonicons-sheet.png?a6) no-repeat scroll -0px -0px"}))));
+preact.h("span",{"class":"picon",style:Dex.getPokemonIcon(null)}),
+preact.h("span",{"class":"picon",style:Dex.getPokemonIcon(null)}),
+preact.h("span",{"class":"picon",style:Dex.getPokemonIcon(null)}),
+preact.h("span",{"class":"picon",style:Dex.getPokemonIcon(null)}),
+preact.h("span",{"class":"picon",style:Dex.getPokemonIcon(null)}),
+preact.h("span",{"class":"picon",style:Dex.getPokemonIcon(null)}))));
 
 
 
 }
-var team=this.getTeam();
-var teambox=null;
-if(PS.roomTypes['teamdropdown']){
-teambox=preact.h(TeamBox,{team:team,noLink:true});
+if(teamFormat!==this.teamFormat){
+this.teamFormat=teamFormat;
+this.teamKey=this.getDefaultTeam(teamFormat);
 }
-return preact.h("button",{"class":"select teamselect",name:"team","data-href":"/teamdropdown","data-format":formatid,onChange:this.change},
-teambox);
+var team=PS.teams.byKey[this.teamKey]||null;
+return preact.h("button",{
+name:"team",value:this.teamKey,
+"class":"select teamselect","data-href":"/teamdropdown","data-format":teamFormat,onChange:this.change},
+
+PS.roomTypes['teamdropdown']&&preact.h(TeamBox,{team:team,noLink:true}));
 
 };return TeamDropdown;}(preact.Component);var
 

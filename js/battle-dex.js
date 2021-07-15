@@ -834,7 +834,7 @@ ModdedDex=function(){
 
 
 
-function ModdedDex(modid){var _this2=this;this.cache={Moves:{},Items:{},Abilities:{},Species:{},Types:{}};this.pokeballs=null;this.
+function ModdedDex(modid){var _this2=this;this.gen=void 0;this.modid=void 0;this.cache={Moves:{},Items:{},Abilities:{},Species:{},Types:{}};this.pokeballs=null;this.
 
 
 
@@ -851,15 +851,10 @@ if(_this2.cache.Moves.hasOwnProperty(id))return _this2.cache.Moves[id];
 
 var data=Object.assign({},Dex.moves.get(name));
 
-var table=window.BattleTeambuilderTable[_this2.modid];
-if(id in table.overrideAcc)data.accuracy=table.overrideAcc[id];
-if(id in table.overrideBP)data.basePower=table.overrideBP[id];
-if(id in table.overridePP)data.pp=table.overridePP[id];
-if(id in table.overrideMoveType)data.type=table.overrideMoveType[id];
-for(var i=_this2.gen;i<8;i++){
-if(id in window.BattleTeambuilderTable['gen'+i].overrideMoveDesc){
-data.shortDesc=window.BattleTeambuilderTable['gen'+i].overrideMoveDesc[id];
-break;
+for(var i=Dex.gen-1;i>=_this2.gen;i--){
+var table=window.BattleTeambuilderTable["gen"+i];
+if(id in table.overrideMoveData){
+Object.assign(data,table.overrideMoveData[id]);
 }
 }
 if(_this2.gen<=3&&data.category!=='Status'){
@@ -884,8 +879,9 @@ if(_this2.cache.Items.hasOwnProperty(id))return _this2.cache.Items[id];
 var data=Object.assign({},Dex.items.get(name));
 
 for(var i=_this2.gen;i<8;i++){
-if(id in window.BattleTeambuilderTable['gen'+i].overrideItemDesc){
-data.shortDesc=window.BattleTeambuilderTable['gen'+i].overrideItemDesc[id];
+var table=window.BattleTeambuilderTable['gen'+i];
+if(id in table.overrideItemDesc){
+data.shortDesc=table.overrideItemDesc[id];
 break;
 }
 }
@@ -908,8 +904,9 @@ if(_this2.cache.Abilities.hasOwnProperty(id))return _this2.cache.Abilities[id];
 var data=Object.assign({},Dex.abilities.get(name));
 
 for(var i=_this2.gen;i<8;i++){
-if(id in window.BattleTeambuilderTable['gen'+i].overrideAbilityDesc){
-data.shortDesc=window.BattleTeambuilderTable['gen'+i].overrideAbilityDesc[id];
+var table=window.BattleTeambuilderTable['gen'+i];
+if(id in table.overrideAbilityDesc){
+data.shortDesc=table.overrideAbilityDesc[id];
 break;
 }
 }
@@ -931,30 +928,17 @@ if(_this2.cache.Species.hasOwnProperty(id))return _this2.cache.Species[id];
 
 var data=Object.assign({},Dex.species.get(name));
 
-var table=window.BattleTeambuilderTable[_this2.modid];
+for(var i=Dex.gen-1;i>=_this2.gen;i--){
+var _table=window.BattleTeambuilderTable["gen"+i];
+if(id in _table.overrideSpeciesData){
+Object.assign(data,_table.overrideSpeciesData[id]);
+}
+}
 if(_this2.gen<3){
 data.abilities={0:"None"};
-}else{
-var abilities=Object.assign({},data.abilities);
-if(id in table.overrideAbility){
-abilities['0']=table.overrideAbility[id];
 }
-if(id in table.removeSecondAbility){
-delete abilities['1'];
-}
-if(id in table.overrideHiddenAbility){
-abilities['H']=table.overrideHiddenAbility[id];
-}
-if(_this2.gen<5)delete abilities['H'];
-if(_this2.gen<7)delete abilities['S'];
 
-data.abilities=abilities;
-}
-if(id in table.overrideStats){
-data.baseStats=Object.assign({},data.baseStats,table.overrideStats[id]);
-}
-if(id in table.overrideType)data.types=table.overrideType[id].split('/');
-
+var table=window.BattleTeambuilderTable[_this2.modid];
 if(id in table.overrideTier)data.tier=table.overrideTier[id];
 if(!data.tier&&id.slice(-5)==='totem'){
 data.tier=_this2.species.get(id.slice(0,-5)).tier;
@@ -980,13 +964,14 @@ if(_this2.cache.Types.hasOwnProperty(id))return _this2.cache.Types[id];
 var data=Object.assign({},Dex.types.get(name));
 
 for(var i=7;i>=_this2.gen;i--){
-if(id in window.BattleTeambuilderTable['gen'+i].removeType){
+var table=window.BattleTeambuilderTable['gen'+i];
+if(id in table.removeType){
 data.exists=false;
 
 break;
 }
-if(id in window.BattleTeambuilderTable['gen'+i].overrideTypeChart){
-data=Object.assign({},data,window.BattleTeambuilderTable['gen'+i].overrideTypeChart[id]);
+if(id in table.overrideTypeChart){
+data=Object.assign({},data,table.overrideTypeChart[id]);
 }
 }
 

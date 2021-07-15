@@ -1,4 +1,4 @@
-var _temp;function _assertThisInitialized(self){if(self===void 0){throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return self;}function _inheritsLoose(subClass,superClass){subClass.prototype=Object.create(superClass.prototype);subClass.prototype.constructor=subClass;_setPrototypeOf(subClass,superClass);}function _setPrototypeOf(o,p){_setPrototypeOf=Object.setPrototypeOf||function _setPrototypeOf(o,p){o.__proto__=p;return o;};return _setPrototypeOf(o,p);}/**
+function _assertThisInitialized(self){if(self===void 0){throw new ReferenceError("this hasn't been initialised - super() hasn't been called");}return self;}function _inheritsLoose(subClass,superClass){subClass.prototype=Object.create(superClass.prototype);subClass.prototype.constructor=subClass;_setPrototypeOf(subClass,superClass);}function _setPrototypeOf(o,p){_setPrototypeOf=Object.setPrototypeOf||function _setPrototypeOf(o,p){o.__proto__=p;return o;};return _setPrototypeOf(o,p);}/**
  * Client main
  *
  * Dependencies: client-core
@@ -215,8 +215,8 @@ this.list.splice(teamIndex,1);
 delete this.byKey[team.key];
 };_proto2.
 undelete=function undelete(){
-if(!this.deletedTeams.length)return;var _ref=
-this.deletedTeams.pop(),team=_ref[0],teamIndex=_ref[1];
+if(!this.deletedTeams.length)return;
+var _ref=this.deletedTeams.pop(),team=_ref[0],teamIndex=_ref[1];
 this.list.splice(teamIndex,0,team);
 if(this.byKey[team.key])team.key=this.getKey(team.name);
 this.byKey[team.key]=team;
@@ -270,8 +270,8 @@ named=false;_this3.
 registered=false;_this3.
 avatar="1";return _this3;}var _proto3=PSUser.prototype;_proto3.
 setName=function setName(fullName,named,avatar){
-var loggingIn=!this.named&&named;var _BattleTextParser$par=
-BattleTextParser.parseNameParts(fullName),name=_BattleTextParser$par.name,group=_BattleTextParser$par.group;
+var loggingIn=!this.named&&named;
+var _BattleTextParser$par=BattleTextParser.parseNameParts(fullName),name=_BattleTextParser$par.name,group=_BattleTextParser$par.group;
 this.name=name;
 this.group=group;
 this.userid=toID(name);
@@ -461,7 +461,7 @@ PSRoom=function(_PSStreamModel3){_inheritsLoose(PSRoom,_PSStreamModel3);
 
 
 function PSRoom(options){var _this4;
-_this4=_PSStreamModel3.call(this)||this;_this4.title="";_this4.type='';_this4.classType='';_this4.location='left';_this4.closable=true;_this4.connected=false;_this4.canConnect=false;_this4.connectWhenLoggedIn=false;_this4.onParentEvent=null;_this4.width=0;_this4.height=0;_this4.parentElem=null;_this4.rightPopup=false;_this4.notifications=[];_this4.isSubtleNotifying=false;
+_this4=_PSStreamModel3.call(this)||this;_this4.id=void 0;_this4.title="";_this4.type='';_this4.classType='';_this4.location='left';_this4.closable=true;_this4.connected=false;_this4.canConnect=false;_this4.connectWhenLoggedIn=false;_this4.onParentEvent=null;_this4.width=0;_this4.height=0;_this4.parentElem=null;_this4.rightPopup=false;_this4.notifications=[];_this4.isSubtleNotifying=false;
 _this4.id=options.id;
 if(options.title)_this4.title=options.title;
 if(!_this4.title)_this4.title=_this4.id;
@@ -507,12 +507,12 @@ case'title':{
 this.title=args[1];
 PS.update();
 break;
-}case'tempnotify':{var
-id=args[1],title=args[2],body=args[3],toHighlight=args[4];
+}case'tempnotify':{
+var id=args[1],title=args[2],body=args[3],toHighlight=args[4];
 this.notify({title:title,body:body,id:id});
 break;
-}case'tempnotifyoff':{var
-_id=args[1];
+}case'tempnotifyoff':{
+var _id=args[1];
 this.dismissNotification(_id);
 break;
 }default:{
@@ -539,8 +539,7 @@ send=function send(msg,direct){
 if(!direct&&!msg)return;
 if(!direct&&this.handleMessage(msg))return;
 
-var id=this.id==='lobby'?'':this.id;
-PS.send(id+'|'+msg);
+PS.send(this.id+'|'+msg);
 };_proto5.
 destroy=function destroy(){
 if(this.connected){
@@ -570,7 +569,7 @@ this.queue.push(args);
 
 
 
-var PS=new(_temp=function(_PSModel2){_inheritsLoose(_temp,_PSModel2);
+var PS=new(function(_PSModel2){_inheritsLoose(_class2,_PSModel2);
 
 
 
@@ -677,7 +676,7 @@ var PS=new(_temp=function(_PSModel2){_inheritsLoose(_temp,_PSModel2);
 
 
 
-function _temp(){var _document$querySelect;var _this6;
+function _class2(){var _document$querySelect;var _this6;
 _this6=_PSModel2.call(this)||this;_this6.down=false;_this6.prefs=new PSPrefs();_this6.teams=new PSTeams();_this6.user=new PSUser();_this6.server=new PSServer();_this6.connection=null;_this6.connected=false;_this6.isOffline=false;_this6.router=null;_this6.rooms={};_this6.roomTypes={};_this6.leftRoomList=[];_this6.rightRoomList=[];_this6.miniRoomList=[];_this6.popups=[];_this6.leftRoom=null;_this6.rightRoom=null;_this6.room=null;_this6.activePanel=null;_this6.onePanelMode=false;_this6.leftRoomWidth=0;_this6.mainmenu=null;_this6.dragging=null;_this6.arrowKeysUsed=false;_this6.newsHTML=((_document$querySelect=document.querySelector('.news-embed .pm-log'))==null?void 0:_document$querySelect.innerHTML)||'';
 
 _this6.addRoom({
@@ -699,7 +698,7 @@ title:"News"});
 
 _this6.updateLayout();
 window.addEventListener('resize',function(){return _this6.updateLayout();});return _this6;
-}var _proto7=_temp.prototype;_proto7.
+}var _proto7=_class2.prototype;_proto7.
 
 
 
@@ -789,8 +788,8 @@ var args=BattleTextParser.parseLine(line);
 switch(args[0]){
 case'init':{
 isInit=true;
-room=PS.rooms[roomid2];var
-_type=args[1];
+room=PS.rooms[roomid2];
+var _type=args[1];
 if(!room){
 this.addRoom({
 id:roomid2,
@@ -1162,5 +1161,5 @@ this.update();
 leave=function leave(roomid){
 var room=PS.rooms[roomid];
 if(room)this.removeRoom(room);
-};return _temp;}(PSModel),_temp)();
+};return _class2;}(PSModel))();
 //# sourceMappingURL=client-main.js.map

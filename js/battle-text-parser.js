@@ -25,7 +25,7 @@ BattleTextParser=function(){
 
 
 
-function BattleTextParser(){var perspective=arguments.length>0&&arguments[0]!==undefined?arguments[0]:'p1';this.p1="Player 1";this.p2="Player 2";this.p3="Player 3";this.p4="Player 4";this.gen=7;this.turn=0;this.curLineSection='break';this.lowercaseRegExp=undefined;this.
+function BattleTextParser(){var perspective=arguments.length>0&&arguments[0]!==undefined?arguments[0]:'p1';this.p1="Player 1";this.p2="Player 2";this.p3="Player 3";this.p4="Player 4";this.perspective=void 0;this.gen=7;this.turn=0;this.curLineSection='break';this.lowercaseRegExp=undefined;this.
 
 
 
@@ -837,7 +837,7 @@ var _template47=this.template('start',_effect11);
 return _line15+_template47.replace('[POKEMON]',this.pokemon(kwArgs.of)).replace('[SOURCE]',this.pokemon(_pokemon19));
 }
 
-if(_id14==='mummy'){
+if(_id14==='mummy'&&kwArgs.ability){
 _line15+=this.ability(kwArgs.ability,_target2);
 _line15+=this.ability('Mummy',_target2);
 var _template48=this.template('changeAbility','mummy');

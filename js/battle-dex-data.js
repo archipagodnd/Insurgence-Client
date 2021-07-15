@@ -258,6 +258,7 @@ furfroupharaoh:900+113,
 furfroustar:900+114,
 meowsticf:900+115,
 aegislashblade:900+116,
+xerneasneutral:900+117,
 hoopaunbound:900+118,
 rattataalola:900+119,
 raticatealola:900+120,
@@ -628,11 +629,11 @@ blacephalon:1200+105};
 var BattleAvatarNumbers={
 1:'lucas',
 2:'dawn',
-3:'youngster-gen4',
+3:'youngster-gen4dp',
 4:'lass-gen4dp',
 5:'camper',
 6:'picnicker',
-7:'bugcatcher',
+7:'bugcatcher-gen4dp',
 8:'aromalady',
 9:'twins-gen4dp',
 10:'hiker-gen4',
@@ -887,8 +888,8 @@ var BattleAvatarNumbers={
 259:'cyclistf',
 260:'cynthia',
 261:'emmet',
-262:'hilbert-dueldisk',
-263:'hilda-dueldisk',
+262:'hilbert-wonderlauncher',
+263:'hilda-wonderlauncher',
 264:'hugh',
 265:'rosa',
 266:'nate',
@@ -928,6 +929,10 @@ var BattleAvatarNumbers={
 '#wally':'wally',
 breeder:'pokemonbreeder',
 breederf:'pokemonbreederf',
+'hilbert-dueldisk':'hilbert-wonderlauncher',
+'hilda-dueldisk':'hilda-wonderlauncher',
+'nate-dueldisk':'nate-wonderlauncher',
+'rosa-dueldisk':'rosa-wonderlauncher',
 
 1001:'#1001',
 1002:'#1002',
@@ -965,7 +970,7 @@ PureEffect=
 
 
 
-function PureEffect(id,name){this.effectType='PureEffect';
+function PureEffect(id,name){this.effectType='PureEffect';this.id=void 0;this.name=void 0;this.gen=void 0;this.exists=void 0;
 this.id=id;
 this.name=name;
 this.gen=0;
@@ -1000,7 +1005,7 @@ Item=
 
 
 
-function Item(id,name,data){this.effectType='Item';
+function Item(id,name,data){this.effectType='Item';this.id=void 0;this.name=void 0;this.gen=void 0;this.exists=void 0;this.num=void 0;this.spritenum=void 0;this.desc=void 0;this.shortDesc=void 0;this.megaStone=void 0;this.megaEvolves=void 0;this.zMove=void 0;this.zMoveType=void 0;this.zMoveFrom=void 0;this.zMoveUser=void 0;this.onPlate=void 0;this.onMemory=void 0;this.onDrive=void 0;this.fling=void 0;this.naturalGift=void 0;this.isPokeball=void 0;this.itemUser=void 0;
 if(!data||typeof data!=='object')data={};
 if(data.name)name=data.name;
 this.name=Dex.sanitizeName(name);
@@ -1129,7 +1134,7 @@ Move=
 
 
 
-function Move(id,name,data){var _this$maxMove;this.effectType='Move';
+function Move(id,name,data){var _this$maxMove;this.effectType='Move';this.id=void 0;this.name=void 0;this.gen=void 0;this.exists=void 0;this.basePower=void 0;this.accuracy=void 0;this.pp=void 0;this.type=void 0;this.category=void 0;this.priority=void 0;this.target=void 0;this.flags=void 0;this.critRatio=void 0;this.desc=void 0;this.shortDesc=void 0;this.isNonstandard=void 0;this.isZ=void 0;this.zMove=void 0;this.isMax=void 0;this.maxMove=void 0;this.ohko=void 0;this.recoil=void 0;this.heal=void 0;this.multihit=void 0;this.hasCrashDamage=void 0;this.noPPBoosts=void 0;this.secondaries=void 0;this.num=void 0;
 if(!data||typeof data!=='object')data={};
 if(data.name)name=data.name;
 this.name=Dex.sanitizeName(name);
@@ -1271,7 +1276,8 @@ Ability=
 
 
 
-function Ability(id,name,data){this.effectType='Ability';
+
+function Ability(id,name,data){this.effectType='Ability';this.id=void 0;this.name=void 0;this.gen=void 0;this.exists=void 0;this.num=void 0;this.shortDesc=void 0;this.desc=void 0;this.rating=void 0;this.isPermanent=void 0;this.isNonstandard=void 0;
 if(!data||typeof data!=='object')data={};
 if(data.name)name=data.name;
 this.name=Dex.sanitizeName(name);
@@ -1282,6 +1288,7 @@ this.num=data.num||0;
 this.shortDesc=data.shortDesc||data.desc||'';
 this.desc=data.desc||data.shortDesc||'';
 this.rating=data.rating||1;
+this.isPermanent=!!data.isPermanent;
 this.isNonstandard=!!data.isNonstandard;
 if(!this.gen){
 if(this.num>=234){
@@ -1355,7 +1362,7 @@ Species=
 
 
 
-function Species(id,name,data){this.effectType='Species';
+function Species(id,name,data){this.effectType='Species';this.id=void 0;this.name=void 0;this.gen=void 0;this.exists=void 0;this.baseSpecies=void 0;this.forme=void 0;this.formeid=void 0;this.spriteid=void 0;this.baseForme=void 0;this.num=void 0;this.types=void 0;this.abilities=void 0;this.baseStats=void 0;this.weightkg=void 0;this.heightm=void 0;this.gender=void 0;this.color=void 0;this.genderRatio=void 0;this.eggGroups=void 0;this.otherFormes=void 0;this.cosmeticFormes=void 0;this.evos=void 0;this.prevo=void 0;this.evoType=void 0;this.evoLevel=void 0;this.evoMove=void 0;this.evoItem=void 0;this.evoCondition=void 0;this.requiredItem=void 0;this.tier=void 0;this.isTotem=void 0;this.isMega=void 0;this.canGigantamax=void 0;this.isPrimal=void 0;this.battleOnly=void 0;this.isNonstandard=void 0;this.unreleasedHidden=void 0;this.changesFrom=void 0;
 if(!data||typeof data!=='object')data={};
 if(data.name)name=data.name;
 this.name=Dex.sanitizeName(name);
@@ -1396,9 +1403,9 @@ this.requiredItem=data.requiredItem||'';
 this.tier=data.tier||'';
 
 this.isTotem=false;
-this.isMega=false;
+this.isMega=!!(this.forme&&['-mega','-megax','-megay'].includes(this.formeid));
 this.canGigantamax=!!data.canGigantamax;
-this.isPrimal=false;
+this.isPrimal=!!(this.forme&&this.formeid==='-primal');
 this.battleOnly=data.battleOnly||undefined;
 this.isNonstandard=data.isNonstandard||null;
 this.unreleasedHidden=data.unreleasedHidden||false;
@@ -1408,13 +1415,8 @@ if(this.num>=810||this.formeid.startsWith('-galar')){
 this.gen=8;
 }else if(this.num>=722||this.formeid==='-alola'||this.formeid==='-starter'){
 this.gen=7;
-}else if(this.forme&&['-mega','-megax','-megay'].includes(this.formeid)){
+}else if(this.isMega||this.isPrimal){
 this.gen=6;
-this.isMega=true;
-this.battleOnly=this.baseSpecies;
-}else if(this.formeid==='-primal'){
-this.gen=6;
-this.isPrimal=true;
 this.battleOnly=this.baseSpecies;
 }else if(this.formeid==='-totem'||this.formeid==='-alolatotem'){
 this.gen=7;

@@ -73,7 +73,7 @@ TextFormatter=function(){
 
 
 
-function TextFormatter(str){var isTrusted=arguments.length>1&&arguments[1]!==undefined?arguments[1]:false;var replaceLinebreaks=arguments.length>2&&arguments[2]!==undefined?arguments[2]:false;
+function TextFormatter(str){var isTrusted=arguments.length>1&&arguments[1]!==undefined?arguments[1]:false;var replaceLinebreaks=arguments.length>2&&arguments[2]!==undefined?arguments[2]:false;this.str=void 0;this.buffers=void 0;this.stack=void 0;this.isTrusted=void 0;this.replaceLinebreaks=void 0;this.offset=void 0;
 
 str=(""+str).
 replace(/&/g,'&amp;').
@@ -112,7 +112,6 @@ this.isTrusted=isTrusted;
 this.replaceLinebreaks=this.isTrusted||replaceLinebreaks;
 this.offset=0;
 }var _proto=TextFormatter.prototype;_proto.
-
 
 
 slice=function slice(start,end){

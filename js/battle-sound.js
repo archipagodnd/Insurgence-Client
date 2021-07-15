@@ -1,4 +1,4 @@
-var _temp;var
+var
 BattleBGM=function(){
 
 
@@ -21,7 +21,7 @@ BattleBGM=function(){
 
 
 
-function BattleBGM(url,loopstart,loopend){this.timer=undefined;this.isPlaying=false;this.isActuallyPlaying=false;this.willRewind=true;
+function BattleBGM(url,loopstart,loopend){this.sound=void 0;this.url=void 0;this.timer=undefined;this.loopstart=void 0;this.loopend=void 0;this.isPlaying=false;this.isActuallyPlaying=false;this.willRewind=true;
 this.url=url;
 this.loopstart=loopstart;
 this.loopend=loopend;
@@ -100,7 +100,7 @@ bgm.actuallyPause();
 };return BattleBGM;}();
 
 
-var BattleSound=new(_temp=function(){function _temp(){this.
+var BattleSound=new(function(){function _class2(){this.
 soundCache={};this.
 
 bgm=[];this.
@@ -108,7 +108,7 @@ bgm=[];this.
 
 effectVolume=50;this.
 bgmVolume=50;this.
-muted=false;}var _proto2=_temp.prototype;_proto2.
+muted=false;}var _proto2=_class2.prototype;_proto2.
 
 getSound=function getSound(url){
 if(!window.HTMLAudioElement)return;
@@ -137,7 +137,10 @@ effect.play();
 
 
 loadBgm=function loadBgm(url,loopstart,loopend,replaceBGM){
-if(replaceBGM)this.deleteBgm(replaceBGM);
+if(replaceBGM){
+replaceBGM.stop();
+this.deleteBgm(replaceBGM);
+}
 
 var bgm=new BattleBGM(url,loopstart,loopend);
 this.bgm.push(bgm);
@@ -175,7 +178,7 @@ BattleBGM.update();
 };_proto2.
 setEffectVolume=function setEffectVolume(effectVolume){
 this.effectVolume=this.loudnessPercentToAmplitudePercent(effectVolume);
-};return _temp;}(),_temp)();
+};return _class2;}())();
 
 
 if(typeof PS==='object'){

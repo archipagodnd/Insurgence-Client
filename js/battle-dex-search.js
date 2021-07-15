@@ -560,7 +560,7 @@ BattleTypedSearch=function(){
 
 
 
-function BattleTypedSearch(searchType){var format=arguments.length>1&&arguments[1]!==undefined?arguments[1]:'';var speciesOrSet=arguments.length>2&&arguments[2]!==undefined?arguments[2]:'';this.dex=Dex;this.format='';this.species='';this.set=null;this.formatType=null;this.baseResults=null;this.baseIllegalResults=null;this.illegalReasons=null;this.results=null;this.sortRow=null;
+function BattleTypedSearch(searchType){var format=arguments.length>1&&arguments[1]!==undefined?arguments[1]:'';var speciesOrSet=arguments.length>2&&arguments[2]!==undefined?arguments[2]:'';this.searchType=void 0;this.dex=Dex;this.format='';this.species='';this.set=null;this.formatType=null;this.baseResults=null;this.baseIllegalResults=null;this.illegalReasons=null;this.results=null;this.sortRow=null;
 this.searchType=searchType;
 
 this.baseResults=null;
@@ -965,17 +965,17 @@ if(!this.canLearn(species.id,value))return false;}
 }
 return true;
 };_proto3.
-sort=function sort(results,sortCol){
+sort=function sort(results,sortCol){var _this3=this;
 if(['hp','atk','def','spa','spd','spe'].includes(sortCol)){
 return results.sort(function(_ref8,_ref9){var rowType1=_ref8[0],id1=_ref8[1];var rowType2=_ref9[0],id2=_ref9[1];
-var stat1=BattlePokedex[id1].baseStats[sortCol];
-var stat2=BattlePokedex[id2].baseStats[sortCol];
+var stat1=_this3.dex.species.get(id1).baseStats[sortCol];
+var stat2=_this3.dex.species.get(id2).baseStats[sortCol];
 return stat2-stat1;
 });
 }else if(sortCol==='bst'){
 return results.sort(function(_ref10,_ref11){var rowType1=_ref10[0],id1=_ref10[1];var rowType2=_ref11[0],id2=_ref11[1];
-var base1=BattlePokedex[id1].baseStats;
-var base2=BattlePokedex[id2].baseStats;
+var base1=_this3.dex.species.get(id1).baseStats;
+var base2=_this3.dex.species.get(id2).baseStats;
 var bst1=base1.hp+base1.atk+base1.def+base1.spa+base1.spd+base1.spe;
 var bst2=base2.hp+base2.atk+base2.def+base2.spa+base2.spd+base2.spe;
 return bst2-bst1;
@@ -1140,8 +1140,8 @@ throw new Error("invalid sortcol");
 };return BattleItemSearch;}(BattleTypedSearch);var
 
 
-BattleMoveSearch=function(_BattleTypedSearch4){_inheritsLoose(BattleMoveSearch,_BattleTypedSearch4);function BattleMoveSearch(){var _this3;for(var _len2=arguments.length,args=new Array(_len2),_key2=0;_key2<_len2;_key2++){args[_key2]=arguments[_key2];}_this3=_BattleTypedSearch4.call.apply(_BattleTypedSearch4,[this].concat(args))||this;_this3.
-sortRow=['sortmove',''];return _this3;}var _proto6=BattleMoveSearch.prototype;_proto6.
+BattleMoveSearch=function(_BattleTypedSearch4){_inheritsLoose(BattleMoveSearch,_BattleTypedSearch4);function BattleMoveSearch(){var _this4;for(var _len2=arguments.length,args=new Array(_len2),_key2=0;_key2<_len2;_key2++){args[_key2]=arguments[_key2];}_this4=_BattleTypedSearch4.call.apply(_BattleTypedSearch4,[this].concat(args))||this;_this4.
+sortRow=['sortmove',''];return _this4;}var _proto6=BattleMoveSearch.prototype;_proto6.
 getTable=function getTable(){
 return BattleMovedex;
 };_proto6.
@@ -1414,7 +1414,9 @@ if(!format.startsWith('cap')&&(_id10==='paleowave'||_id10==='shadowstrike'))cont
 var move=dex.moves.get(_id10);
 if(move.gen>dex.gen)continue;
 if(sketch){
-if(move.isMax||move.isZ||move.isNonstandard)continue;
+if(move.isMax||move.isZ)continue;
+if(move.isNonstandard&&move.isNonstandard!=='Past')continue;
+if(move.isNonstandard==='Past'&&this.formatType!=='natdex'&&dex.gen===8)continue;
 sketchMoves.push(move.id);
 }else{
 if(!(dex.gen<8||this.formatType==='natdex')&&move.isZ)continue;
@@ -1503,7 +1505,7 @@ break;}
 }
 return true;
 };_proto6.
-sort=function sort(results,sortCol){
+sort=function sort(results,sortCol){var _this5=this;
 switch(sortCol){
 case'power':
 var powerTable={
@@ -1515,24 +1517,24 @@ dragonrage:1140,sonicboom:1120,superfang:1350,endeavor:1399,sheercold:1501,
 fissure:1500,horndrill:1500,guillotine:1500};
 
 return results.sort(function(_ref17,_ref18){var rowType1=_ref17[0],id1=_ref17[1];var rowType2=_ref18[0],id2=_ref18[1];
-var move1=BattleMovedex[id1];
-var move2=BattleMovedex[id2];
+var move1=_this5.dex.moves.get(id1);
+var move2=_this5.dex.moves.get(id2);
 var pow1=move1.basePower||powerTable[id1]||(move1.category==='Status'?-1:1400);
 var pow2=move2.basePower||powerTable[id2]||(move2.category==='Status'?-1:1400);
 return pow2-pow1;
 });
 case'accuracy':
 return results.sort(function(_ref19,_ref20){var rowType1=_ref19[0],id1=_ref19[1];var rowType2=_ref20[0],id2=_ref20[1];
-var accuracy1=BattleMovedex[id1].accuracy||0;
-var accuracy2=BattleMovedex[id2].accuracy||0;
+var accuracy1=_this5.dex.moves.get(id1).accuracy||0;
+var accuracy2=_this5.dex.moves.get(id2).accuracy||0;
 if(accuracy1===true)accuracy1=101;
 if(accuracy2===true)accuracy2=101;
 return accuracy2-accuracy1;
 });
 case'pp':
 return results.sort(function(_ref21,_ref22){var rowType1=_ref21[0],id1=_ref21[1];var rowType2=_ref22[0],id2=_ref22[1];
-var pp1=BattleMovedex[id1].pp||0;
-var pp2=BattleMovedex[id2].pp||0;
+var pp1=_this5.dex.moves.get(id1).pp||0;
+var pp2=_this5.dex.moves.get(id2).pp||0;
 return pp2-pp1;
 });}
 

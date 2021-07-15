@@ -37,7 +37,7 @@ BattleLog=function(){
 
 
 
-function BattleLog(elem,scene,innerElem){var _this=this;this.scene=null;this.preemptElem=null;this.atBottom=true;this.battleParser=null;this.joinLeave=null;this.lastRename=null;this.perspective=-1;this.
+function BattleLog(elem,scene,innerElem){var _this=this;this.elem=void 0;this.innerElem=void 0;this.scene=null;this.preemptElem=null;this.atBottom=true;this.className=void 0;this.battleParser=null;this.joinLeave=null;this.lastRename=null;this.perspective=-1;this.
 
 
 
@@ -72,7 +72,7 @@ this.atBottom=true;
 destroy=function destroy(){
 this.elem.onscroll=null;
 };_proto.
-add=function add(args,kwArgs,preempt){var _this$scene,_window$app,_window$app$ignore,_window$app2,_window$app2$rooms;
+add=function add(args,kwArgs,preempt){var _this$scene,_window$app,_window$app$ignore,_window$app2,_window$app2$rooms,_this$scene2;
 if(kwArgs!=null&&kwArgs.silent)return;
 var divClass='chat';
 var divHTML='';
@@ -208,6 +208,14 @@ return;
 case'debug':
 divClass='debug';
 divHTML='<div class="chat"><small style="color:#999">[DEBUG] '+BattleLog.escapeHTML(args[1])+'.</small></div>';
+break;
+
+case'notify':
+var title=args[1];
+var body=args[2];
+var roomid=(_this$scene2=this.scene)==null?void 0:_this$scene2.battle.roomid;
+if(!roomid)break;
+app.rooms[roomid].notifyOnce(title,body,'highlight');
 break;
 
 case'seed':case'choice':case':':case'timer':case't:':
@@ -457,6 +465,9 @@ return this.escapeFormat(formatid.slice(0,atIndex))+
 }
 if(window.BattleFormats&&BattleFormats[formatid]){
 return this.escapeHTML(BattleFormats[formatid].name);
+}
+if(window.NonBattleGames&&NonBattleGames[formatid]){
+return this.escapeHTML(NonBattleGames[formatid]);
 }
 return this.escapeHTML(formatid);
 };BattleLog.
@@ -810,7 +821,7 @@ var channelId=(_$exec=/(https?:\/\/)?twitch.tv\/([A-Za-z0-9]+)/i.exec(_src))==nu
 return{
 tagName:'iframe',
 attribs:[
-'src',"https://player.twitch.tv/?channel="+channelId+"&parent="+location.hostname,
+'src',"https://player.twitch.tv/?channel="+channelId+"&parent="+location.hostname+"&autoplay=false",
 'allowfullscreen','true','height',"400",'width',"340"]};
 
 

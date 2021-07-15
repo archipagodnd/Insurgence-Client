@@ -32,8 +32,8 @@ this.connectWhenLoggedIn=false;
 }
 };_proto.
 updateTarget=function updateTarget(force){
-if(this.id.startsWith('pm-')){var _this$id$slice$split=
-this.id.slice(3).split('-'),id1=_this$id$slice$split[0],id2=_this$id$slice$split[1];
+if(this.id.startsWith('pm-')){
+var _this$id$slice$split=this.id.slice(3).split('-'),id1=_this$id$slice$split[0],id2=_this$id$slice$split[1];
 if(id1===PS.user.userid&&toID(this.pmTarget)!==id2){
 this.pmTarget=id2;
 }else if(id2===PS.user.userid&&toID(this.pmTarget)!==id1){
@@ -495,6 +495,11 @@ if(!controlsElem)return;
 preact.render(null,this.base,controlsElem);
 this.updateScroll();
 return;
+}
+if(!controlsElem){
+controlsElem=document.createElement('div');
+controlsElem.className='controls';
+this.base.appendChild(controlsElem);
 }
 preact.render(preact.h("div",{"class":"controls"},jsx),this.base,controlsElem);
 this.updateScroll();

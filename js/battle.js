@@ -33,7 +33,6 @@
 
 
 
-
 Pokemon=function(){
 
 
@@ -102,7 +101,7 @@ Pokemon=function(){
 
 
 
-function Pokemon(data,side){this.name='';this.speciesForme='';this.ident='';this.details='';this.searchid='';this.slot=0;this.fainted=false;this.hp=0;this.maxhp=1000;this.level=100;this.gender='N';this.shiny=false;this.hpcolor='g';this.moves=[];this.ability='';this.baseAbility='';this.item='';this.itemEffect='';this.prevItem='';this.prevItemEffect='';this.boosts={};this.status='';this.statusStage=0;this.volatiles={};this.turnstatuses={};this.movestatuses={};this.lastMove='';this.moveTrack=[];this.statusData={sleepTurns:0,toxicTurns:0};
+function Pokemon(data,side){this.name='';this.speciesForme='';this.ident='';this.details='';this.searchid='';this.side=void 0;this.slot=0;this.fainted=false;this.hp=0;this.maxhp=1000;this.level=100;this.gender='N';this.shiny=false;this.hpcolor='g';this.moves=[];this.ability='';this.baseAbility='';this.item='';this.itemEffect='';this.prevItem='';this.prevItemEffect='';this.boosts={};this.status='';this.statusStage=0;this.volatiles={};this.turnstatuses={};this.movestatuses={};this.lastMove='';this.moveTrack=[];this.statusData={sleepTurns:0,toxicTurns:0};this.sprite=void 0;
 this.side=side;
 this.speciesForme=data.speciesForme;
 
@@ -494,7 +493,7 @@ return true;
 }
 
 var item=toID(serverPokemon?serverPokemon.item:this.item);
-var ability=toID(this.ability||(serverPokemon==null?void 0:serverPokemon.ability));
+var ability=toID(this.effectiveAbility(serverPokemon));
 if(battle.hasPseudoWeather('Magic Room')||this.volatiles['embargo']||ability==='klutz'){
 item='';
 }
@@ -512,6 +511,16 @@ if(item==='airballoon'){
 return false;
 }
 return!this.getTypeList(serverPokemon).includes('Flying');
+};_proto.
+effectiveAbility=function effectiveAbility(serverPokemon){
+if(this.fainted||this.volatiles['gastroacid'])return'';
+var ability=this.side.battle.dex.abilities.get(
+(serverPokemon==null?void 0:serverPokemon.ability)||this.ability||(serverPokemon==null?void 0:serverPokemon.baseAbility)||'');
+
+if(this.side.battle.ngasActive()&&!ability.isPermanent){
+return'';
+}
+return ability.name;
 };_proto.
 getTypeList=function getTypeList(serverPokemon){
 var _this$getTypes=this.getTypes(serverPokemon),types=_this$getTypes[0],addedType=_this$getTypes[1];
@@ -600,7 +609,7 @@ Side=function(){
 
 
 
-function Side(battle,n){this.name='';this.id='';this.foe=null;this.ally=null;this.avatar='unknown';this.rating='';this.totalPokemon=6;this.x=0;this.y=0;this.z=0;this.missedPokemon=null;this.wisher=null;this.active=[null];this.lastPokemon=null;this.pokemon=[];this.sideConditions={};
+function Side(battle,n){this.battle=void 0;this.name='';this.id='';this.sideid=void 0;this.n=void 0;this.isFar=void 0;this.foe=null;this.ally=null;this.avatar='unknown';this.rating='';this.totalPokemon=6;this.x=0;this.y=0;this.z=0;this.missedPokemon=null;this.wisher=null;this.active=[null];this.lastPokemon=null;this.pokemon=[];this.sideConditions={};
 this.battle=battle;
 this.n=n;
 this.sideid=['p1','p2','p3','p4'][n];
@@ -1087,7 +1096,7 @@ function Battle()
 
 
 
-{var options=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};this.sidesSwitched=false;this.preemptStepQueue=[];this.waitForAnimations=true;this.currentStep=0;this.seeking=null;this.activeMoveIsSpread=null;this.mute=false;this.messageFadeTime=300;this.messageShownTime=1;this.turnsSinceMoved=0;this.turn=-1;this.atQueueEnd=false;this.started=false;this.ended=false;this.isReplay=false;this.usesUpkeep=false;this.weather='';this.pseudoWeather=[];this.weatherTimeLeft=0;this.weatherMinTimeLeft=0;this.mySide=null;this.nearSide=null;this.farSide=null;this.p1=null;this.p2=null;this.p3=null;this.p4=null;this.pokemonControlled=0;this.sides=null;this.myPokemon=null;this.myAllyPokemon=null;this.lastMove='';this.gen=8;this.dex=Dex;this.teamPreviewCount=0;this.speciesClause=false;this.tier='';this.gameType='singles';this.rated=false;this.isBlitz=false;this.endLastTurnPending=false;this.totalTimeLeft=0;this.graceTimeLeft=0;this.kickingInactive=false;this.id='';this.roomid='';this.hardcoreMode=false;this.ignoreNicks=!!Dex.prefs('ignorenicks');this.ignoreOpponent=!!Dex.prefs('ignoreopp');this.ignoreSpects=!!Dex.prefs('ignorespects');this.joinButtons=false;
+{var options=arguments.length>0&&arguments[0]!==undefined?arguments[0]:{};this.scene=void 0;this.sidesSwitched=false;this.stepQueue=void 0;this.preemptStepQueue=[];this.waitForAnimations=true;this.currentStep=0;this.seeking=null;this.activeMoveIsSpread=null;this.subscription=void 0;this.mute=false;this.messageFadeTime=300;this.messageShownTime=1;this.turnsSinceMoved=0;this.turn=-1;this.atQueueEnd=false;this.started=false;this.ended=false;this.isReplay=false;this.usesUpkeep=false;this.weather='';this.pseudoWeather=[];this.weatherTimeLeft=0;this.weatherMinTimeLeft=0;this.mySide=null;this.nearSide=null;this.farSide=null;this.p1=null;this.p2=null;this.p3=null;this.p4=null;this.pokemonControlled=0;this.sides=null;this.myPokemon=null;this.myAllyPokemon=null;this.lastMove='';this.gen=8;this.dex=Dex;this.teamPreviewCount=0;this.speciesClause=false;this.tier='';this.gameType='singles';this.rated=false;this.isBlitz=false;this.endLastTurnPending=false;this.totalTimeLeft=0;this.graceTimeLeft=0;this.kickingInactive=false;this.id='';this.roomid='';this.hardcoreMode=false;this.ignoreNicks=!!Dex.prefs('ignorenicks');this.ignoreOpponent=!!Dex.prefs('ignoreopp');this.ignoreSpects=!!Dex.prefs('ignorespects');this.debug=void 0;this.joinButtons=false;this.paused=void 0;
 this.id=options.id||'';
 
 if(options.$frame&&options.$logFrame){
@@ -1140,6 +1149,30 @@ return true;
 }
 return false;
 };_proto3.
+ngasActive=function ngasActive(){for(var _i6=0,_this$sides=
+this.sides;_i6<_this$sides.length;_i6++){var side=_this$sides[_i6];for(var _i7=0,_side$active=
+side.active;_i7<_side$active.length;_i7++){var active=_side$active[_i7];
+if(active&&!active.fainted&&active.ability==='Neutralizing Gas'&&!active.volatiles['gastroacid']){
+return true;
+}
+}
+}
+return false;
+};_proto3.
+abilityActive=function abilityActive(abilities){var _this=this;
+if(this.ngasActive()){
+abilities=abilities.filter(function(a){return _this.dex.abilities.get(a).isPermanent;});
+if(!abilities.length)return false;
+}for(var _i8=0,_this$sides2=
+this.sides;_i8<_this$sides2.length;_i8++){var side=_this$sides2[_i8];for(var _i9=0,_side$active2=
+side.active;_i9<_side$active2.length;_i9++){var active=_side$active2[_i9];
+if(active&&!active.fainted&&abilities.includes(active.ability)&&!active.volatiles['gastroacid']){
+return true;
+}
+}
+}
+return false;
+};_proto3.
 reset=function reset(){var _this$subscription;
 this.paused=true;
 this.scene.pause();
@@ -1156,9 +1189,9 @@ this.weather='';
 this.weatherTimeLeft=0;
 this.weatherMinTimeLeft=0;
 this.pseudoWeather=[];
-this.lastMove='';for(var _i6=0,_this$sides=
+this.lastMove='';for(var _i10=0,_this$sides3=
 
-this.sides;_i6<_this$sides.length;_i6++){var side=_this$sides[_i6];
+this.sides;_i10<_this$sides3.length;_i10++){var side=_this$sides3[_i10];
 if(side)side.reset();
 }
 this.myPokemon=null;
@@ -1311,19 +1344,48 @@ this.weatherMinTimeLeft=this.gen<=3?0:5;
 this.weather=weather;
 this.scene.updateWeather();
 };_proto3.
-updateTurnCounters=function updateTurnCounters(){for(var _i7=0,_this$pseudoWeather2=
-this.pseudoWeather;_i7<_this$pseudoWeather2.length;_i7++){var pWeather=_this$pseudoWeather2[_i7];
+swapSideConditions=function swapSideConditions(){
+var sideConditions=[
+'mist','lightscreen','reflect','spikes','safeguard','tailwind','toxicspikes','stealthrock','waterpledge','firepledge','grasspledge','stickyweb','auroraveil','gmaxsteelsurge','gmaxcannonade','gmaxvinelash','gmaxwildfire'];
+
+if(this.gameType==='freeforall'){
+
+return;
+}else{
+var side1=this.sides[0];
+var side2=this.sides[1];for(var _i11=0;_i11<
+sideConditions.length;_i11++){var _id3=sideConditions[_i11];
+if(side1.sideConditions[_id3]&&side2.sideConditions[_id3]){var _ref2=
+[
+side2.sideConditions[_id3],side1.sideConditions[_id3]];side1.sideConditions[_id3]=_ref2[0];side2.sideConditions[_id3]=_ref2[1];
+
+this.scene.addSideCondition(side1.n,_id3);
+this.scene.addSideCondition(side2.n,_id3);
+}else if(side1.sideConditions[_id3]&&!side2.sideConditions[_id3]){
+side2.sideConditions[_id3]=side1.sideConditions[_id3];
+this.scene.addSideCondition(side2.n,_id3);
+side1.removeSideCondition(_id3);
+}else if(side2.sideConditions[_id3]&&!side1.sideConditions[_id3]){
+side1.sideConditions[_id3]=side2.sideConditions[_id3];
+this.scene.addSideCondition(side1.n,_id3);
+side2.removeSideCondition(_id3);
+}
+}
+}
+};_proto3.
+updateTurnCounters=function updateTurnCounters(){for(var _i12=0,_this$pseudoWeather2=
+this.pseudoWeather;_i12<_this$pseudoWeather2.length;_i12++){var pWeather=_this$pseudoWeather2[_i12];
 if(pWeather[1])pWeather[1]--;
 if(pWeather[2])pWeather[2]--;
-}for(var _i8=0,_this$sides2=
-this.sides;_i8<_this$sides2.length;_i8++){var side=_this$sides2[_i8];
-for(var _id3 in side.sideConditions){
-var cond=side.sideConditions[_id3];
+}for(var _i13=0,_this$sides4=
+this.sides;_i13<_this$sides4.length;_i13++){var side=_this$sides4[_i13];
+for(var _id4 in side.sideConditions){
+var cond=side.sideConditions[_id4];
 if(cond[2])cond[2]--;
 if(cond[3])cond[3]--;
 }
-}for(var _i9=0,_ref2=[].concat(
-this.nearSide.active,this.farSide.active);_i9<_ref2.length;_i9++){var poke=_ref2[_i9];
+}for(var _i14=0,_ref3=[].concat(
+this.nearSide.active,this.farSide.active);_i14<_ref3.length;_i14++){var poke=_ref3[_i14];
 if(poke){
 if(poke.status==='tox')poke.statusData.toxicTurns++;
 poke.clearTurnstatuses();
@@ -1357,14 +1419,33 @@ if(BattleItems[_item].zMoveType===move.type)pokemon.item=_item;
 }
 }
 var pp=1;
-if(move.target==="all"){for(var _i10=0,_pokemon$side$foe$act=
-pokemon.side.foe.active;_i10<_pokemon$side$foe$act.length;_i10++){var active=_pokemon$side$foe$act[_i10];
-if(active&&toID(active.ability)==='pressure'){
+
+if(this.abilityActive(['Pressure'])&&move.id!=='stickyweb'){
+var foeTargets=[];
+
+if(
+!target&&this.gameType==='singles'&&
+!['self','allies','allySide','adjacentAlly','adjacentAllyOrSelf'].includes(move.target))
+{
+
+foeTargets.push(pokemon.side.foe.active[0]);
+}else if(['all','allAdjacent','allAdjacentFoes','foeSide'].includes(move.target)){for(var _i15=0,_this$sides5=
+
+this.sides;_i15<_this$sides5.length;_i15++){var side=_this$sides5[_i15];
+if(side===pokemon.side||side===pokemon.side.ally)continue;for(var _i16=0,_side$active3=
+side.active;_i16<_side$active3.length;_i16++){var active=_side$active3[_i16];
+foeTargets.push(active);
+}
+}
+}else if(target&&target.side!==pokemon.side){
+foeTargets.push(target);
+}for(var _i17=0;_i17<
+
+foeTargets.length;_i17++){var foe=foeTargets[_i17];
+if(foe&&!foe.fainted&&foe.effectiveAbility()==='Pressure'){
 pp+=1;
 }
 }
-}else if(target&&target.side!==pokemon.side&&toID(target.ability)==='pressure'){
-pp+=1;
 }
 pokemon.rememberMove(moveName,pp);
 }
@@ -1402,8 +1483,8 @@ var targets=[pokemon];
 if(kwArgs.spread==='.'){
 
 targets.push(target.side.missedPokemon);
-}else{for(var _i11=0,_kwArgs$spread$split=
-kwArgs.spread.split(',');_i11<_kwArgs$spread$split.length;_i11++){var hitTarget=_kwArgs$spread$split[_i11];
+}else{for(var _i18=0,_kwArgs$spread$split=
+kwArgs.spread.split(',');_i18<_kwArgs$spread$split.length;_i18++){var hitTarget=_kwArgs$spread$split[_i18];
 var curTarget=this.getPokemon(hitTarget+': ?');
 if(!curTarget){
 this.log(['error',"Invalid spread move target: \""+hitTarget+"\""]);
@@ -1584,8 +1665,8 @@ _poke.item=_effect.name;
 }
 }
 switch(_effect.id){
-case'lunardance':for(var _i12=0,_poke$moveTrack=
-_poke.moveTrack;_i12<_poke$moveTrack.length;_i12++){var trackedMove=_poke$moveTrack[_i12];
+case'lunardance':for(var _i19=0,_poke$moveTrack=
+_poke.moveTrack;_i19<_poke$moveTrack.length;_i19++){var trackedMove=_poke$moveTrack[_i19];
 trackedMove[1]=0;
 }
 
@@ -1686,8 +1767,8 @@ break;
 case'-swapboost':{
 var _poke5=this.getPokemon(args[1]);
 var poke2=this.getPokemon(args[2]);
-var stats=args[3]?args[3].split(', '):['atk','def','spa','spd','spe','accuracy','evasion'];for(var _i13=0;_i13<
-stats.length;_i13++){var _stat4=stats[_i13];
+var stats=args[3]?args[3].split(', '):['atk','def','spa','spd','spe','accuracy','evasion'];for(var _i20=0;_i20<
+stats.length;_i20++){var _stat4=stats[_i20];
 var tmp=_poke5.boosts[_stat4];
 _poke5.boosts[_stat4]=poke2.boosts[_stat4];
 if(!_poke5.boosts[_stat4])delete _poke5.boosts[_stat4];
@@ -1733,14 +1814,14 @@ break;
 case'-copyboost':{
 var _poke8=this.getPokemon(args[1]);
 var frompoke=this.getPokemon(args[2]);
-var _stats=args[3]?args[3].split(', '):['atk','def','spa','spd','spe','accuracy','evasion'];for(var _i14=0;_i14<
-_stats.length;_i14++){var _stat7=_stats[_i14];
+var _stats=args[3]?args[3].split(', '):['atk','def','spa','spd','spe','accuracy','evasion'];for(var _i21=0;_i21<
+_stats.length;_i21++){var _stat7=_stats[_i21];
 _poke8.boosts[_stat7]=frompoke.boosts[_stat7];
 if(!_poke8.boosts[_stat7])delete _poke8.boosts[_stat7];
 }
 if(this.gen>=6){
-var volatilesToCopy=['focusenergy','laserfocus'];for(var _i15=0;_i15<
-volatilesToCopy.length;_i15++){var volatile=volatilesToCopy[_i15];
+var volatilesToCopy=['focusenergy','laserfocus'];for(var _i22=0;_i22<
+volatilesToCopy.length;_i22++){var volatile=volatilesToCopy[_i22];
 if(frompoke.volatiles[volatile]){
 _poke8.addVolatile(volatile);
 }else{
@@ -1777,9 +1858,9 @@ this.log(args,kwArgs);
 break;
 }
 case'-clearallboost':{
-var timeOffset=this.scene.timeOffset;for(var _i16=0,_this$sides3=
-this.sides;_i16<_this$sides3.length;_i16++){var side=_this$sides3[_i16];for(var _i17=0,_side$active=
-side.active;_i17<_side$active.length;_i17++){var active=_side$active[_i17];
+var timeOffset=this.scene.timeOffset;for(var _i23=0,_this$sides6=
+this.sides;_i23<_this$sides6.length;_i23++){var side=_this$sides6[_i23];for(var _i24=0,_side$active4=
+side.active;_i24<_side$active4.length;_i24++){var active=_side$active4[_i24];
 if(active){
 active.boosts={};
 this.scene.timeOffset=timeOffset;
@@ -1936,7 +2017,6 @@ var _poke20=this.getPokemon(args[1]);
 var _effect8=Dex.getEffect(kwArgs.from);
 var _ofpoke7=this.getPokemon(kwArgs.of)||_poke20;
 _poke20.status=args[2];
-_poke20.removeVolatile('yawn');
 this.activateAbility(_ofpoke7||_poke20,_effect8);
 if(_effect8.effectType==='Item'){
 _ofpoke7.item=_effect8.name;
@@ -2024,8 +2104,8 @@ break;
 
 }
 case'-cureteam':{
-var _poke22=this.getPokemon(args[1]);for(var _i18=0,_poke22$side$pokemon=
-_poke22.side.pokemon;_i18<_poke22$side$pokemon.length;_i18++){var _target2=_poke22$side$pokemon[_i18];
+var _poke22=this.getPokemon(args[1]);for(var _i25=0,_poke22$side$pokemon=
+_poke22.side.pokemon;_i25<_poke22$side$pokemon.length;_i25++){var _target2=_poke22$side$pokemon[_i25];
 _target2.status='';
 this.scene.updateStatbarIfExists(_target2);
 }
@@ -2206,6 +2286,7 @@ break;}
 }else{
 this.activateAbility(_poke25,ability.name);
 }
+this.scene.updateWeather();
 this.log(args,kwArgs);
 break;
 }
@@ -2262,13 +2343,14 @@ this.activateAbility(_poke28,_effect13);
 _poke28.boosts=Object.assign({},tpoke.boosts);
 _poke28.copyTypesFrom(tpoke);
 _poke28.ability=tpoke.ability;
-var speciesForme=tpoke.volatiles.formechange?tpoke.volatiles.formechange[1]:tpoke.speciesForme;
+var targetForme=tpoke.volatiles.formechange;
+var speciesForme=targetForme&&!targetForme[1].endsWith('-Gmax')?targetForme[1]:tpoke.speciesForme;
 var _pokemon2=tpoke;
 var shiny=tpoke.shiny;
 var gender=tpoke.gender;
 _poke28.addVolatile('transform',_pokemon2,shiny,gender);
-_poke28.addVolatile('formechange',speciesForme);for(var _i19=0,_tpoke$moveTrack=
-tpoke.moveTrack;_i19<_tpoke$moveTrack.length;_i19++){var _trackedMove=_tpoke$moveTrack[_i19];
+_poke28.addVolatile('formechange',speciesForme);for(var _i26=0,_tpoke$moveTrack=
+tpoke.moveTrack;_i26<_tpoke$moveTrack.length;_i26++){var _trackedMove=_tpoke$moveTrack[_i26];
 _poke28.rememberMove(_trackedMove[0],0);
 }
 this.scene.animTransform(_poke28);
@@ -2663,8 +2745,8 @@ case'phantomforce':
 case'shadowforce':
 case'feint':
 this.scene.resultAnim(_poke35,'Protection broken','bad');
-_poke35.removeTurnstatus('protect');for(var _i20=0,_poke35$side$pokemon=
-_poke35.side.pokemon;_i20<_poke35$side$pokemon.length;_i20++){var curTarget=_poke35$side$pokemon[_i20];
+_poke35.removeTurnstatus('protect');for(var _i27=0,_poke35$side$pokemon=
+_poke35.side.pokemon;_i27<_poke35$side$pokemon.length;_i27++){var curTarget=_poke35$side$pokemon[_i27];
 curTarget.removeTurnstatus('wideguard');
 curTarget.removeTurnstatus('quickguard');
 curTarget.removeTurnstatus('craftyshield');
@@ -2708,8 +2790,8 @@ case'forewarn':
 if(_target3){
 _target3.rememberMove(kwArgs.move,0);
 }else{
-var foeActive=[];for(var _i21=0,_poke35$side$foe$acti=
-_poke35.side.foe.active;_i21<_poke35$side$foe$acti.length;_i21++){var maybeTarget=_poke35$side$foe$acti[_i21];
+var foeActive=[];for(var _i28=0,_poke35$side$foe$acti=
+_poke35.side.foe.active;_i28<_poke35$side$foe$acti.length;_i28++){var maybeTarget=_poke35$side$foe$acti[_i28];
 if(maybeTarget&&!maybeTarget.fainted)foeActive.push(maybeTarget);
 }
 if(foeActive.length===1){
@@ -2779,6 +2861,12 @@ _side2.removeSideCondition(_effect20.name);
 this.log(args,kwArgs);
 break;
 }
+case'-swapsideconditions':{
+this.swapSideConditions();
+this.scene.updateWeather();
+this.log(args,kwArgs);
+break;
+}
 case'-weather':{
 var _effect21=Dex.getEffect(args[1]);
 var _poke36=this.getPokemon(kwArgs.of)||undefined;
@@ -2810,9 +2898,9 @@ this.addPseudoWeather(_effect22.name,5,maxTimeLeft);
 
 switch(_effect22.id){
 case'gravity':
-if(this.seeking!==null)break;for(var _i22=0,_this$sides4=
-this.sides;_i22<_this$sides4.length;_i22++){var _side3=_this$sides4[_i22];for(var _i23=0,_side3$active=
-_side3.active;_i23<_side3$active.length;_i23++){var _active=_side3$active[_i23];
+if(this.seeking!==null)break;for(var _i29=0,_this$sides7=
+this.sides;_i29<_this$sides7.length;_i29++){var _side3=_this$sides7[_i29];for(var _i30=0,_side3$active=
+_side3.active;_i30<_side3$active.length;_i30++){var _active=_side3$active[_i30];
 if(_active)this.scene.runOtherAnim('gravity',[_active]);
 }
 }
@@ -3018,8 +3106,8 @@ return this.sides[siden].addPokemon('','',details);
 };_proto3.
 findCorrespondingPokemon=function findCorrespondingPokemon(serverPokemon){
 var _this$parsePokemonId3=this.parsePokemonId(serverPokemon.ident),siden=_this$parsePokemonId3.siden;
-var searchid=serverPokemon.ident+"|"+serverPokemon.details;for(var _i24=0,_this$sides$siden$pok=
-this.sides[siden].pokemon;_i24<_this$sides$siden$pok.length;_i24++){var _pokemon4=_this$sides$siden$pok[_i24];
+var searchid=serverPokemon.ident+"|"+serverPokemon.details;for(var _i31=0,_this$sides$siden$pok=
+this.sides[siden].pokemon;_i31<_this$sides$siden$pok.length;_i31++){var _pokemon4=_this$sides$siden$pok[_i31];
 if(_pokemon4.searchid===searchid){
 return _pokemon4;
 }
@@ -3038,9 +3126,9 @@ var isInactive=slot<0;
 var side=this.sides[siden];
 
 
-if(!isInactive&&side.active[slot])return side.active[slot];for(var _i25=0,_side$pokemon=
+if(!isInactive&&side.active[slot])return side.active[slot];for(var _i32=0,_side$pokemon=
 
-side.pokemon;_i25<_side$pokemon.length;_i25++){var _pokemon5=_side$pokemon[_i25];
+side.pokemon;_i32<_side$pokemon.length;_i32++){var _pokemon5=_side$pokemon[_i32];
 if(isInactive&&side.active.includes(_pokemon5))continue;
 if(_pokemon5.ident===pokemonid){
 if(slot>=0)_pokemon5.slot=slot;
@@ -3151,8 +3239,8 @@ case'rotation':
 this.nearSide.active=[null,null,null];
 this.farSide.active=[null,null,null];
 break;
-default:for(var _i26=0,_this$sides5=
-this.sides;_i26<_this$sides5.length;_i26++){var side=_this$sides5[_i26];side.active=[null];}
+default:for(var _i33=0,_this$sides8=
+this.sides;_i33<_this$sides8.length;_i33++){var side=_this$sides8[_i33];side.active=[null];}
 break;}
 
 if(!this.pokemonControlled)this.pokemonControlled=this.nearSide.active.length;
@@ -3288,8 +3376,22 @@ break;
 }
 case'poke':{
 var _pokemon6=this.rememberTeamPreviewPokemon(args[1],args[2]);
-if(args[3]==='item'){
+if(args[3]==='mail'){
+_pokemon6.item='(mail)';
+}else if(args[3]==='item'){
 _pokemon6.item='(exists)';
+}
+break;
+}
+case'updatepoke':{
+var _this$parsePokemonId5=this.parsePokemonId(args[1]),siden=_this$parsePokemonId5.siden;
+var _side6=this.sides[siden];
+for(var i=0;i<_side6.pokemon.length;i++){
+var _pokemon7=_side6.pokemon[i];
+if(_pokemon7.details!==args[2]&&_pokemon7.checkDetails(args[2])){
+_side6.addPokemon('','',args[2],i);
+break;
+}
 }
 break;
 }
@@ -3314,6 +3416,7 @@ poke.side.replace(poke);
 }else{
 poke.side.dragIn(poke);
 }
+this.scene.updateWeather();
 this.log(args,kwArgs);
 break;
 }
@@ -3427,8 +3530,8 @@ this.runMajor(args,kwArgs,preempt);
 }catch(err){var _this$subscription6;
 this.log(['majorerror','Error parsing: '+str+' ('+err+')']);
 if(err.stack){
-var stack=(''+err.stack).split('\n');for(var _i27=0;_i27<
-stack.length;_i27++){var line=stack[_i27];
+var stack=(''+err.stack).split('\n');for(var _i34=0;_i34<
+stack.length;_i34++){var line=stack[_i34];
 if(/\brun\b/.test(line)){
 break;
 }
@@ -3517,7 +3620,7 @@ if(this.atQueueEnd)return false;
 if(this.seeking!==null)return true;
 return!(this.paused&&this.turn>=0);
 };_proto3.
-nextStep=function nextStep(){var _this=this;
+nextStep=function nextStep(){var _this2=this;
 if(!this.shouldStep())return;
 
 this.scene.startAnimations();
@@ -3555,8 +3658,8 @@ if(!animations)return;
 
 var interruptionCount=this.scene.interruptionCount;
 animations.done(function(){
-if(interruptionCount===_this.scene.interruptionCount){
-_this.nextStep();
+if(interruptionCount===_this2.scene.interruptionCount){
+_this2.nextStep();
 }
 });
 };_proto3.
