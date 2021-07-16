@@ -3546,11 +3546,13 @@ setAttrib('src','https:'+src);
 
 var _src=getAttrib('src')||"";
 var channelId=(_$exec=/(https?:\/\/)?twitch.tv\/([A-Za-z0-9]+)/i.exec(_src))==null?void 0:_$exec[2];
+var height=parseInt(getAttrib('height')||"",10)||400;
+var width=parseInt(getAttrib('width')||"",10)||340;
 return{
 tagName:'iframe',
 attribs:[
 'src',"https://player.twitch.tv/?channel="+channelId+"&parent="+location.hostname+"&autoplay=false",
-'allowfullscreen','true','height',"400",'width',"340"]};
+'allowfullscreen','true','height',""+height,'width',""+width]};
 
 
 }else if(tagName==='username'){
@@ -3573,11 +3575,11 @@ attribs:['src',"https://open.spotify.com/embed/track/"+songId,'width','300','hei
 
 var _src3=getAttrib('src')||'';
 
-var width='320';
-var height='200';
+var _width='320';
+var _height='200';
 if(window.innerWidth>=400){
-width='400';
-height='225';
+_width='400';
+_height='225';
 }
 var videoId=(_$exec3=/(?:\?v=|\/embed\/)([A-Za-z0-9_\-]+)/.exec(_src3))==null?void 0:_$exec3[1];
 if(!videoId)return{tagName:'img',attribs:['alt',"invalid src for <youtube>"]};
@@ -3587,7 +3589,7 @@ var time=(_$exec4=/(?:\?|&)(?:t|start)=([0-9]+)/.exec(_src3))==null?void 0:_$exe
 return{
 tagName:'iframe',
 attribs:[
-'width',width,'height',height,
+'width',_width,'height',_height,
 'src',"https://www.youtube.com/embed/"+videoId+(time?"?start="+time:''),
 'frameborder','0','allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture','allowfullscreen','allowfullscreen']};
 
