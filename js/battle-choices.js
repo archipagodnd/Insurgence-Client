@@ -121,7 +121,7 @@ BattleChoiceBuilder=function(){
 
 
 
-function BattleChoiceBuilder(request){this.choices=[];this.current={choiceType:'move',move:0,targetLoc:0,mega:false,ultra:false,z:false,max:false};this.alreadySwitchingIn=[];this.alreadyMega=false;this.alreadyMax=false;this.alreadyZ=false;
+function BattleChoiceBuilder(request){this.request=void 0;this.choices=[];this.current={choiceType:'move',move:0,targetLoc:0,mega:false,ultra:false,z:false,max:false};this.alreadySwitchingIn=[];this.alreadyMega=false;this.alreadyMax=false;this.alreadyZ=false;
 this.request=request;
 this.fillPasses();
 }var _proto=BattleChoiceBuilder.prototype;_proto.

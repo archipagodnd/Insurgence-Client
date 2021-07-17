@@ -103,8 +103,8 @@ var roomid=null;
 if(/^[a-z0-9-]*$/.test(possibleRoomid)){
 roomid=possibleRoomid;
 }
-if(typeof e.state==='string'){var _ref=
-e.state.split('..'),leftRoomid=_ref[0],rightRoomid=_ref[1];
+if(typeof e.state==='string'){
+var _ref=e.state.split('..'),leftRoomid=_ref[0],rightRoomid=_ref[1];
 PS.join(leftRoomid,'left');
 if(rightRoomid){
 PS.join(rightRoomid,'right');

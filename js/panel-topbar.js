@@ -262,7 +262,7 @@ UserRoom=function(_PSRoom){_inheritsLoose(UserRoom,_PSRoom);
 
 
 function UserRoom(options){var _this3;
-_this3=_PSRoom.call(this,options)||this;_this3.classType='user';
+_this3=_PSRoom.call(this,options)||this;_this3.classType='user';_this3.userid=void 0;_this3.name=void 0;_this3.isSelf=void 0;
 _this3.userid=_this3.id.slice(5);
 _this3.isSelf=_this3.userid===PS.user.userid;
 _this3.name=options.username||_this3.userid;
