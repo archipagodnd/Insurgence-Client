@@ -16,10 +16,10 @@
     "build-full": "node build full"
   },
   "dependencies": {
-    "@babel/core": "^7.14.6",
+    "@babel/core": "^7.14.8",
     "@babel/plugin-proposal-class-properties": "^7.14.5",
     "@babel/plugin-transform-react-jsx": "^7.14.5",
-    "@babel/preset-env": "^7.14.7",
+    "@babel/preset-env": "^7.14.8",
     "@babel/preset-typescript": "^7.14.5",
     "babel-plugin-remove-import-export": "^1.1.1",
     "google-auth-library": "^3.1.0",
