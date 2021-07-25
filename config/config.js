@@ -19,7 +19,7 @@ Config.whitelist = [
 // address bar is `Config.routes.client`.
 Config.defaultserver = {
 	id: 'showdown',
-	host: 'insurg-sim-server.herokuapp.com',
+	host: '77.162.113.75',
 	port: 443,
 	httpport: 8000,
 	altport: 80,
