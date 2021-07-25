@@ -23,17 +23,12 @@ class PSDatabase {
 
 	function connect() {
 		if (!$this->db) {
-			try {
-				$this->db = new PDO(
-					"mysql:dbname={$this->database};host={$this->server};charset={$this->charset}",
-					$this->username,
-					$this->password
-				);
-				$this->db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
-			} catch (Exception $e) {
-				// hide passwords and stuff from stacktrace
-				throw new ErrorException($e->getMessage());
-			}
+			$this->db = new PDO(
+				"mysql:dbname={$this->database};host={$this->server};charset={$this->charset}",
+				$this->username,
+				$this->password
+			);
+			$this->db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 		}
 	}
 	function query($query, $params=false) {

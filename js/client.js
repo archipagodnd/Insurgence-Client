@@ -732,18 +732,8 @@ function toId() {
 			var constructSocket = function () {
 				var protocol = (Config.server.port === 443 || Config.server.https) ? 'https' : 'http';
 				Config.server.host = $.trim(Config.server.host);
-				try {
-					return new SockJS(
-						protocol + '://' + Config.server.host + ':' + Config.server.port + Config.sockjsprefix,
-						[], {timeout: 5 * 60 * 1000}
-					);
-				} catch (err) {
-					// The most common case this happens is if an HTTPS connection fails,
-					// and we fall back to HTTP, which throws a SecurityError if the URL
-					// is HTTPS
-					self.trigger('init:connectionerror');
-					return null;
-				}
+				return new SockJS(protocol + '://' + Config.server.host + ':' +
+					Config.server.port + Config.sockjsprefix, [], {timeout: 5 * 60 * 1000});
 			};
 			this.socket = constructSocket();
 

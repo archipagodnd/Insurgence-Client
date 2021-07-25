@@ -62,8 +62,6 @@ class ModifiableValue {
 			this.comment.push(` (${abilityName} suppressed by Gastro Acid)`);
 			return false;
 		}
-		// Check for Neutralizing Gas
-		if (!this.pokemon?.effectiveAbility(this.serverPokemon)) return false;
 		return true;
 	}
 	tryWeather(weatherName?: string) {
@@ -1339,16 +1337,13 @@ class BattleTooltips {
 	 * Gets the proper current type for moves with a variable type.
 	 */
 	getMoveType(move: Move, value: ModifiableValue, forMaxMove?: boolean | Move): [TypeName, 'Physical' | 'Special' | 'Status'] {
-		const pokemon = value.pokemon;
-		const serverPokemon = value.serverPokemon;
-
 		let moveType = move.type;
 		let category = move.category;
 		if (category === 'Status' && forMaxMove) return ['Normal', 'Status']; // Max Guard
 		// can happen in obscure situations
-		if (!pokemon) return [moveType, category];
+		if (!value.pokemon) return [moveType, category];
 
-		let pokemonTypes = pokemon.getTypeList(serverPokemon);
+		let pokemonTypes = value.pokemon.getTypeList(value.serverPokemon);
 		value.reset();
 		if (move.id === 'revelationdance') {
 			moveType = pokemonTypes[0];
@@ -1391,7 +1386,7 @@ class BattleTooltips {
 				break;
 			}
 		}
-		if (move.id === 'terrainpulse' && pokemon.isGrounded(serverPokemon)) {
+		if (move.id === 'terrainpulse') {
 			if (this.battle.hasPseudoWeather('Electric Terrain')) {
 				moveType = 'Electric';
 			} else if (this.battle.hasPseudoWeather('Grassy Terrain')) {
@@ -1404,7 +1399,7 @@ class BattleTooltips {
 		}
 
 		// Aura Wheel as Morpeko-Hangry changes the type to Dark
-		if (move.id === 'aurawheel' && pokemon.getSpeciesForme() === 'Morpeko-Hangry') {
+		if (move.id === 'aurawheel' && value.pokemon.getSpeciesForme() === 'Morpeko-Hangry') {
 			moveType = 'Dark';
 		}
 
@@ -1654,7 +1649,7 @@ class BattleTooltips {
 				value.weatherModify(2);
 			}
 		}
-		if (move.id === 'terrainpulse' && pokemon.isGrounded(serverPokemon)) {
+		if (move.id === 'terrainpulse') {
 			if (
 				this.battle.hasPseudoWeather('Electric Terrain') ||
 				this.battle.hasPseudoWeather('Grassy Terrain') ||
