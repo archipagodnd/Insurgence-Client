@@ -19,7 +19,7 @@ Config.whitelist = [
 // address bar is `Config.routes.client`.
 Config.defaultserver = {
 	id: 'showdown',
-	host: '77.162.113.75',
+	host: 'insurg-sim-server.herokuapp.com',
 	port: 443,
 	httpport: 8000,
 	altport: 80,
@@ -33,7 +33,7 @@ Config.customcolors = {
 	'zarel': 'aeo'
 };
 /*** Begin automatically generated configuration ***/
-Config.version = "0.11.2 (529e3e86)";
+Config.version = "0.11.2 (d67ae96b)";
 
 Config.routes = {
 	root: 'pokemonshowdown.com',
