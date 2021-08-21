@@ -2629,7 +2629,7 @@
 
 			// level
 			var level = parseInt(this.$chart.find('input[name=level]').val(), 10);
-			if (!level || level > 100 || level < 1) level = 100;
+			if (!level || level > 120 || level < 1) level = 120;
 			if (level !== 100 || set.level) set.level = level;
 
 			// happiness
@@ -2921,6 +2921,7 @@
 				if (this.curTeam && this.curTeam.format) {
 					if (baseFormat === 'battlespotsingles' || baseFormat === 'battlespotdoubles' || baseFormat.substr(0, 3) === 'vgc') set.level = 50;
 					if (baseFormat.startsWith('lc') || baseFormat.endsWith('lc')) set.level = 5;
+					if (baseFormat.startsWith('level 120')) set.level = 120;
 				}
 				set.gender = 'F';
 				if (set.happiness) delete set.happiness;
