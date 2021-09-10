@@ -574,7 +574,7 @@ class BattleTooltips {
 					case 'hail':
 						zMove = this.battle.dex.moves.get(BattleTooltips.zMoveTable['Ice']);
 						break;
-					case 'newmoon':
+					case 'darkness':
 						zMove = this.battle.dex.getMove(BattleTooltips.zMoveTable['Dark']);
 						break;
 					}
@@ -1116,10 +1116,10 @@ class BattleTooltips {
 						}
 					}
 				}
-        if (ability === 'supercell' && (weather === 'raindance' || weather === 'primordialsea' || weather === 'newmoon')) {
+        if (ability === 'supercell' && (weather === 'raindance' || weather === 'primordialsea' || weather === 'darkness')) {
           stats.spa *= 1.5;
         }
-        if (ability === 'absolution' && weather === 'newmoon') {
+        if (ability === 'absolution' && weather === 'darkness') {
           stats.spa *= 1.5;
         }
 				if (ability === 'chlorophyll' && (weather === 'sunnyday' || weather === 'desolateland')) {
