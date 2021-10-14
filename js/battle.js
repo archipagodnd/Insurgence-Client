@@ -1346,7 +1346,7 @@ this.scene.updateWeather();
 };_proto3.
 swapSideConditions=function swapSideConditions(){
 var sideConditions=[
-'mist','lightscreen','reflect','spikes','safeguard','tailwind','toxicspikes','stealthrock','waterpledge','firepledge','grasspledge','stickyweb','auroraveil','gmaxsteelsurge','gmaxcannonade','gmaxvinelash','gmaxwildfire'];
+'mist','lightscreen','reflect','spikes','safeguard','tailwind','toxicspikes','stealthrock','stealthcoal','livewire', 'permafrost','waterpledge','firepledge','grasspledge','stickyweb','auroraveil','gmaxsteelsurge','gmaxcannonade','gmaxvinelash','gmaxwildfire'];
 
 if(this.gameType==='freeforall'){
 
