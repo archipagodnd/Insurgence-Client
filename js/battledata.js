@@ -1138,7 +1138,7 @@ spe:'Spe'};
 
 
 var BattleBaseSpeciesChart=[
-"unown","burmy","shellos","gastrodon","deerling","sawsbuck","vivillon","flabebe","floette","florges","furfrou","minior","alcremie","pokestarufo","pokestarbrycenman","pokestarmt","pokestarmt2","pokestartransport","pokestargiant","pokestarhumanoid","pokestarmonster","pokestarf00","pokestarf002","pokestarspirit","pokestarblackdoor","pokestarwhitedoor","pokestarblackbelt"];
+"unown","burmy","shellos","gastrodon","deerling","sawsbuck","vivillon","flabebe","floette","florges","furfrou","minior","alcremie","pokestarufo","pokestarbrycenman","pokestarmt","pokestarmt2","pokestartransport","pokestargiant","pokestarhumanoid","pokestarmonster","pokestarf00","pokestarf002","pokestarspirit","pokestarblackdoor","pokestarwhitedoor","pokestarblackbelt","snorlaxdelta","mew"];
 
 
 var BattlePokemonIconIndexes={
@@ -1576,6 +1576,10 @@ wooperdelta:1380+56,
 quagsiredelta:1380+57,
 munchlaxdelta:1380+58,
 snorlaxdelta:1380+59,
+snorlaxdeltasummer:1380+59,
+snorlaxdeltaautumn:1380+59,
+snorlaxdeltawinter:1380+59,
+snorlaxdeltasakura:1380+59,
 misdreavusdelta:1380+60,
 mismagiusdelta:1380+61,
 cyndaquildelta:1380+62,
