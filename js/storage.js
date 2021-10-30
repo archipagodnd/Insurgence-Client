@@ -323,52 +323,8 @@ var updatePrefs = function () {
 Storage.whenPrefsLoaded(updatePrefs);
 
 Storage.initPrefs = function () {
-	Storage.loadTeams();
-	if (Config.testclient) {
-		return this.initTestClient();
-	} else if (location.protocol + '//' + location.hostname === Storage.origin) {
-		// Same origin, everything can be kept as default
-		Config.server = Config.server || Config.defaultserver;
-		this.whenPrefsLoaded.load();
-		if (!window.nodewebkit) this.whenTeamsLoaded.load();
-		return;
-	}
-
-	// Cross-origin
-
-	if (!('postMessage' in window)) {
-		// browser does not support cross-document messaging
-		return Storage.whenAppLoaded(function (app) {
-			app.trigger('init:unsupported');
-		});
-	}
-
-	$(window).on('message', Storage.onMessage);
-
-	if (document.location.hostname !== Config.routes.client) {
-		$(
-			'<iframe src="https://' + Config.routes.client + '/crossdomain.php?host=' +
-			encodeURIComponent(document.location.hostname) +
-			'&path=' + encodeURIComponent(document.location.pathname.substr(1)) +
-			'&protocol=' + encodeURIComponent(document.location.protocol) +
-			'" style="display: none;"></iframe>'
-		).appendTo('body');
-	} else {
-		Config.server = Config.server || Config.defaultserver;
-		$(
-			'<iframe src="https://' + Config.routes.client + '/crossprotocol.html?v1.2" style="display: none;"></iframe>'
-		).appendTo('body');
-		setTimeout(function () {
-			// HTTPS may be blocked
-			// yes, this happens, blame Avast! and BitDefender and other antiviruses
-			// that feel a need to MitM HTTPS poorly
-			Storage.whenPrefsLoaded.load();
-			if (!Storage.whenTeamsLoaded.isLoaded) {
-				Storage.whenTeamsLoaded.error = 'stalled';
-				Storage.whenTeamsLoaded.update();
-			}
-		}, 2000);
-	}
+    Storage.loadTeams();
+    return this.initTestClient();
 };
 
 Storage.crossOriginFrame = null;
