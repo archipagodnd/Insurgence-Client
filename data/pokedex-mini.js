@@ -313,6 +313,7 @@ exports.BattlePokemonSprites = {
 	typhlosiondelta:{num:157},
 	typhlosionmega:{num:157},
 	typhlosiondeltamega:{num:157},
+	typhlosiondeltamegaactive:{num:157},
 	totodile:{num:158},
 	croconaw:{num:159},
 	feraligatr:{num:160},
