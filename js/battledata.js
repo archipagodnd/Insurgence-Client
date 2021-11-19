@@ -509,7 +509,7 @@ y:0,
 url:Dex.resourcePrefix+'sprites/',
 pixelated:true,
 isFrontSprite:false,
-cryurl:'',
+cryurl:'https://raw.githubusercontent.com/Poilerwags/Sprites/master/play.pokemonshowdown.com/',
 shiny:options.shiny};
 
 var name=species.spriteid;
@@ -558,7 +558,7 @@ if(!miscData)miscData={};
 
 if(miscData.num!==0&&miscData.num>-5000){
 var baseSpeciesid=toID(species.baseSpecies);
-spriteData.cryurl='audio/cries/'+baseSpeciesid;
+spriteData.cryurl+='audio/cries/'+baseSpeciesid;
 var formeid=species.formeid;
 if(species.isMega||formeid&&(
 formeid==='-crowned'||
@@ -575,6 +575,7 @@ formeid==='-starter'||
 formeid==='-super'||
 formeid==='-therian'||
 formeid==='-unbound'||
+formeid==='-delta'||
 baseSpeciesid==='calyrex'||
 baseSpeciesid==='kyurem'||
 baseSpeciesid==='cramorant'||

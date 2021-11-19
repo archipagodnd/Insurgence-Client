@@ -575,6 +575,7 @@ formeid==='-starter'||
 formeid==='-super'||
 formeid==='-therian'||
 formeid==='-unbound'||
+formeid==='-delta'||
 baseSpeciesid==='calyrex'||
 baseSpeciesid==='kyurem'||
 baseSpeciesid==='cramorant'||
