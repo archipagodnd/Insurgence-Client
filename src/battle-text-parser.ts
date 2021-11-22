@@ -1080,7 +1080,17 @@ class BattleTextParser {
 				const template2 = this.template('transformMega');
 				template += template2.replace('[POKEMON]', pokemonName).replace('[SPECIES]', species);
 			}
-			return template.replace('[POKEMON]', pokemonName).replace('[ITEM]', item).replace('[TRAINER]', this.trainer(side));
+      if (item === 'Zoronite' && pokemonName !== 'Zoroark') {
+        if (!pokemon.canMegaEvo) {
+          return;
+        } else {
+          mega = pokemonName.concat("-Mega")
+          item = this.dex.species.get(mega.requiredItem);
+          return template.replace('[POKEMON]', pokemonName).replace('[ITEM]', item).replace('[TRAINER]', this.trainer(side));
+        }
+      } else {
+        return template.replace('[POKEMON]', pokemonName).replace('[ITEM]', item).replace('[TRAINER]', this.trainer(side));
+      }
 		}
 
 		case '-zpower': {

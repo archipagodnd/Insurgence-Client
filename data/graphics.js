@@ -2638,6 +2638,8 @@ BattleOtherAnims.schoolingin.anim(scene,[this]);
 BattleOtherAnims.schoolingout.anim(scene,[this]);
 }else if(speciesid==='mimikyubusted'||speciesid==='mimikyubustedtotem'){
 
+}else if(speciesid==='zoroark'){
+
 }else{
 BattleOtherAnims.megaevo.anim(scene,[this]);
 doCry=true;

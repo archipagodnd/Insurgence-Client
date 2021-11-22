@@ -2637,7 +2637,8 @@ BattleOtherAnims.schoolingin.anim(scene,[this]);
 }else if(speciesid==='wishiwashi'){
 BattleOtherAnims.schoolingout.anim(scene,[this]);
 }else if(speciesid==='mimikyubusted'||speciesid==='mimikyubustedtotem'){
-}else if(speciesid==='zoroark') {
+
+}else if(speciesid==='zoroark'){
 
 }else{
 BattleOtherAnims.megaevo.anim(scene,[this]);
