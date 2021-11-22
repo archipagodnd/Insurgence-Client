@@ -1080,7 +1080,11 @@ if(cmd==='-mega'){
 var template2=this.template('transformMega');
 _template65+=template2.replace('[POKEMON]',pokemonName).replace('[SPECIES]',species);
 }
-return _template65.replace('[POKEMON]',pokemonName).replace('[ITEM]',_item2).replace('[TRAINER]',this.trainer(_side7));
+if(_item2 === 'Zoronite' && pokemonName !== 'Zoroark') {
+  return _template65.replace('[POKEMON]',pokemonName).replace('[ITEM]',"Hello").replace('[TRAINER]',this.trainer(_side7));
+} else {
+  return _template65.replace('[POKEMON]',pokemonName).replace('[ITEM]',"Hi").replace('[TRAINER]',this.trainer(_side7));
+}
 }
 
 case'-zpower':{
