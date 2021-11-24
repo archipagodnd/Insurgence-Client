@@ -1,4 +1,4 @@
-function _readOnlyError(name){throw new TypeError("\""+name+"\" is read-only");}/**
+/**
  * Text parser
  *
  * No dependencies
@@ -1084,40 +1084,7 @@ if(cmd==='-mega'){
 var template2=this.template('transformMega');
 _template65+=template2.replace('[POKEMON]',pokemonName).replace('[SPECIES]',species);
 }
-if(_item2==='Zoronite'&&pokemonName!=='Zoroark'){
-var dict={
-"Venusaur":"Venusaurite","Charizard":"Charizardite X","Blastoise":"Blastoisinite","Beedrill":"Beedrillite",
-"Pidgeot":"Pidgeotite","Alakazam":"Alakazite","Slowbro":"Slowbronite","Gengar":"Gengarite","Kangaskhan":"Kangaskhanite",
-"Pinsir":"Pinsirite","Gyarados":"Gyaradosite","Aerodactyl":"Aerodactylite","Mewtwo":"Mewtwonite X","Ampharos":"Ampharosite",
-"Steelix":"Steelixite Steel","Scizor":"Scizorite","Heracross":"Heracronite","Houndoom":"Houndoominite","Tyranitar":"Tyranitarite",
-"Sceptile":"Sceptilite","Swampert":"Swampertite","Blaziken":"Blazikenite","Gardevoir":"Gardevoirite","Sableye":"Sablenite",
-"Mawile":"Mawilite","Aggron":"Aggronite","Medicham":"Medichamite","Manectric":"Manectite","Sharpedo":"Sharpedonite",
-"Camerupt":"Cameruptite","Altaria":"Altarianite","Banette":"Banettite","Absol":"Absolite","Glalie":"Glalitite",
-"Salamence":"Salamencite","Metagross":"Metagrossite","Latias":"Latiasite","Latios":"Latiosite","Lopunny":"Lopunnite",
-"Garchomp":"Garchompite","Lucario":"Lucarionite","Abomasnow":"Abomasite","Gallade":"Galladite","Audino":"Audinite",
-"Diancie":"Diancite","Poliwrath":"Poliwrathite","Marowak":"Marowite","Eevee":"Eevite","Mewtwo-Shadow":"Mewtwonite X",
-"Meganium":"Meganiumite","Typhlosion":"Typhlosionite","Feraligatr":"Feraligatite","Sudowoodo":"Sudowoodite","Politoed":"Politoedite",
-"Sunflora":"Sunflorite","Sunflora-F":"Sunflorite","Girafarig":"Etigirafarigite","Magcargo":"Magcargonite","Donphan":"Donphanite",
-"Miltank":"Miltankite","Shiftry":"Shiftrite","Flygon":"Flygonite","Cacturne":"Cacturnite","Crawdaunt":"Crawdite",
-"Milotic":"Milotite","Jirachi":"Jirachite","Chatot":"Chatotite","Spiritomb":"Spiritombite","Froslass":"Froslassite",
-"Zebstrika":"Zebstrikite","Gothitelle":"Gothitite","Reuniclus":"Reuniclite","Cryogonal":"Cryogonite","Haxorus":"Haxorite",
-"Stunfisk":"Stunfiskite","Bisharp":"Bisharpite","Hydreigon":"Hydreigonite","Venusaur-Delta":"Delta Venusaurite",
-"Charizard-Delta":"Delta Charizardite","Blastoise-Delta":"Delta Blastoisinite","Bisharp-Delta":"Delta Bishapite",
-"Gardevoir-Delta":"Delta Gardevoirite","Gallade-Delta":"Delta Galladite","Sunflora-Delta":"Delta Sunflorite","Scizor-Delta":"Delta Scizorite",
-"Glalie-Delta":"Delta Glalie","Froslass-Delta":"Delta Froslassite","Typhlosion-Delta":"Delta Typhlosionite","Pidgeot-Delta":"Delta Pidgeotite",
-"Girafarig-Delta":"Delta Etigirafarigite","Sableye-Delta":"Delta Sablenite","Mawile-Delta":"Delta Mawilite","Medicham-Delta":"Delta Medichamite",
-"Camerupt-Delta":"Delta Cameruptite","Milotic-Delta":"Delta Milotite","Metagross-Delta-S":"Delta Metagrossite Spider",
-"Metagross-Delta-R":"Delta Metagrossite Ruin","Lopunny-Delta":"Delta Lopunnite","Lucario-Delta":"Delta Lucarionite"};
-
-if(!dict[pokemonName]){
-return;
-}else{
-dict[pokemonName],_readOnlyError("item");
 return _template65.replace('[POKEMON]',pokemonName).replace('[ITEM]',_item2).replace('[TRAINER]',this.trainer(_side7));
-}
-}else{
-return _template65.replace('[POKEMON]',pokemonName).replace('[ITEM]',_item2).replace('[TRAINER]',this.trainer(_side7));
-}
 }
 
 case'-zpower':{
