@@ -2638,7 +2638,6 @@ class PokemonSprite extends Sprite {
 				BattleOtherAnims.schoolingout.anim(scene, [this]);
 			} else if (speciesid === 'mimikyubusted' || speciesid === 'mimikyubustedtotem') {
 				// standard animation
-      } else if (speciesid === 'zoroark') {
 
       } else {
         BattleOtherAnims.megaevo.anim(scene, [this]);

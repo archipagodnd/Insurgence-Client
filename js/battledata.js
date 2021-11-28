@@ -1591,7 +1591,8 @@ mismagiusdelta:1380+61,
 cyndaquildelta:1380+62,
 quilavadelta:1380+63,
 typhlosiondelta:1380+64,
-typhlosiondeltamega:1380+65,
+typhlosiondeltamega:1644+13,
+typhlosiondeltamegaactive:1380+65,
 treeckodelta:1380+66,
 grovyledelta:1380+67,
 sceptiledelta:1380+68,
@@ -1796,7 +1797,11 @@ regigigasprimal:1644+8,
 giratinaprimal:1644+9,
 arceusprimal:1644+10,
 leavannyarmor:1644+11,
-zekromarmor:1644+12};
+zekromarmor:1644+12,
+snorlaxdeltasummer:1644+14,
+snorlaxdeltaautumn:1644+15,
+snorlaxdeltawinter:1644+16,
+snorlaxdeltasakura:1644+17};
 
 
 var BattlePokemonIconIndexesLeft={
