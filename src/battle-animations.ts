@@ -11,6 +11,12 @@
  * @license MIT
  */
 
+import type {Battle, Pokemon, Side, WeatherState} from './battle';
+import type {BattleSceneStub} from './battle-scene-stub';
+import {BattleMoveAnims} from './battle-animations-moves';
+import {BattleLog} from './battle-log';
+import {BattleBGM, BattleSound} from './battle-sound';
+
 /*
 
 Most of this file is: CC0 (public domain)
@@ -30,7 +36,7 @@ This license DOES NOT extend to any other files in this repository.
 
 */
 
-class BattleScene {
+export class BattleScene implements BattleSceneStub {
 	battle: Battle;
 	animating = true;
 	acceleration = 1;
@@ -234,7 +240,7 @@ class BattleScene {
 		} else {
 			this.$frame.append('<div class="playbutton"><button name="play"><i class="fa fa-play"></i> Play</button><br /><br /><button name="play-muted" class="startsoundchooser" style="font-size:10pt;display:none">Play (music off)</button></div>');
 			this.$frame.find('div.playbutton button[name=play-muted]').click(() => {
-				this.battle.setMute(true);
+				this.setMute(true);
 				this.battle.play();
 			});
 		}
@@ -243,6 +249,9 @@ class BattleScene {
 	resume() {
 		this.$frame.find('div.playbutton').remove();
 		this.updateBgm();
+	}
+	setMute(muted: boolean) {
+		BattleSound.setMute(muted);
 	}
 	wait(time: number) {
 		if (!this.animating) return;
@@ -589,7 +598,7 @@ class BattleScene {
 		} else {
 			let statustext = '';
 			if (pokemon.hp !== pokemon.maxhp) {
-				statustext += Pokemon.getHPText(pokemon);
+				statustext += pokemon.getHPText();
 			}
 			if (pokemon.status) {
 				if (statustext) statustext += '|';
@@ -822,7 +831,7 @@ class BattleScene {
 				buf2 += '<div style="position:absolute;top:' + (y + 45) + 'px;left:' + (x - 40) + 'px;width:80px;font-size:10px;text-align:center;color:#FFF;">';
 				const gender = pokemon.gender;
 				if (gender === 'M' || gender === 'F') {
-					buf2 += `<img src="${Dex.resourcePrefix}fx/gender-${gender.toLowerCase()}.png" alt="${gender}" width="7" height="10" class="pixelated" style="margin-bottom:-1px" /> `;
+					buf2 += `<img src="${Dex.fxPrefix}gender-${gender.toLowerCase()}.png" alt="${gender}" width="7" height="10" class="pixelated" style="margin-bottom:-1px" /> `;
 				}
 				if (pokemon.level !== 100) {
 					buf2 += '<span style="text-shadow:#000 1px 1px 0,#000 1px -1px 0,#000 -1px 1px 0,#000 -1px -1px 0"><small>L</small>' + pokemon.level + '</span>';
@@ -1811,7 +1820,7 @@ class BattleScene {
 	}
 }
 
-interface ScenePos {
+export interface ScenePos {
 	/** - left, + right */
 	x?: number;
 	/** - down, + up */
@@ -1837,7 +1846,7 @@ interface InitScenePos {
 	display?: string;
 }
 
-class Sprite {
+export class Sprite {
 	scene: BattleScene;
 	$el: JQuery = null!;
 	sp: SpriteData;
@@ -1900,7 +1909,7 @@ class Sprite {
 	}
 }
 
-class PokemonSprite extends Sprite {
+export class PokemonSprite extends Sprite {
 	// HTML strings are constructed from this table and stored back in it to cache them
 	protected static statusTable: {[id: string]: [string, 'good' | 'bad' | 'neutral'] | null | string} = {
 		formechange: null,
@@ -1993,6 +2002,8 @@ class PokemonSprite extends Sprite {
 		thundercage: ['Thunder Cage', 'bad'],
 		whirlpool: ['Whirlpool', 'bad'],
 		wrap: ['Wrap', 'bad'],
+		// Gen 1-2
+		mist: ['Mist', 'good'],
 		// Gen 1
 		lightscreen: ['Light Screen', 'good'],
 		reflect: ['Reflect', 'good'],
@@ -2609,7 +2620,16 @@ class PokemonSprite extends Sprite {
 		});
 		let oldsp = this.sp;
 		if (isPermanent) {
-			this.oldsp = null;
+			if (pokemon.volatiles.dynamax) {
+				// if a permanent forme change happens while dynamaxed, we need an undynamaxed sprite to go back to
+				this.oldsp = Dex.getSpriteData(pokemon, this.isFrontSprite, {
+					gen: this.scene.gen,
+					mod: this.scene.mod,
+					dynamax: false,
+				});
+			} else {
+				this.oldsp = null;
+			}
 		} else if (!this.oldsp) {
 			this.oldsp = oldsp;
 		}
@@ -2792,7 +2812,7 @@ class PokemonSprite extends Sprite {
 		buf += `<strong>${BattleLog.escapeHTML(ignoreNick ? pokemon.speciesForme : pokemon.name)}`;
 		const gender = pokemon.gender;
 		if (gender === 'M' || gender === 'F') {
-			buf += ` <img src="${Dex.resourcePrefix}fx/gender-${gender.toLowerCase()}.png" alt="${gender}" width="7" height="10" class="pixelated" />`;
+			buf += ` <img src="${Dex.fxPrefix}gender-${gender.toLowerCase()}.png" alt="${gender}" width="7" height="10" class="pixelated" />`;
 		}
 		buf += (pokemon.level === 100 ? `` : ` <small>L${pokemon.level}</small>`);
 
@@ -2964,7 +2984,7 @@ interface AnimData {
 	prepareAnim?(scene: BattleScene, args: PokemonSprite[]): void;
 	residualAnim?(scene: BattleScene, args: PokemonSprite[]): void;
 }
-type AnimTable = {[k: string]: AnimData};
+export type AnimTable = {[k: string]: AnimData};
 
 const BattleEffects: {[k: string]: SpriteData} = {
 	wisp: {
@@ -3297,7 +3317,7 @@ const BattleBackdrops = [
 	'bg-skypillar.jpg',
 ];
 
-const BattleOtherAnims: AnimTable = {
+export const BattleOtherAnims: AnimTable = {
 	hitmark: {
 		anim(scene, [attacker]) {
 			scene.showEffect('hitmark', {
@@ -5883,7 +5903,7 @@ const BattleOtherAnims: AnimTable = {
 		},
 	},
 };
-const BattleStatusAnims: AnimTable = {
+export const BattleStatusAnims: AnimTable = {
 	brn: {
 		anim(scene, [attacker]) {
 			scene.showEffect('fireball', {

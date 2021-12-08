@@ -721,7 +721,7 @@ function toId() {
 			}
 
 			if (Config.server.banned) {
-				this.addPopupMessage("This server has been deleted for breaking US laws, impersonating PS global staff, or other major rulebreaking.");
+				this.addPopupMessage("This server has either been deleted for breaking US law or PS global rules, or it is hosted on a platform that's often used to host rulebreaking servers.");
 				return;
 			}
 
@@ -729,8 +729,31 @@ function toId() {
 			var constructSocket = function () {
 				var protocol = (Config.server.port === 443 || Config.server.https) ? 'https' : 'http';
 				Config.server.host = $.trim(Config.server.host);
-				return new SockJS(protocol + '://' + Config.server.host + ':' +
-					Config.server.port + Config.sockjsprefix, [], {timeout: 5 * 60 * 1000});
+				try {
+					if (Config.server.host === 'localhost') {
+						// connecting to localhost from psim.us is now banned as of Chrome 94
+						// thanks Docker for having vulns
+						// https://wicg.github.io/cors-rfc1918
+						// anyway, this affects SockJS because it makes HTTP requests to localhost
+						// but it turns out that making direct WebSocket connections to localhost is
+						// still supported, so we'll just bypass SockJS and use WebSocket directly.
+						console.log("Bypassing SockJS for localhost");
+						console.log('ws' + protocol.slice('4') + '://' + Config.server.host + ':' + Config.server.port + Config.sockjsprefix + '/websocket');
+						return new WebSocket(
+							'ws' + protocol.slice('4') + '://' + Config.server.host + ':' + Config.server.port + Config.sockjsprefix + '/websocket'
+						);
+					}
+					return new SockJS(
+						protocol + '://' + Config.server.host + ':' + Config.server.port + Config.sockjsprefix,
+						[], {timeout: 5 * 60 * 1000}
+					);
+				} catch (err) {
+					// The most common case this happens is if an HTTPS connection fails,
+					// and we fall back to HTTP, which throws a SecurityError if the URL
+					// is HTTPS
+					self.trigger('init:connectionerror');
+					return null;
+				}
 			};
 			this.socket = constructSocket();
 
@@ -804,6 +827,7 @@ function toId() {
 			if (!Config.testclient && location.search && window.history) {
 				history.replaceState(null, null, location.pathname);
 			}
+			if (fragment && fragment.includes('.')) fragment = '';
 			this.fragment = fragment = toRoomid(fragment || '');
 			if (this.initialFragment === undefined) this.initialFragment = fragment;
 			this.tryJoinRoom(fragment);
@@ -1232,6 +1256,7 @@ function toId() {
 					var searchShow = true;
 					var challengeShow = true;
 					var tournamentShow = true;
+					var partner = false;
 					var team = null;
 					var teambuilderLevel = null;
 					var lastCommaIndex = name.lastIndexOf(',');
@@ -1243,6 +1268,7 @@ function toId() {
 						if (!(code & 4)) challengeShow = false;
 						if (!(code & 8)) tournamentShow = false;
 						if (code & 16) teambuilderLevel = 50;
+						if (code & 32) partner = true;
 					} else {
 						// Backwards compatibility: late 0.9.0 -> 0.10.0
 						if (name.substr(name.length - 2) === ',#') { // preset teams
@@ -1308,6 +1334,7 @@ function toId() {
 						tournamentShow: tournamentShow,
 						rated: searchShow && id.substr(4, 7) !== 'unrated',
 						teambuilderLevel: teambuilderLevel,
+						partner: partner,
 						teambuilderFormat: teambuilderFormat,
 						isTeambuilderFormat: isTeambuilderFormat,
 						effectType: 'Format'
@@ -1338,8 +1365,10 @@ function toId() {
 			var serverid = Config.server.id && toID(Config.server.id.split(':')[0]);
 			var silent = data.silent;
 			if (serverid && serverid !== 'showdown') id = serverid + '-' + id;
-			$.post(app.user.getActionPHP() + '?act=uploadreplay', {
+			$.post(app.user.getActionPHP(), {
+				act: 'uploadreplay',
 				log: data.log,
+				serverid: serverid,
 				password: data.password || '',
 				id: id
 			}, function (data) {
@@ -2521,39 +2550,44 @@ function toId() {
 			type: 'staff',
 			order: 10006
 		},
+		'\u00a7': {
+			name: "Section Leader (\u00a7)",
+			type: 'staff',
+			order: 10007
+		},
 		'*': {
 			name: "Bot (*)",
 			type: 'normal',
-			order: 10007
+			order: 10008
 		},
 		'\u2606': {
 			name: "Player (\u2606)",
 			type: 'normal',
-			order: 10008
+			order: 10009
 		},
 		'+': {
 			name: "Voice (+)",
 			type: 'normal',
-			order: 10009
+			order: 10010
 		},
 		' ': {
 			type: 'normal',
-			order: 10010
+			order: 10011
 		},
 		'!': {
 			name: "<span style='color:#777777'>Muted (!)</span>",
 			type: 'punishment',
-			order: 10011
+			order: 10012
 		},
 		'✖': {
 			name: "<span style='color:#777777'>Namelocked (✖)</span>",
 			type: 'punishment',
-			order: 10012
+			order: 10013
 		},
 		'\u203d': {
 			name: "<span style='color:#777777'>Locked (\u203d)</span>",
 			type: 'punishment',
-			order: 10013
+			order: 10014
 		}
 	};
 
@@ -2586,7 +2620,7 @@ function toId() {
 			var groupName = ((Config.groups[data.roomGroup] || {}).name || '');
 			var globalGroup = (Config.groups[data.group || Config.defaultGroup || ' '] || null);
 			var globalGroupName = '';
-			if (globalGroup && globalGroup.name) {
+			if (globalGroup && globalGroup.name && toID(globalGroup.name) !== toID(data.customgroup)) {
 				if (globalGroup.type === 'punishment') {
 					groupName = globalGroup.name;
 				} else if (!groupName || groupName === globalGroup.name) {
@@ -2612,7 +2646,7 @@ function toId() {
 			if (globalGroupName) {
 				buf += '<small class="usergroup globalgroup">' + globalGroupName + '</small>';
 			}
-			if (data.customgroup) {
+			if (data.customgroup && toID(data.customgroup) !== toID(globalGroupName || groupName)) {
 				if (groupName || globalGroupName) buf += '<br />';
 				buf += '<small class="usergroup globalgroup">' + BattleLog.escapeHTML(data.customgroup) + '</small>';
 			}

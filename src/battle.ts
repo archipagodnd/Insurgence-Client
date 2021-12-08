@@ -27,13 +27,17 @@
  * @license MIT
  */
 
-/** [id, element?, ...misc] */
-type EffectState = any[] & {0: ID};
-/** [name, minTimeLeft, maxTimeLeft] */
-type WeatherState = [string, number, number];
-type HPColor = 'r' | 'y' | 'g';
+import {BattleSceneStub} from './battle-scene-stub';
+import {BattleLog} from './battle-log';
+import {BattleScene, PokemonSprite, BattleStatusAnims} from './battle-animations';
 
-class Pokemon implements PokemonDetails, PokemonHealth {
+/** [id, element?, ...misc] */
+export type EffectState = any[] & {0: ID};
+/** [name, minTimeLeft, maxTimeLeft] */
+export type WeatherState = [string, number, number];
+export type HPColor = 'r' | 'y' | 'g';
+
+export class Pokemon implements PokemonDetails, PokemonHealth {
 	name = '';
 	speciesForme = '';
 
@@ -570,6 +574,9 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 		}
 		return percentage * maxWidth / 100;
 	}
+	getHPText(precision = 1) {
+		return Pokemon.getHPText(this, precision);
+	}
 	static getHPText(pokemon: PokemonHealth, precision = 1) {
 		if (pokemon.maxhp === 100) return pokemon.hp + '%';
 		if (pokemon.maxhp !== 48) return (100 * pokemon.hp / pokemon.maxhp).toFixed(precision) + '%';
@@ -583,7 +590,7 @@ class Pokemon implements PokemonDetails, PokemonHealth {
 	}
 }
 
-class Side {
+export class Side {
 	battle: Battle;
 	name = '';
 	id = '';
@@ -933,7 +940,7 @@ class Side {
 	}
 }
 
-interface PokemonDetails {
+export interface PokemonDetails {
 	details: string;
 	name: string;
 	speciesForme: string;
@@ -943,14 +950,14 @@ interface PokemonDetails {
 	ident: string;
 	searchid: string;
 }
-interface PokemonHealth {
+export interface PokemonHealth {
 	hp: number;
 	maxhp: number;
 	hpcolor: HPColor | '';
 	status: StatusName | 'tox' | '' | '???';
 	fainted?: boolean;
 }
-interface ServerPokemon extends PokemonDetails, PokemonHealth {
+export interface ServerPokemon extends PokemonDetails, PokemonHealth {
 	ident: string;
 	details: string;
 	condition: string;
@@ -977,8 +984,8 @@ interface ServerPokemon extends PokemonDetails, PokemonHealth {
 	gigantamax: string | false;
 }
 
-class Battle {
-	scene: BattleScene | BattleSceneStub;
+export class Battle {
+	scene: BattleSceneStub;
 
 	sidesSwitched = false;
 
@@ -1425,7 +1432,7 @@ class Battle {
 
 				if (
 					!target && this.gameType === 'singles' &&
-					!['self', 'allies', 'allySide', 'adjacentAlly', 'adjacentAllyOrSelf'].includes(move.target)
+					!['self', 'allies', 'allySide', 'adjacentAlly', 'adjacentAllyOrSelf', 'allyTeam'].includes(move.target)
 				) {
 					// Hardcode for moves without a target in singles
 					foeTargets.push(pokemon.side.foe.active[0]);
@@ -2362,7 +2369,7 @@ class Battle {
 			let poke = this.getPokemon(args[1])!;
 			let species = Dex.species.get(args[2]);
 			let fromeffect = Dex.getEffect(kwArgs.from);
-			let isCustomAnim = false;
+			let isCustomAnim = species.name.startsWith('Wishiwashi');
 			poke.removeVolatile('typeadd' as ID);
 			poke.removeVolatile('typechange' as ID);
 			if (this.gen >= 7) poke.removeVolatile('autotomize' as ID);
@@ -2534,6 +2541,10 @@ class Battle {
 				}
 				break;
 
+			// Gen 1-2
+			case 'mist':
+				this.scene.resultAnim(poke, 'Mist', 'good');
+				break;
 			// Gen 1
 			case 'lightscreen':
 				this.scene.resultAnim(poke, 'Light Screen', 'good');
@@ -3202,6 +3213,9 @@ class Battle {
 				this.messageFadeTime = 40;
 				this.isBlitz = true;
 			}
+			if (this.tier.includes(`Let's Go`)) {
+				this.dex = Dex.mod('gen7letsgo' as ID);
+			}
 			this.log(args);
 			break;
 		}
@@ -3525,7 +3539,7 @@ class Battle {
 				} else {
 					this.runMajor(args, kwArgs, preempt);
 				}
-			} catch (err) {
+			} catch (err: any) {
 				this.log(['majorerror', 'Error parsing: ' + str + ' (' + err + ')']);
 				if (err.stack) {
 					let stack = ('' + err.stack).split('\n');
@@ -3668,7 +3682,7 @@ class Battle {
 	}
 
 	setMute(mute: boolean) {
-		BattleSound.setMute(mute);
+		this.scene.setMute(mute);
 	}
 }
 
