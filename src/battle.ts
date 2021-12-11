@@ -699,6 +699,8 @@ export class Side {
 		case 'stealthrock':
     case 'stealthcoal':
 		case 'spikes':
+    case 'livewire':
+    case 'permafrost':
 		case 'toxicspikes':
 		case 'stickyweb':
 			this.sideConditions[condition] = [effect.name, 1, 0, 0];
@@ -3390,7 +3392,9 @@ export class Battle {
 		}
 		case 'poke': {
 			let pokemon = this.rememberTeamPreviewPokemon(args[1], args[2])!;
-			if (args[3] === 'item') {
+			if (args[3] === 'mail') {
+				pokemon.item = '(mail)';
+			} else if (args[3] === 'item') {
 				pokemon.item = '(exists)';
 			}
 			break;

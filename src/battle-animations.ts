@@ -836,7 +836,9 @@ export class BattleScene implements BattleSceneStub {
 				if (pokemon.level !== 100) {
 					buf2 += '<span style="text-shadow:#000 1px 1px 0,#000 1px -1px 0,#000 -1px 1px 0,#000 -1px -1px 0"><small>L</small>' + pokemon.level + '</span>';
 				}
-				if (pokemon.item) {
+				if (pokemon.item === '(mail)') {
+					buf2 += ' <img src="' + Dex.resourcePrefix + 'fx/mail.png" width="8" height="10" alt="F" style="margin-bottom:-1px" />';
+				} else if (pokemon.item) {
 					buf2 += ' <img src="' + Dex.resourcePrefix + 'fx/item.png" width="8" height="10" alt="F" style="margin-bottom:-1px" />';
 				}
 				buf2 += '</div>';
@@ -2658,9 +2660,8 @@ export class PokemonSprite extends Sprite {
 				BattleOtherAnims.schoolingout.anim(scene, [this]);
 			} else if (speciesid === 'mimikyubusted' || speciesid === 'mimikyubustedtotem') {
 				// standard animation
-
-      } else {
-        BattleOtherAnims.megaevo.anim(scene, [this]);
+			} else {
+				BattleOtherAnims.megaevo.anim(scene, [this]);
 				doCry = true;
 			}
 		}

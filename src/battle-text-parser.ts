@@ -1075,10 +1075,6 @@ class BattleTextParser {
 				id = 'dragonascent';
 				templateId = 'megaNoItem';
 			}
-      if (item === 'Zoronite' && this.pokemon(pokemon) === 'Rayquaza') {
-        id = 'dragonascent';
-        templateId = 'megaNoItem';
-      }
 			if (!id && cmd === '-mega' && this.gen < 7) templateId = 'megaGen6';
 			if (!item && cmd === '-mega') templateId = 'megaNoItem';
 			let template = this.template(templateId, id);
