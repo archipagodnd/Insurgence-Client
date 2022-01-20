@@ -30,6 +30,12 @@ function _inheritsLoose(subClass,superClass){subClass.prototype=Object.create(su
 
 
 
+
+
+
+
+
+
 BattleScene=function(){
 
 
@@ -234,7 +240,7 @@ this.$frame.append('<div class="playbutton"><button name="play"><i class="fa fa-
 }else{
 this.$frame.append('<div class="playbutton"><button name="play"><i class="fa fa-play"></i> Play</button><br /><br /><button name="play-muted" class="startsoundchooser" style="font-size:10pt;display:none">Play (music off)</button></div>');
 this.$frame.find('div.playbutton button[name=play-muted]').click(function(){
-_this.battle.setMute(true);
+_this.setMute(true);
 _this.battle.play();
 });
 }
@@ -243,6 +249,9 @@ this.$frame.find('div.playbutton button[name=play]').click(function(){return _th
 resume=function resume(){
 this.$frame.find('div.playbutton').remove();
 this.updateBgm();
+};_proto.
+setMute=function setMute(muted){
+BattleSound.setMute(muted);
 };_proto.
 wait=function wait(time){
 if(!this.animating)return;
@@ -589,7 +598,7 @@ name+=' (fainted)';
 }else{
 var statustext='';
 if(pokemon.hp!==pokemon.maxhp){
-statustext+=Pokemon.getHPText(pokemon);
+statustext+=pokemon.getHPText();
 }
 if(pokemon.status){
 if(statustext)statustext+='|';
@@ -822,12 +831,14 @@ buf+='<img src="'+_url+'" width="'+spriteData.w+'" height="'+spriteData.h+'" sty
 buf2+='<div style="position:absolute;top:'+(y+45)+'px;left:'+(x-40)+'px;width:80px;font-size:10px;text-align:center;color:#FFF;">';
 var gender=pokemon.gender;
 if(gender==='M'||gender==='F'){
-buf2+="<img src=\""+Dex.resourcePrefix+"fx/gender-"+gender.toLowerCase()+".png\" alt=\""+gender+"\" width=\"7\" height=\"10\" class=\"pixelated\" style=\"margin-bottom:-1px\" /> ";
+buf2+="<img src=\""+Dex.fxPrefix+"gender-"+gender.toLowerCase()+".png\" alt=\""+gender+"\" width=\"7\" height=\"10\" class=\"pixelated\" style=\"margin-bottom:-1px\" /> ";
 }
 if(pokemon.level!==100){
 buf2+='<span style="text-shadow:#000 1px 1px 0,#000 1px -1px 0,#000 -1px 1px 0,#000 -1px -1px 0"><small>L</small>'+pokemon.level+'</span>';
 }
-if(pokemon.item){
+if(pokemon.item==='(mail)'){
+buf2+=' <img src="'+Dex.resourcePrefix+'fx/mail.png" width="8" height="10" alt="F" style="margin-bottom:-1px" />';
+}else if(pokemon.item){
 buf2+=' <img src="'+Dex.resourcePrefix+'fx/item.png" width="8" height="10" alt="F" style="margin-bottom:-1px" />';
 }
 buf2+='</div>';
@@ -2020,6 +2031,8 @@ PokemonSprite=function(_Sprite){_inheritsLoose(PokemonSprite,_Sprite);
 
 
 
+
+
 function PokemonSprite(spriteData,pos,scene,isFrontSprite){var _this5;
 _this5=_Sprite.call(this,spriteData,pos,scene)||this;_this5.forme='';_this5.cryurl=undefined;_this5.subsp=null;_this5.$sub=null;_this5.isSubActive=false;_this5.$statbar=null;_this5.isFrontSprite=void 0;_this5.isMissedPokemon=false;_this5.oldsp=null;_this5.statbarLeft=0;_this5.statbarTop=0;_this5.left=0;_this5.top=0;_this5.effects={};
 _this5.cryurl=_this5.sp.cryurl;
@@ -2609,7 +2622,16 @@ mod:this.scene.mod});
 
 var oldsp=this.sp;
 if(isPermanent){
+if(pokemon.volatiles.dynamax){
+
+this.oldsp=Dex.getSpriteData(pokemon,this.isFrontSprite,{
+gen:this.scene.gen,
+mod:this.scene.mod,
+dynamax:false});
+
+}else{
 this.oldsp=null;
+}
 }else if(!this.oldsp){
 this.oldsp=oldsp;
 }
@@ -2637,7 +2659,6 @@ BattleOtherAnims.schoolingin.anim(scene,[this]);
 }else if(speciesid==='wishiwashi'){
 BattleOtherAnims.schoolingout.anim(scene,[this]);
 }else if(speciesid==='mimikyubusted'||speciesid==='mimikyubustedtotem'){
-
 
 }else{
 BattleOtherAnims.megaevo.anim(scene,[this]);
@@ -2792,7 +2813,7 @@ var ignoreNick=this.isFrontSprite&&(this.scene.battle.ignoreOpponent||this.scene
 buf+="<strong>"+BattleLog.escapeHTML(ignoreNick?pokemon.speciesForme:pokemon.name);
 var gender=pokemon.gender;
 if(gender==='M'||gender==='F'){
-buf+=" <img src=\""+Dex.resourcePrefix+"fx/gender-"+gender.toLowerCase()+".png\" alt=\""+gender+"\" width=\"7\" height=\"10\" class=\"pixelated\" />";
+buf+=" <img src=\""+Dex.fxPrefix+"gender-"+gender.toLowerCase()+".png\" alt=\""+gender+"\" width=\"7\" height=\"10\" class=\"pixelated\" />";
 }
 buf+=pokemon.level===100?"":" <small>L"+pokemon.level+"</small>";
 
@@ -2931,7 +2952,7 @@ $hptext.html(pokemon.hpWidth(100)+'%');
 $hptext.show();
 $hptextborder.show();
 }
-};return PokemonSprite;}(Sprite);PokemonSprite.statusTable={formechange:null,typechange:null,typeadd:null,dynamax:['Dynamaxed','good'],trapped:null,throatchop:['Throat Chop','bad'],confusion:['Confused','bad'],healblock:['Heal Block','bad'],yawn:['Drowsy','bad'],flashfire:['Flash Fire','good'],imprison:['Imprisoning foe','good'],autotomize:['Lightened','neutral'],miracleeye:['Miracle Eye','bad'],foresight:['Foresight','bad'],telekinesis:['Telekinesis','neutral'],transform:['Transformed','neutral'],powertrick:['Power Trick','neutral'],curse:['Curse','bad'],nightmare:['Nightmare','bad'],attract:['Infatuation','bad'],torment:['Torment','bad'],taunt:['Taunt','bad'],disable:['Disable','bad'],embargo:['Embargo','bad'],ingrain:['Ingrain','good'],aquaring:['Aqua Ring','good'],stockpile1:['Stockpile','good'],stockpile2:['Stockpile&times;2','good'],stockpile3:['Stockpile&times;3','good'],perish0:['Perish now','bad'],perish1:['Perish next turn','bad'],perish2:['Perish in 2','bad'],perish3:['Perish in 3','bad'],airballoon:['Balloon','good'],leechseed:['Leech Seed','bad'],encore:['Encore','bad'],mustrecharge:['Must recharge','bad'],bide:['Bide','good'],magnetrise:['Magnet Rise','good'],smackdown:['Smack Down','bad'],focusenergy:['Critical Hit Boost','good'],slowstart:['Slow Start','bad'],noretreat:['No Retreat','bad'],octolock:['Octolock','bad'],tarshot:['Tar Shot','bad'],doomdesire:null,futuresight:null,mimic:['Mimic','good'],watersport:['Water Sport','good'],mudsport:['Mud Sport','good'],substitute:null,uproar:['Uproar','neutral'],rage:['Rage','neutral'],roost:['Landed','neutral'],protect:['Protect','good'],quickguard:['Quick Guard','good'],wideguard:['Wide Guard','good'],craftyshield:['Crafty Shield','good'],matblock:['Mat Block','good'],maxguard:['Max Guard','good'],helpinghand:['Helping Hand','good'],magiccoat:['Magic Coat','good'],destinybond:['Destiny Bond','good'],snatch:['Snatch','good'],grudge:['Grudge','good'],charge:['Charge','good'],endure:['Endure','good'],focuspunch:['Focusing','neutral'],shelltrap:['Trap set','neutral'],powder:['Powder','bad'],electrify:['Electrify','bad'],ragepowder:['Rage Powder','good'],followme:['Follow Me','good'],instruct:['Instruct','neutral'],beakblast:['Beak Blast','neutral'],laserfocus:['Laser Focus','good'],spotlight:['Spotlight','neutral'],itemremoved:null,bind:['Bind','bad'],clamp:['Clamp','bad'],firespin:['Fire Spin','bad'],infestation:['Infestation','bad'],magmastorm:['Magma Storm','bad'],sandtomb:['Sand Tomb','bad'],snaptrap:['Snap Trap','bad'],thundercage:['Thunder Cage','bad'],whirlpool:['Whirlpool','bad'],wrap:['Wrap','bad'],lightscreen:['Light Screen','good'],reflect:['Reflect','good']};
+};return PokemonSprite;}(Sprite);PokemonSprite.statusTable={formechange:null,typechange:null,typeadd:null,dynamax:['Dynamaxed','good'],trapped:null,throatchop:['Throat Chop','bad'],confusion:['Confused','bad'],healblock:['Heal Block','bad'],yawn:['Drowsy','bad'],flashfire:['Flash Fire','good'],imprison:['Imprisoning foe','good'],autotomize:['Lightened','neutral'],miracleeye:['Miracle Eye','bad'],foresight:['Foresight','bad'],telekinesis:['Telekinesis','neutral'],transform:['Transformed','neutral'],powertrick:['Power Trick','neutral'],curse:['Curse','bad'],nightmare:['Nightmare','bad'],attract:['Infatuation','bad'],torment:['Torment','bad'],taunt:['Taunt','bad'],disable:['Disable','bad'],embargo:['Embargo','bad'],ingrain:['Ingrain','good'],aquaring:['Aqua Ring','good'],stockpile1:['Stockpile','good'],stockpile2:['Stockpile&times;2','good'],stockpile3:['Stockpile&times;3','good'],perish0:['Perish now','bad'],perish1:['Perish next turn','bad'],perish2:['Perish in 2','bad'],perish3:['Perish in 3','bad'],airballoon:['Balloon','good'],leechseed:['Leech Seed','bad'],encore:['Encore','bad'],mustrecharge:['Must recharge','bad'],bide:['Bide','good'],magnetrise:['Magnet Rise','good'],smackdown:['Smack Down','bad'],focusenergy:['Critical Hit Boost','good'],slowstart:['Slow Start','bad'],noretreat:['No Retreat','bad'],octolock:['Octolock','bad'],tarshot:['Tar Shot','bad'],doomdesire:null,futuresight:null,mimic:['Mimic','good'],watersport:['Water Sport','good'],mudsport:['Mud Sport','good'],substitute:null,uproar:['Uproar','neutral'],rage:['Rage','neutral'],roost:['Landed','neutral'],protect:['Protect','good'],quickguard:['Quick Guard','good'],wideguard:['Wide Guard','good'],craftyshield:['Crafty Shield','good'],matblock:['Mat Block','good'],maxguard:['Max Guard','good'],helpinghand:['Helping Hand','good'],magiccoat:['Magic Coat','good'],destinybond:['Destiny Bond','good'],snatch:['Snatch','good'],grudge:['Grudge','good'],charge:['Charge','good'],endure:['Endure','good'],focuspunch:['Focusing','neutral'],shelltrap:['Trap set','neutral'],powder:['Powder','bad'],electrify:['Electrify','bad'],ragepowder:['Rage Powder','good'],followme:['Follow Me','good'],instruct:['Instruct','neutral'],beakblast:['Beak Blast','neutral'],laserfocus:['Laser Focus','good'],spotlight:['Spotlight','neutral'],itemremoved:null,bind:['Bind','bad'],clamp:['Clamp','bad'],firespin:['Fire Spin','bad'],infestation:['Infestation','bad'],magmastorm:['Magma Storm','bad'],sandtomb:['Sand Tomb','bad'],snaptrap:['Snap Trap','bad'],thundercage:['Thunder Cage','bad'],whirlpool:['Whirlpool','bad'],wrap:['Wrap','bad'],mist:['Mist','good'],lightscreen:['Light Screen','good'],reflect:['Reflect','good']};
 
 
 
@@ -6239,6 +6260,8 @@ BattleStatusAnims['focuspunch']={anim:BattleStatusAnims['flinch'].anim};
  * @author Guangcong Luo <guangcongluo@gmail.com>
  * @license CC0-1.0
  */
+
+
 
 var BattleMoveAnims={
 taunt:{

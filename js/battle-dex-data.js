@@ -481,6 +481,8 @@ equilibra:1308+28,
 astrolotl:1308+29,
 miasmaw:1308+30,
 chromera:1308+31,
+venomicon:1308+32,
+venomiconepilogue:1308+33,
 
 syclar:1344+0,
 embirch:1344+1,
@@ -503,7 +505,7 @@ privatyke:1344+17,
 nohface:1344+18,
 monohm:1344+19,
 duohm:1344+20,
-
+protowatt:1344+21,
 voodoll:1344+22,
 mumbao:1344+23,
 fawnifer:1344+24,
@@ -514,7 +516,8 @@ swirlpool:1344+28,
 coribalis:1344+29,
 justyke:1344+30,
 solotl:1344+31,
-miasmite:1344+32};
+miasmite:1344+32,
+dorsoil:1344+33};
 
 
 var BattlePokemonIconIndexesLeft={
@@ -1134,7 +1137,9 @@ Move=
 
 
 
-function Move(id,name,data){var _this$maxMove;this.effectType='Move';this.id=void 0;this.name=void 0;this.gen=void 0;this.exists=void 0;this.basePower=void 0;this.accuracy=void 0;this.pp=void 0;this.type=void 0;this.category=void 0;this.priority=void 0;this.target=void 0;this.flags=void 0;this.critRatio=void 0;this.desc=void 0;this.shortDesc=void 0;this.isNonstandard=void 0;this.isZ=void 0;this.zMove=void 0;this.isMax=void 0;this.maxMove=void 0;this.ohko=void 0;this.recoil=void 0;this.heal=void 0;this.multihit=void 0;this.hasCrashDamage=void 0;this.noPPBoosts=void 0;this.secondaries=void 0;this.num=void 0;
+
+
+function Move(id,name,data){var _this$maxMove;this.effectType='Move';this.id=void 0;this.name=void 0;this.gen=void 0;this.exists=void 0;this.basePower=void 0;this.accuracy=void 0;this.pp=void 0;this.type=void 0;this.category=void 0;this.priority=void 0;this.target=void 0;this.pressureTarget=void 0;this.flags=void 0;this.critRatio=void 0;this.desc=void 0;this.shortDesc=void 0;this.isNonstandard=void 0;this.isZ=void 0;this.zMove=void 0;this.isMax=void 0;this.maxMove=void 0;this.ohko=void 0;this.recoil=void 0;this.heal=void 0;this.multihit=void 0;this.hasCrashDamage=void 0;this.noPPBoosts=void 0;this.secondaries=void 0;this.noSketch=void 0;this.num=void 0;
 if(!data||typeof data!=='object')data={};
 if(data.name)name=data.name;
 this.name=Dex.sanitizeName(name);
@@ -1149,6 +1154,7 @@ this.type=data.type||'???';
 this.category=data.category||'Physical';
 this.priority=data.priority||0;
 this.target=data.target||'normal';
+this.pressureTarget=data.pressureTarget||this.target;
 this.flags=data.flags||{};
 this.critRatio=data.critRatio===0?0:data.critRatio||1;
 
@@ -1165,6 +1171,7 @@ this.multihit=data.multihit||null;
 this.hasCrashDamage=data.hasCrashDamage||false;
 this.noPPBoosts=data.noPPBoosts||false;
 this.secondaries=data.secondaries||(data.secondary?[data.secondary]:null);
+this.noSketch=!!data.noSketch;
 
 this.isMax=data.isMax||false;
 this.maxMove=data.maxMove||{basePower:0};
@@ -1362,7 +1369,8 @@ Species=
 
 
 
-function Species(id,name,data){this.effectType='Species';this.id=void 0;this.name=void 0;this.gen=void 0;this.exists=void 0;this.baseSpecies=void 0;this.forme=void 0;this.formeid=void 0;this.spriteid=void 0;this.baseForme=void 0;this.num=void 0;this.types=void 0;this.abilities=void 0;this.baseStats=void 0;this.weightkg=void 0;this.heightm=void 0;this.gender=void 0;this.color=void 0;this.genderRatio=void 0;this.eggGroups=void 0;this.otherFormes=void 0;this.cosmeticFormes=void 0;this.evos=void 0;this.prevo=void 0;this.evoType=void 0;this.evoLevel=void 0;this.evoMove=void 0;this.evoItem=void 0;this.evoCondition=void 0;this.requiredItem=void 0;this.tier=void 0;this.isTotem=void 0;this.isMega=void 0;this.canGigantamax=void 0;this.isPrimal=void 0;this.battleOnly=void 0;this.isNonstandard=void 0;this.unreleasedHidden=void 0;this.changesFrom=void 0;
+
+function Species(id,name,data){this.effectType='Species';this.id=void 0;this.name=void 0;this.gen=void 0;this.exists=void 0;this.baseSpecies=void 0;this.forme=void 0;this.formeid=void 0;this.spriteid=void 0;this.baseForme=void 0;this.num=void 0;this.types=void 0;this.abilities=void 0;this.baseStats=void 0;this.weightkg=void 0;this.heightm=void 0;this.gender=void 0;this.color=void 0;this.genderRatio=void 0;this.eggGroups=void 0;this.tags=void 0;this.otherFormes=void 0;this.cosmeticFormes=void 0;this.evos=void 0;this.prevo=void 0;this.evoType=void 0;this.evoLevel=void 0;this.evoMove=void 0;this.evoItem=void 0;this.evoCondition=void 0;this.requiredItems=void 0;this.tier=void 0;this.isTotem=void 0;this.isMega=void 0;this.canGigantamax=void 0;this.isPrimal=void 0;this.battleOnly=void 0;this.isNonstandard=void 0;this.unreleasedHidden=void 0;this.changesFrom=void 0;
 if(!data||typeof data!=='object')data={};
 if(data.name)name=data.name;
 this.name=Dex.sanitizeName(name);
@@ -1389,6 +1397,7 @@ this.gender=data.gender||'';
 this.color=data.color||'';
 this.genderRatio=data.genderRatio||null;
 this.eggGroups=data.eggGroups||[];
+this.tags=data.tags||[];
 
 this.otherFormes=data.otherFormes||null;
 this.cosmeticFormes=data.cosmeticFormes||null;
@@ -1399,7 +1408,7 @@ this.evoLevel=data.evoLevel||0;
 this.evoMove=data.evoMove||'';
 this.evoItem=data.evoItem||'';
 this.evoCondition=data.evoCondition||'';
-this.requiredItem=data.requiredItem||'';
+this.requiredItems=data.requiredItems||(data.requiredItem?[data.requiredItem]:[]);
 this.tier=data.tier||'';
 
 this.isTotem=false;

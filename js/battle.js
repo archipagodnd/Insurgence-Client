@@ -33,6 +33,10 @@
 
 
 
+
+
+
+
 Pokemon=function(){
 
 
@@ -569,6 +573,9 @@ if(percentage===100&&this.hp<this.maxhp){
 percentage=99;
 }
 return percentage*maxWidth/100;
+};_proto.
+getHPText=function getHPText(){var precision=arguments.length>0&&arguments[0]!==undefined?arguments[0]:1;
+return Pokemon.getHPText(this,precision);
 };Pokemon.
 getHPText=function getHPText(pokemon){var precision=arguments.length>1&&arguments[1]!==undefined?arguments[1]:1;
 if(pokemon.maxhp===100)return pokemon.hp+'%';
@@ -692,6 +699,8 @@ break;
 case'stealthrock':
 case'stealthcoal':
 case'spikes':
+case'livewire':
+case'permafrost':
 case'toxicspikes':
 case'stickyweb':
 this.sideConditions[condition]=[effect.name,1,0,0];
@@ -1346,7 +1355,7 @@ this.scene.updateWeather();
 };_proto3.
 swapSideConditions=function swapSideConditions(){
 var sideConditions=[
-'mist','lightscreen','reflect','spikes','safeguard','tailwind','toxicspikes','stealthrock','stealthcoal','livewire', 'permafrost','waterpledge','firepledge','grasspledge','stickyweb','auroraveil','gmaxsteelsurge','gmaxcannonade','gmaxvinelash','gmaxwildfire'];
+'mist','lightscreen','reflect','spikes','safeguard','tailwind','toxicspikes','stealthrock','stealthcoal','livewire','permafrost','waterpledge','firepledge','grasspledge','stickyweb','auroraveil','gmaxsteelsurge','gmaxcannonade','gmaxvinelash','gmaxwildfire'];
 
 if(this.gameType==='freeforall'){
 
@@ -1403,8 +1412,15 @@ pokemon.removeTurnstatus('focuspunch');
 this.scene.updateStatbar(pokemon);
 if(fromeffect.id==='sleeptalk'){
 pokemon.rememberMove(move.name,0);
-}else if(!fromeffect.id||fromeffect.id==='pursuit'){
+}
+var callerMoveForPressure=null;
+
+if(fromeffect.id&&kwArgs.from.startsWith("move:")){
+callerMoveForPressure=fromeffect;
+}
+if(!fromeffect.id||callerMoveForPressure||fromeffect.id==='pursuit'){
 var moveName=move.name;
+if(!callerMoveForPressure){
 if(move.isZ){
 pokemon.item=move.isZ;
 var item=Dex.items.get(move.isZ);
@@ -1418,18 +1434,19 @@ if(BattleItems[_item].zMoveType===move.type)pokemon.item=_item;
 }
 }
 }
+}
 var pp=1;
-
-if(this.abilityActive(['Pressure'])&&move.id!=='stickyweb'){
+if(this.abilityActive(['Pressure'])){
 var foeTargets=[];
+var moveTarget=move.pressureTarget;
 
 if(
 !target&&this.gameType==='singles'&&
-!['self','allies','allySide','adjacentAlly','adjacentAllyOrSelf'].includes(move.target))
+!['self','allies','allySide','adjacentAlly','adjacentAllyOrSelf','allyTeam'].includes(moveTarget))
 {
 
 foeTargets.push(pokemon.side.foe.active[0]);
-}else if(['all','allAdjacent','allAdjacentFoes','foeSide'].includes(move.target)){for(var _i15=0,_this$sides5=
+}else if(['all','allAdjacent','allAdjacentFoes','foeSide'].includes(moveTarget)){for(var _i15=0,_this$sides5=
 
 this.sides;_i15<_this$sides5.length;_i15++){var side=_this$sides5[_i15];
 if(side===pokemon.side||side===pokemon.side.ally)continue;for(var _i16=0,_side$active3=
@@ -1447,7 +1464,11 @@ pp+=1;
 }
 }
 }
+if(!callerMoveForPressure){
 pokemon.rememberMove(moveName,pp);
+}else{
+pokemon.rememberMove(callerMoveForPressure.name,pp-1);
+}
 }
 pokemon.lastMove=move.id;
 this.lastMove=move.id;
@@ -2362,7 +2383,7 @@ case'-formechange':{
 var _poke29=this.getPokemon(args[1]);
 var _species=Dex.species.get(args[2]);
 var _fromeffect2=Dex.getEffect(kwArgs.from);
-var isCustomAnim=false;
+var isCustomAnim=_species.name.startsWith('Wishiwashi');
 _poke29.removeVolatile('typeadd');
 _poke29.removeVolatile('typechange');
 if(this.gen>=7)_poke29.removeVolatile('autotomize');
@@ -2534,6 +2555,10 @@ this.scene.resultAnim(_poke31,'Blocked','neutral');
 }
 break;
 
+
+case'mist':
+this.scene.resultAnim(_poke31,'Mist','good');
+break;
 
 case'lightscreen':
 this.scene.resultAnim(_poke31,'Light Screen','good');
@@ -3202,6 +3227,9 @@ if(this.tier.slice(-8)===' (Blitz)'){
 this.messageFadeTime=40;
 this.isBlitz=true;
 }
+if(this.tier.includes("Let's Go")){
+this.dex=Dex.mod('gen7letsgo');
+}
 this.log(args);
 break;
 }
@@ -3376,7 +3404,9 @@ break;
 }
 case'poke':{
 var _pokemon6=this.rememberTeamPreviewPokemon(args[1],args[2]);
-if(args[3]==='item'){
+if(args[3]==='mail'){
+_pokemon6.item='(mail)';
+}else if(args[3]==='item'){
 _pokemon6.item='(exists)';
 }
 break;
@@ -3668,7 +3698,7 @@ this.resetStep();
 };_proto3.
 
 setMute=function setMute(mute){
-BattleSound.setMute(mute);
+this.scene.setMute(mute);
 };return Battle;}();
 
 

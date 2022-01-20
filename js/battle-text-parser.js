@@ -591,6 +591,7 @@ if(kwArgs.zeffect)templateId='startFromZEffect';
 if(kwArgs.damage)templateId='activate';
 if(kwArgs.block)templateId='block';
 if(kwArgs.upkeep)templateId='upkeep';
+if(_id8==='mist'&&this.gen<=2)templateId='startGen'+this.gen;
 if(_id8==='reflect'||_id8==='lightscreen')templateId='startGen1';
 if(templateId==='start'&&(_kwArgs$from=kwArgs.from)!=null&&_kwArgs$from.startsWith('item:')){
 templateId+='FromItem';
@@ -996,40 +997,43 @@ return _template59.replace('[POKEMON]',this.pokemon(_pokemon29));
 case'-block':{
 var _pokemon30=args[1],_effect14=args[2],_move2=args[3],attacker=args[4];
 var _line24=this.maybeAbility(_effect14,kwArgs.of||_pokemon30);
-var _template60=this.template('block',_effect14);
+var _id17=BattleTextParser.effectId(_effect14);
+var _templateId9='block';
+if(_id17==='mist'&&this.gen<=2)_templateId9='blockGen'+this.gen;
+var _template60=this.template(_templateId9,_effect14);
 return _line24+_template60.replace('[POKEMON]',this.pokemon(_pokemon30)).replace('[SOURCE]',this.pokemon(attacker||kwArgs.of)).replace('[MOVE]',_move2);
 }
 
 case'-fail':{
 var _pokemon31=args[1],_effect15=args[2],_stat2=args[3];
-var _id17=BattleTextParser.effectId(_effect15);
+var _id18=BattleTextParser.effectId(_effect15);
 var blocker=BattleTextParser.effectId(kwArgs.from);
 var _line25=this.maybeAbility(kwArgs.from,kwArgs.of||_pokemon31);
-var _templateId9='block';
+var _templateId10='block';
 if(['desolateland','primordialsea'].includes(blocker)&&
-!['sunnyday','raindance','sandstorm','hail','newmoon'].includes(_id17)){
-_templateId9='blockMove';
+!['sunnyday','raindance','sandstorm','hail','newmoon'].includes(_id18)){
+_templateId10='blockMove';
 }else if(blocker==='uproar'&&kwArgs.msg){
-_templateId9='blockSelf';
+_templateId10='blockSelf';
 }
-var _template61=this.template(_templateId9,kwArgs.from);
+var _template61=this.template(_templateId10,kwArgs.from);
 if(_template61){
 return _line25+_template61.replace('[POKEMON]',this.pokemon(_pokemon31));
 }
 
-if(_id17==='unboost'){
+if(_id18==='unboost'){
 _template61=this.template(_stat2?'failSingular':'fail','unboost');
 return _line25+_template61.replace('[POKEMON]',this.pokemon(_pokemon31)).replace('[STAT]',_stat2);
 }
 
-_templateId9='fail';
-if(['brn','frz','par','psn','slp','substitute'].includes(_id17)){
-_templateId9='alreadyStarted';
+_templateId10='fail';
+if(['brn','frz','par','psn','slp','substitute'].includes(_id18)){
+_templateId10='alreadyStarted';
 }
-if(kwArgs.heavy)_templateId9='failTooHeavy';
-if(kwArgs.weak)_templateId9='fail';
-if(kwArgs.forme)_templateId9='failWrongForme';
-_template61=this.template(_templateId9,_id17);
+if(kwArgs.heavy)_templateId10='failTooHeavy';
+if(kwArgs.weak)_templateId10='fail';
+if(kwArgs.forme)_templateId10='failWrongForme';
+_template61=this.template(_templateId10,_id18);
 return _line25+_template61.replace('[POKEMON]',this.pokemon(_pokemon31));
 }
 
@@ -1038,8 +1042,8 @@ var _pokemon32=args[1];
 var _line26=this.maybeAbility(kwArgs.from,kwArgs.of||_pokemon32);
 var _template62=this.template('block',kwArgs.from);
 if(!_template62){
-var _templateId10=kwArgs.ohko?'immuneOHKO':'immune';
-_template62=this.template(_pokemon32?_templateId10:'immuneNoPokemon',kwArgs.from);
+var _templateId11=kwArgs.ohko?'immuneOHKO':'immune';
+_template62=this.template(_pokemon32?_templateId11:'immuneNoPokemon',kwArgs.from);
 }
 return _line26+_template62.replace('[POKEMON]',this.pokemon(_pokemon32));
 }
@@ -1065,19 +1069,15 @@ return this.template('noTarget');
 
 case'-mega':case'-primal':{
 var _pokemon34=args[1],species=args[2],_item2=args[3];
-var _id18='';
-var _templateId11=cmd.slice(1);
+var _id19='';
+var _templateId12=cmd.slice(1);
 if(species==='Rayquaza'){
-_id18='dragonascent';
-_templateId11='megaNoItem';
+_id19='dragonascent';
+_templateId12='megaNoItem';
 }
-if(_item2==='Zoronite'&&this.pokemon(_pokemon34)==='Rayquaza'){
-_id18='dragonascent';
-_templateId11='megaNoItem';
-}
-if(!_id18&&cmd==='-mega'&&this.gen<7)_templateId11='megaGen6';
-if(!_item2&&cmd==='-mega')_templateId11='megaNoItem';
-var _template65=this.template(_templateId11,_id18);
+if(!_id19&&cmd==='-mega'&&this.gen<7)_templateId12='megaGen6';
+if(!_item2&&cmd==='-mega')_templateId12='megaNoItem';
+var _template65=this.template(_templateId12,_id19);
 var _side7=_pokemon34.slice(0,2);
 var pokemonName=this.pokemon(_pokemon34);
 if(cmd==='-mega'){

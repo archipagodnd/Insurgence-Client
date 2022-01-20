@@ -1,4 +1,8 @@
-var BattleSceneStub=function(){function BattleSceneStub(){this.
+var
+
+
+
+BattleSceneStub=function(){function BattleSceneStub(){this.
 animating=false;this.
 acceleration=NaN;this.
 gen=NaN;this.
@@ -15,7 +19,7 @@ addSideCondition=function addSideCondition(siden,id,instant){};_proto.
 animationOff=function animationOff(){};_proto.
 animationOn=function animationOn(){};_proto.
 maybeCloseMessagebar=function maybeCloseMessagebar(args,kwArgs){return false;};_proto.
-closeMessagebar=function closeMessagebar(){};_proto.
+closeMessagebar=function closeMessagebar(){return false;};_proto.
 damageAnim=function damageAnim(pokemon,damage){};_proto.
 destroy=function destroy(){};_proto.
 finishAnimations=function finishAnimations(){return void 0;};_proto.
@@ -25,6 +29,7 @@ incrementTurn=function incrementTurn(){};_proto.
 updateAcceleration=function updateAcceleration(){};_proto.
 message=function message(_message,hiddenMessage){};_proto.
 pause=function pause(){};_proto.
+setMute=function setMute(muted){};_proto.
 preemptCatchup=function preemptCatchup(){};_proto.
 removeSideCondition=function removeSideCondition(siden,id){};_proto.
 reset=function reset(){};_proto.
@@ -67,8 +72,7 @@ animFaint=function animFaint(pokemon){};_proto.
 animReset=function animReset(pokemon){};_proto.
 anim=function anim(pokemon,end,transition){};_proto.
 beforeMove=function beforeMove(pokemon){};_proto.
-afterMove=function afterMove(pokemon){};_proto.
-unlink=function unlink(userid){var showRevealButton=arguments.length>1&&arguments[1]!==undefined?arguments[1]:false;};return BattleSceneStub;}();
+afterMove=function afterMove(pokemon){};return BattleSceneStub;}();
 
 
 if(typeof require==='function'){

@@ -352,14 +352,19 @@ name:"Driver (%)",
 type:'staff',
 order:106},
 
+"\xA7":{
+name:"Section Leader (\xA7)",
+type:'staff',
+order:107},
+
 
 '*':{
 name:"Bot (*)",
-order:108},
+order:109},
 
 "\u2606":{
 name:"Player (\u2606)",
-order:109},
+order:110},
 
 '+':{
 name:"Voice (+)",
@@ -385,7 +390,7 @@ order:303}};this.
 
 
 defaultGroup={
-order:107};}var _proto4=PSServer.prototype;_proto4.
+order:108};}var _proto4=PSServer.prototype;_proto4.
 
 getGroup=function getGroup(symbol){
 return this.groups[(symbol||' ').charAt(0)]||this.defaultGroup;

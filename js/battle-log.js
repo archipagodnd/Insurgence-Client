@@ -13,6 +13,16 @@
  * @license MIT
  */var
 
+
+
+
+
+
+
+
+
+
+
 BattleLog=function(){
 
 
@@ -358,7 +368,7 @@ this.updateScroll();
 addSpacer=function addSpacer(){
 this.addDiv('spacer battle-history','<br />');
 };_proto.
-changeUhtml=function changeUhtml(id,html,forceAdd){
+changeUhtml=function changeUhtml(id,htmlSrc,forceAdd){
 id=toID(id);
 var classContains=' uhtml-'+id+' ';
 var elements=[];for(var _i2=0,_ref=
@@ -374,9 +384,9 @@ elements.push(_node);
 }
 }
 }
-if(html&&elements.length&&!forceAdd){for(var _i4=0;_i4<
+if(htmlSrc&&elements.length&&!forceAdd){for(var _i4=0;_i4<
 elements.length;_i4++){var element=elements[_i4];
-element.innerHTML=BattleLog.sanitizeHTML(html);
+element.innerHTML=BattleLog.sanitizeHTML(htmlSrc);
 }
 this.updateScroll();
 return;
@@ -384,11 +394,11 @@ return;
 elements.length;_i5++){var _element=elements[_i5];
 _element.parentElement.removeChild(_element);
 }
-if(!html)return;
+if(!htmlSrc)return;
 if(forceAdd){
-this.addDiv('notice uhtml-'+id,BattleLog.sanitizeHTML(html));
+this.addDiv('notice uhtml-'+id,BattleLog.sanitizeHTML(htmlSrc));
 }else{
-this.prependDiv('notice uhtml-'+id,BattleLog.sanitizeHTML(html));
+this.prependDiv('notice uhtml-'+id,BattleLog.sanitizeHTML(htmlSrc));
 }
 };_proto.
 hideChatFrom=function hideChatFrom(userid){var showRevealButton=arguments.length>1&&arguments[1]!==undefined?arguments[1]:true;var lineCount=arguments.length>2&&arguments[2]!==undefined?arguments[2]:0;
@@ -634,8 +644,8 @@ timestamp+"<strong"+colorStyle+">"+clickableName+":</strong> <em>"+BattleLog.san
 case'uhtml':
 case'uhtmlchange':
 var parts=target.split(',');
-var _html=parts.slice(1).join(',').trim();
-this.changeUhtml(parts[0],_html,cmd==='uhtml');
+var htmlSrc=parts.slice(1).join(',').trim();
+this.changeUhtml(parts[0],htmlSrc,cmd==='uhtml');
 return['',''];
 case'raw':
 return['chat',BattleLog.sanitizeHTML(target)];
@@ -818,11 +828,13 @@ setAttrib('src','https:'+src);
 
 var _src=getAttrib('src')||"";
 var channelId=(_$exec=/(https?:\/\/)?twitch.tv\/([A-Za-z0-9]+)/i.exec(_src))==null?void 0:_$exec[2];
+var height=parseInt(getAttrib('height')||"",10)||400;
+var width=parseInt(getAttrib('width')||"",10)||340;
 return{
 tagName:'iframe',
 attribs:[
 'src',"https://player.twitch.tv/?channel="+channelId+"&parent="+location.hostname+"&autoplay=false",
-'allowfullscreen','true','height',"400",'width',"340"]};
+'allowfullscreen','true','height',""+height,'width',""+width]};
 
 
 }else if(tagName==='username'){
@@ -845,11 +857,11 @@ attribs:['src',"https://open.spotify.com/embed/track/"+songId,'width','300','hei
 
 var _src3=getAttrib('src')||'';
 
-var width='320';
-var height='200';
+var _width='320';
+var _height='200';
 if(window.innerWidth>=400){
-width='400';
-height='225';
+_width='400';
+_height='225';
 }
 var videoId=(_$exec3=/(?:\?v=|\/embed\/)([A-Za-z0-9_\-]+)/.exec(_src3))==null?void 0:_$exec3[1];
 if(!videoId)return{tagName:'img',attribs:['alt',"invalid src for <youtube>"]};
@@ -859,7 +871,7 @@ var time=(_$exec4=/(?:\?|&)(?:t|start)=([0-9]+)/.exec(_src3))==null?void 0:_$exe
 return{
 tagName:'iframe',
 attribs:[
-'width',width,'height',height,
+'width',_width,'height',_height,
 'src',"https://www.youtube.com/embed/"+videoId+(time?"?start="+time:''),
 'frameborder','0','allow','accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture','allowfullscreen','allowfullscreen']};
 

@@ -186,11 +186,8 @@ return prefix+"//"+(window.Config?Config.routes.client:'play.pokemonshowdown.com
 }();this.
 
 fxPrefix=function(){var _window$document2,_window$document2$loc;
-if(((_window$document2=window.document)==null?void 0:(_window$document2$loc=_window$document2.location)==null?void 0:_window$document2$loc.protocol)==='file:'){
-if(window.Replays)return"https://"+(window.Config?Config.routes.client:'play.pokemonshowdown.com')+"/fx/";
-return"fx/";
-}
-return"//"+(window.Config?Config.routes.client:'play.pokemonshowdown.com')+"/fx/";
+var protocol=((_window$document2=window.document)==null?void 0:(_window$document2$loc=_window$document2.location)==null?void 0:_window$document2$loc.protocol)!=='http:'?'https:':'';
+return protocol+"//"+(window.Config?Config.routes.client:'play.pokemonshowdown.com')+"/fx/";
 }();this.
 
 loadedSpriteData={xy:1,bw:0};this.
@@ -495,7 +492,7 @@ options.gender=pokemon.volatiles.transform[3];
 options.shiny=pokemon.shiny;
 options.gender=pokemon.gender;
 }
-if(pokemon.volatiles.dynamax)isDynamax=true;
+if(pokemon.volatiles.dynamax&&options.dynamax!==false)isDynamax=true;
 pokemon=pokemon.getSpeciesForme();
 }
 var species=Dex.species.get(pokemon);
@@ -575,7 +572,6 @@ formeid==='-starter'||
 formeid==='-super'||
 formeid==='-therian'||
 formeid==='-unbound'||
-formeid==='-delta'||
 baseSpeciesid==='calyrex'||
 baseSpeciesid==='kyurem'||
 baseSpeciesid==='cramorant'||
@@ -660,7 +656,7 @@ if(isDynamax&&!options.noScale){
 spriteData.w*=2;
 spriteData.h*=2;
 spriteData.y+=-22;
-}else if((species.isTotem||isDynamax)&&!options.noScale){
+}else if(species.isTotem&&!options.noScale){
 spriteData.w*=1.5;
 spriteData.h*=1.5;
 spriteData.y+=-11;
@@ -723,7 +719,7 @@ var num=this.getPokemonIconNum(id,((_pokemon4=pokemon)==null?void 0:_pokemon4.ge
 var top=Math.floor(num/12)*30;
 var left=num%12*40;
 var fainted=(_pokemon5=pokemon)!=null&&_pokemon5.fainted?";opacity:.3;filter:grayscale(100%) brightness(.5)":"";
-return"background:transparent url("+Dex.resourcePrefix+"sprites/pokemonicons-sheet.png?v5) no-repeat scroll -"+left+"px -"+top+"px"+fainted;
+return"background:transparent url("+Dex.resourcePrefix+"sprites/pokemonicons-sheet.png?v7) no-repeat scroll -"+left+"px -"+top+"px"+fainted;
 };_proto2.
 
 getTeambuilderSpriteData=function getTeambuilderSpriteData(pokemon){var gen=arguments.length>1&&arguments[1]!==undefined?arguments[1]:0;
@@ -742,10 +738,10 @@ y:-3};
 
 if(pokemon.shiny)spriteData.shiny=true;
 if(Dex.prefs('nopastgens'))gen=6;
-var xydexExists=!species.isNonstandard||species.isNonstandard==='Past'||[
-"pikachustarter","eeveestarter","meltan","melmetal","fidgit","stratagem","tomohawk","mollux","crucibelle","crucibellemega","kerfluffle","pajantom","jumbao","caribolt","smokomodo","snaelstrom","equilibra","astrolotl","scratchet","pluffle","smogecko","pokestarufo","pokestarufo2","pokestarbrycenman","pokestarmt","pokestarmt2","pokestargiant","pokestarhumanoid","pokestarmonster","pokestarf00","pokestarf002","pokestarspirit"].
+var xydexExists=!species.isNonstandard||species.isNonstandard==='Past'||species.isNonstandard==='CAP'||[
+"pikachustarter","eeveestarter","meltan","melmetal","pokestarufo","pokestarufo2","pokestarbrycenman","pokestarmt","pokestarmt2","pokestargiant","pokestarhumanoid","pokestarmonster","pokestarf00","pokestarf002","pokestarspirit"].
 includes(species.id);
-if(species.gen===8)xydexExists=false;
+if(species.gen===8&&species.isNonstandard!=='CAP')xydexExists=false;
 if((!gen||gen>=6)&&xydexExists){
 if(species.gen>=7){
 spriteData.x=-6;
@@ -858,6 +854,12 @@ if(id in table.overrideMoveData){
 Object.assign(data,table.overrideMoveData[id]);
 }
 }
+if(_this2.modid!=="gen"+_this2.gen){
+var _table=window.BattleTeambuilderTable[_this2.modid];
+if(id in _table.overrideMoveData){
+Object.assign(data,_table.overrideMoveData[id]);
+}
+}
 if(_this2.gen<=3&&data.category!=='Status'){
 data.category=Dex.getGen3Category(data.type);
 }
@@ -904,11 +906,16 @@ if(_this2.cache.Abilities.hasOwnProperty(id))return _this2.cache.Abilities[id];
 
 var data=Object.assign({},Dex.abilities.get(name));
 
-for(var i=_this2.gen;i<8;i++){
-var table=window.BattleTeambuilderTable['gen'+i];
-if(id in table.overrideAbilityDesc){
-data.shortDesc=table.overrideAbilityDesc[id];
-break;
+for(var i=Dex.gen-1;i>=_this2.gen;i--){
+var table=window.BattleTeambuilderTable["gen"+i];
+if(id in table.overrideAbilityData){
+Object.assign(data,table.overrideAbilityData[id]);
+}
+}
+if(_this2.modid!=="gen"+_this2.gen){
+var _table2=window.BattleTeambuilderTable[_this2.modid];
+if(id in _table2.overrideAbilityData){
+Object.assign(data,_table2.overrideAbilityData[id]);
 }
 }
 
@@ -930,13 +937,19 @@ if(_this2.cache.Species.hasOwnProperty(id))return _this2.cache.Species[id];
 var data=Object.assign({},Dex.species.get(name));
 
 for(var i=Dex.gen-1;i>=_this2.gen;i--){
-var _table=window.BattleTeambuilderTable["gen"+i];
-if(id in _table.overrideSpeciesData){
-Object.assign(data,_table.overrideSpeciesData[id]);
+var _table3=window.BattleTeambuilderTable["gen"+i];
+if(id in _table3.overrideSpeciesData){
+Object.assign(data,_table3.overrideSpeciesData[id]);
 }
 }
-if(_this2.gen<3){
-data.abilities={0:"None"};
+if(_this2.modid!=="gen"+_this2.gen){
+var _table4=window.BattleTeambuilderTable[_this2.modid];
+if(id in _table4.overrideSpeciesData){
+Object.assign(data,_table4.overrideSpeciesData[id]);
+}
+}
+if(_this2.gen<3||_this2.modid==='gen7letsgo'){
+data.abilities={0:"No Ability"};
 }
 
 var table=window.BattleTeambuilderTable[_this2.modid];
@@ -978,7 +991,7 @@ data=Object.assign({},data,table.overrideTypeChart[id]);
 
 _this2.cache.Types[id]=data;
 return data;
-}};this.modid=modid;var gen=parseInt(modid.slice(3),10);if(!modid.startsWith('gen')||!gen)throw new Error("Unsupported modid");this.gen=gen;}var _proto3=ModdedDex.prototype;_proto3.
+}};this.modid=modid;var gen=parseInt(modid.substr(3,1),10);if(!modid.startsWith('gen')||!gen)throw new Error("Unsupported modid");this.gen=gen;}var _proto3=ModdedDex.prototype;_proto3.
 
 
 getPokeballs=function getPokeballs(){

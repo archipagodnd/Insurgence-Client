@@ -9,6 +9,8 @@
  * @license CC0-1.0
  */
 
+
+
 var BattleMoveAnims={
 taunt:{
 anim:function(scene,_ref){var attacker=_ref[0],defender=_ref[1];

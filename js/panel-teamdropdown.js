@@ -803,7 +803,7 @@ curColumnNum=format.column;
 if(format.section!==curSection){
 curSection=format.section;
 if(curSection){
-curColumn.push({id:'',section:curSection});
+curColumn.push({id:null,section:curSection});
 }
 }
 curColumn.push(format);

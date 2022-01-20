@@ -56,12 +56,14 @@ return false;
 }
 return true;
 };_proto.
-tryAbility=function tryAbility(abilityName){var _this$pokemon2;
+tryAbility=function tryAbility(abilityName){var _this$pokemon2,_this$pokemon3;
 if(abilityName!==this.abilityName)return false;
 if((_this$pokemon2=this.pokemon)!=null&&_this$pokemon2.volatiles['gastroacid']){
 this.comment.push(" ("+abilityName+" suppressed by Gastro Acid)");
 return false;
 }
+
+if(!((_this$pokemon3=this.pokemon)!=null&&_this$pokemon3.effectiveAbility(this.serverPokemon)))return false;
 return true;
 };_proto.
 tryWeather=function tryWeather(weatherName){
@@ -712,7 +714,7 @@ text+="<p class=\"movetag\">The user thaws out if it is frozen.</p>";
 if(!move.flags.protect&&!['self','allySide'].includes(move.target)){
 text+="<p class=\"movetag\">Not blocked by Protect <small>(and Detect, King's Shield, Spiky Shield)</small></p>";
 }
-if(move.flags.authentic&&!(move.flags.sound&&this.battle.gen<6)){
+if(move.flags.bypasssub){
 text+="<p class=\"movetag\">Bypasses Substitute <small>(but does not break it)</small></p>";
 }
 if(!move.flags.reflectable&&!['self','allySide'].includes(move.target)&&move.category==='Status'){
@@ -775,7 +777,7 @@ var text='';
 var genderBuf='';
 var gender=pokemon.gender;
 if(gender==='M'||gender==='F'){
-genderBuf=" <img src=\""+Dex.resourcePrefix+"fx/gender-"+gender.toLowerCase()+".png\" alt=\""+gender+"\" width=\"7\" height=\"10\" class=\"pixelated\" /> ";
+genderBuf=" <img src=\""+Dex.fxPrefix+"gender-"+gender.toLowerCase()+".png\" alt=\""+gender+"\" width=\"7\" height=\"10\" class=\"pixelated\" /> ";
 }
 
 var name=BattleLog.escapeHTML(pokemon.name);
@@ -961,7 +963,7 @@ return true;
 return false;
 };_proto2.
 
-calculateModifiedStats=function calculateModifiedStats(clientPokemon,serverPokemon){
+calculateModifiedStats=function calculateModifiedStats(clientPokemon,serverPokemon){var _clientPokemon$effect,_clientPokemon$volati;
 var stats=Object.assign({},serverPokemon.stats);
 var pokemon=clientPokemon||serverPokemon;
 var isPowerTrick=clientPokemon==null?void 0:clientPokemon.volatiles['powertrick'];for(var _i10=0,_Dex$statNamesExceptH=
@@ -988,8 +990,8 @@ stats[statName]=Math.floor(stats[statName]);
 }
 }
 
-var ability=toID(
-(clientPokemon==null?void 0:clientPokemon.effectiveAbility(serverPokemon))||serverPokemon.ability||serverPokemon.baseAbility);
+var ability=toID((_clientPokemon$effect=
+clientPokemon==null?void 0:clientPokemon.effectiveAbility(serverPokemon))!=null?_clientPokemon$effect:serverPokemon.ability||serverPokemon.baseAbility);
 
 
 
@@ -1023,25 +1025,27 @@ clientPokemon!=null&&clientPokemon.volatiles['embargo'])
 item='';
 }
 
-var speciesForme=clientPokemon?clientPokemon.getSpeciesForme():serverPokemon.speciesForme;
-var species=Dex.species.get(speciesForme).baseSpecies;
+var species=Dex.species.get(serverPokemon.speciesForme).baseSpecies;
+var isTransform=clientPokemon==null?void 0:clientPokemon.volatiles.transform;
+var speciesName=isTransform&&clientPokemon!=null&&(_clientPokemon$volati=clientPokemon.volatiles.formechange)!=null&&_clientPokemon$volati[1]&&this.battle.gen<=4?
+this.battle.dex.species.get(clientPokemon.volatiles.formechange[1]).baseSpecies:species;
 
 var speedModifiers=[];
 
 
 
-if(item==='lightball'&&species==='Pikachu'){
-if(this.battle.gen>=4)stats.atk*=2;
+if(item==='lightball'&&speciesName==='Pikachu'&&this.battle.gen!==4){
+if(this.battle.gen>4)stats.atk*=2;
 stats.spa*=2;
 }
 
 if(item==='thickclub'){
-if(species==='Marowak'||species==='Cubone'){
+if(speciesName==='Marowak'||speciesName==='Cubone'){
 stats.atk*=2;
 }
 }
 
-if(species==='Ditto'&&!(clientPokemon&&'transform'in clientPokemon.volatiles)){
+if(speciesName==='Ditto'&&!(clientPokemon&&'transform'in clientPokemon.volatiles)){
 if(item==='quickpowder'){
 speedModifiers.push(2);
 }
@@ -1337,13 +1341,16 @@ return[min,max];
 
 
 getMoveType=function getMoveType(move,value,forMaxMove){
+var pokemon=value.pokemon;
+var serverPokemon=value.serverPokemon;
+
 var moveType=move.type;
 var category=move.category;
 if(category==='Status'&&forMaxMove)return['Normal','Status'];
 
-if(!value.pokemon)return[moveType,category];
+if(!pokemon)return[moveType,category];
 
-var pokemonTypes=value.pokemon.getTypeList(value.serverPokemon);
+var pokemonTypes=pokemon.getTypeList(serverPokemon);
 value.reset();
 if(move.id==='revelationdance'){
 moveType=pokemonTypes[0];
@@ -1386,7 +1393,7 @@ moveType='Dark';
 break;}
 
 }
-if(move.id==='terrainpulse'){
+if(move.id==='terrainpulse'&&pokemon.isGrounded(serverPokemon)){
 if(this.battle.hasPseudoWeather('Electric Terrain')){
 moveType='Electric';
 }else if(this.battle.hasPseudoWeather('Grassy Terrain')){
@@ -1399,7 +1406,7 @@ moveType='Psychic';
 }
 
 
-if(move.id==='aurawheel'&&value.pokemon.getSpeciesForme()==='Morpeko-Hangry'){
+if(move.id==='aurawheel'&&pokemon.getSpeciesForme()==='Morpeko-Hangry'){
 moveType='Dark';
 }
 
@@ -1649,7 +1656,7 @@ if(this.battle.weather!=='deltastream'){
 value.weatherModify(2);
 }
 }
-if(move.id==='terrainpulse'){
+if(move.id==='terrainpulse'&&pokemon.isGrounded(serverPokemon)){
 if(
 this.battle.hasPseudoWeather('Electric Terrain')||
 this.battle.hasPseudoWeather('Grassy Terrain')||
@@ -1939,10 +1946,14 @@ return value;
 
 
 
-getItemBoost=function getItemBoost(move,value,moveType){
+getItemBoost=function getItemBoost(move,value,moveType){var _value$pokemon$volati;
 var item=this.battle.dex.items.get(value.serverPokemon.item);
 var itemName=item.name;
 var moveName=move.name;
+var species=this.battle.dex.species.get(value.serverPokemon.speciesForme);
+var isTransform=value.pokemon.volatiles.transform;
+var speciesName=isTransform&&(_value$pokemon$volati=value.pokemon.volatiles.formechange)!=null&&_value$pokemon$volati[1]&&this.battle.gen<=4?
+this.battle.dex.species.get(value.pokemon.volatiles.formechange[1]).baseSpecies:species.baseSpecies;
 
 
 if(item.onPlate===moveType&&!item.zMove){
@@ -1963,8 +1974,14 @@ return value;
 }
 
 
+if(item.name==='Light Ball'&&this.battle.gen===4&&speciesName==='Pikachu'){
+value.itemModify(2);
+return value;
+}
+
+
 if(item.name==='Soul Dew'&&this.battle.gen<7)return value;
-if(BattleTooltips.orbUsers[Dex.species.get(value.serverPokemon.speciesForme).baseSpecies]===item.name&&
+if(BattleTooltips.orbUsers[speciesName]===item.name&&
 [BattleTooltips.orbTypes[item.name],'Dragon'].includes(moveType)){
 value.itemModify(1.2);
 return value;
