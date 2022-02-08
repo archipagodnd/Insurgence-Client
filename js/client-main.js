@@ -61,7 +61,7 @@ PSPrefs=function(_PSStreamModel){_inheritsLoose(PSPrefs,_PSStreamModel);
 
 
 function PSPrefs(){var _this;
-_this=_PSStreamModel.call(this)||this;_this.dark=false;_this.nogif=null;_this.showjoins=null;_this.onepanel=false;_this.mute=false;_this.effectvolume=50;_this.musicvolume=50;_this.notifvolume=50;_this.storageEngine='';_this.storage={};_this.origin="https://"+Config.routes.client;
+_this=_PSStreamModel.call(this)||this;_this.theme='light';_this.nogif=null;_this.showjoins=null;_this.onepanel=false;_this.mute=false;_this.effectvolume=50;_this.musicvolume=50;_this.notifvolume=50;_this.storageEngine='';_this.storage={};_this.origin="https://"+Config.routes.client;
 
 for(var _key in _assertThisInitialized(_this)){
 var value=_assertThisInitialized(_this)[_key];
@@ -127,6 +127,17 @@ delete newPrefs['nogif'];
 }else if(isChrome64){
 newPrefs['nogif']=true;
 alert('Your version of Chrome has a bug that makes animated GIFs freeze games sometimes, so certain animations have been disabled. Only some people have the problem, so you can experiment and enable them in the Options menu setting "Disable GIFs for Chrome 64 bug".');
+}
+
+var colorSchemeQuerySupported=(window.matchMedia==null?void 0:window.matchMedia('(prefers-color-scheme: dark)').media)!=='not all';
+if(newPrefs['theme']==='system'&&!colorSchemeQuerySupported){
+newPrefs['theme']='light';
+}
+if(newPrefs['dark']!==undefined){
+if(newPrefs['dark']){
+newPrefs['theme']='dark';
+}
+delete newPrefs['dark'];
 }
 };return PSPrefs;}(PSStreamModel);
 

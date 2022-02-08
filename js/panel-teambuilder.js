@@ -234,9 +234,9 @@ preact.h("i",{"class":"fa fa-times"})," Remove")):
 filterFolder===''?
 preact.h("h2",null,preact.h("i",{"class":"fa fa-folder-open-o"})," Teams not in any folders"):
 filterFormat?
-preact.h("h2",null,preact.h("i",{"class":"fa fa-folder-open-o"})," ",filterFormat):
+preact.h("h2",null,preact.h("i",{"class":"fa fa-folder-open-o"})," ",filterFormat," ",preact.h("small",null,"(",teams.length,")")):
 
-preact.h("h2",null,"All Teams"),
+preact.h("h2",null,"All Teams ",preact.h("small",null,"(",teams.length,")")),
 
 preact.h("p",null,
 preact.h("button",{name:"cmd",value:"/newteam","class":"button big"},preact.h("i",{"class":"fa fa-plus-circle"})," New Team")),

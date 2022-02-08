@@ -450,9 +450,9 @@ Component:VolumePanel};var
 
 
 OptionsPanel=function(_PSRoomPanel3){_inheritsLoose(OptionsPanel,_PSRoomPanel3);function OptionsPanel(){var _this6;for(var _len3=arguments.length,args=new Array(_len3),_key3=0;_key3<_len3;_key3++){args[_key3]=arguments[_key3];}_this6=_PSRoomPanel3.call.apply(_PSRoomPanel3,[this].concat(args))||this;_this6.
-setCheckbox=function(e){
-var checkbox=e.currentTarget;
-PS.prefs.set(checkbox.name,!!checkbox.checked);
+setTheme=function(e){
+var theme=e.currentTarget.value;
+PS.prefs.set('theme',theme);
 _this6.forceUpdate();
 };return _this6;}var _proto4=OptionsPanel.prototype;_proto4.
 render=function render(){
@@ -460,7 +460,11 @@ var room=this.props.room;
 return preact.h(PSPanelWrapper,{room:room},
 preact.h("h3",null,"Graphics"),
 preact.h("p",null,
-preact.h("label",{"class":"checkbox"},preact.h("input",{type:"checkbox",name:"dark",checked:PS.prefs.dark,onChange:this.setCheckbox})," Dark mode")));
+preact.h("label",{"class":"optlabel"},"Theme: ",preact.h("select",{onChange:this.setTheme},
+preact.h("option",{value:"light",selected:PS.prefs.theme==='light'},"Light"),
+preact.h("option",{value:"dark",selected:PS.prefs.theme==='dark'},"Dark"),
+preact.h("option",{value:"system",selected:PS.prefs.theme==='system'},"Match system theme")))));
+
 
 
 };return OptionsPanel;}(PSRoomPanel);

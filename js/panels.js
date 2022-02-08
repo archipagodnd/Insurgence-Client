@@ -304,9 +304,18 @@ PS.focusRightRoom();
 }
 });
 
+var colorSchemeQuery=window.matchMedia==null?void 0:window.matchMedia('(prefers-color-scheme: dark)');
+if((colorSchemeQuery==null?void 0:colorSchemeQuery.media)!=='not all'){
+colorSchemeQuery.addEventListener('change',function(cs){
+if(PS.prefs.theme==='system')document.body.className=cs.matches?'dark':'';
+});
+}
+
 PS.prefs.subscribeAndRun(function(key){
-if(!key||key==='dark'){
-document.body.className=PS.prefs.dark?'dark':'';
+if(!key||key==='theme'){
+var dark=PS.prefs.theme==='dark'||
+PS.prefs.theme==='system'&&colorSchemeQuery&&colorSchemeQuery.matches;
+document.body.className=dark?'dark':'';
 }
 });return _this4;
 }var _proto3=PSMain.prototype;_proto3.

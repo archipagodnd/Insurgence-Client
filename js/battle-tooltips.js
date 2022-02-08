@@ -873,14 +873,16 @@ if(_itemEffect)_itemEffect=' ('+_itemEffect+')';
 if(_item)itemText='<small>Item:</small> '+_item+_itemEffect;
 }
 
+if(abilityText||itemText){
 text+='<p>';
 text+=abilityText;
-if(itemText){
+if(abilityText&&itemText){
 
 text+=!isActive&&serverPokemon?' / ':'</p><p>';
-text+=itemText;
 }
+text+=itemText;
 text+='</p>';
+}
 
 text+=this.renderStats(clientPokemon,serverPokemon,!isActive);
 
