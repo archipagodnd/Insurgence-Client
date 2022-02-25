@@ -182,12 +182,12 @@ pokeballs=null;this.
 resourcePrefix=function(){var _window$document,_window$document$loca;
 var prefix='';
 if(((_window$document=window.document)==null?void 0:(_window$document$loca=_window$document.location)==null?void 0:_window$document$loca.protocol)!=='http:')prefix='https:';
-return prefix+"//"+(window.Config?Config.routes.client:'play.pokemonshowdown.com')+"/";
+return prefix+"//raw.githubusercontent.com/BabyGrootTheEpic/Sprites/main/play.pokemonshowdown.com/";
 }();this.
 
 fxPrefix=function(){var _window$document2,_window$document2$loc;
 var protocol=((_window$document2=window.document)==null?void 0:(_window$document2$loc=_window$document2.location)==null?void 0:_window$document2$loc.protocol)!=='http:'?'https:':'';
-return protocol+"//"+(window.Config?Config.routes.client:'play.pokemonshowdown.com')+"/fx/";
+return protocol+"//raw.githubusercontent.com/BabyGrootTheEpic/Sprites/main/play.pokemonshowdown.com/fx/";
 }();this.
 
 loadedSpriteData={xy:1,bw:0};this.
@@ -630,9 +630,14 @@ dir=(baseDir||'gen5')+dir;
 
 
 
-if(spriteData.gen>=4&&miscData['frontf']&&options.gender==='F'){
+if(spriteData.gen>=4&&options.gender==='F'){
+if(miscData['frontf']||[
+'bulbasaurdelta','ivysaurdelta','venusaurdelta','venusaurdeltamega','deinodelta','zweilousdelta','hydreigondelta','gardevoirdeltamega','meganiummega'].
+includes(speciesid)){
 name+='-f';
 }
+}
+
 
 spriteData.url+=dir+'/'+name+'.png';
 }
@@ -680,7 +685,10 @@ num=BattlePokemonIconIndexes[id];
 }
 
 if(isFemale){
-if(['unfezant','frillish','jellicent','meowstic','pyroar'].includes(id)){
+if([
+'unfezant','frillish','jellicent','meowstic','pyroar',
+'bulbasaurdelta','ivysaurdelta','venusaurdelta','venusaurdeltamega','deinodelta','zweilousdelta','hydreigondelta'].
+includes(id)){
 num=BattlePokemonIconIndexes[id+'f'];
 }
 }

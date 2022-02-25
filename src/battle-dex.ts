@@ -182,12 +182,12 @@ const Dex = new class implements ModdedDex {
 	resourcePrefix = (() => {
 		let prefix = '';
 		if (window.document?.location?.protocol !== 'http:') prefix = 'https:';
-		return `${prefix}//${window.Config ? Config.routes.client : 'play.pokemonshowdown.com'}/`;
+		return `${prefix}//raw.githubusercontent.com/Poilerwags/Sprites/master/play.pokemonshowdown.com/`;
 	})();
 
 	fxPrefix = (() => {
 		const protocol = (window.document?.location?.protocol !== 'http:') ? 'https:' : '';
-		return `${protocol}//${window.Config ? Config.routes.client : 'play.pokemonshowdown.com'}/fx/`;
+		return `${protocol}//raw.githubusercontent.com/Poilerwags/Sprites/master/play.pokemonshowdown.com/fx/`;
 	})();
 
 	loadedSpriteData = {xy: 1, bw: 0};
@@ -630,9 +630,14 @@ const Dex = new class implements ModdedDex {
 
 			// Gender differences don't exist prior to Gen 4,
 			// so there are no sprites for it
-			if (spriteData.gen >= 4 && miscData['frontf'] && options.gender === 'F') {
-				name += '-f';
+			if (spriteData.gen >= 4 && options.gender === 'F') {
+				if(miscData['frontf'] || [
+					'bulbasaurdelta', 'ivysaurdelta', 'venusaurdelta', 'venusaurdeltamega', 'deinodelta', 'zweilousdelta', 'hydreigondelta', 'gardevoirdeltamega', 'meganiummega'
+				].includes(speciesid)) {
+					name += '-f';
+				}
 			}
+
 
 			spriteData.url += dir + '/' + name + '.png';
 		}
@@ -680,7 +685,10 @@ const Dex = new class implements ModdedDex {
 		}
 
 		if (isFemale) {
-			if (['unfezant', 'frillish', 'jellicent', 'meowstic', 'pyroar'].includes(id)) {
+			if ([
+				'unfezant', 'frillish', 'jellicent', 'meowstic', 'pyroar',
+				'bulbasaurdelta', 'ivysaurdelta', 'venusaurdelta', 'venusaurdeltamega', 'deinodelta', 'zweilousdelta', 'hydreigondelta'
+			].includes(id)) {
 				num = BattlePokemonIconIndexes[id + 'f'];
 			}
 		}
