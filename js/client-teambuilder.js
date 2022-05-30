@@ -3214,6 +3214,7 @@
 						baseFormat.substr(0, 3) === 'vgc' || baseFormat.substr(0, 14) === 'battlefestival') set.level = 50;
 					if (baseFormat.substr(0, 2) === 'lc' || baseFormat.substr(0, 5) === 'caplc' || baseFormat.substr(-2) === 'lc') set.level = 5;
 					if (baseFormat.substr(0, 19) === 'battlespotspecial17') set.level = 1;
+					if (baseFormat.substr(0, 8) === 'level120') set.level = 120;
 					if (format && format.teambuilderLevel) {
 						set.level = format.teambuilderLevel;
 					}

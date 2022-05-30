@@ -1250,16 +1250,22 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 			if (id === 'metronome') return true;
 		}
 
-		if (itemid === 'pidgeotite') abilityid = 'noguard' as ID;
-		if (itemid === 'blastoisinite') abilityid = 'megalauncher' as ID;
-		if (itemid === 'aerodactylite') abilityid = 'toughclaws' as ID;
+		if (itemid === 'pidgeotite' || itemid === 'poliwrathite') abilityid = 'noguard' as ID;
+		if (itemid === 'blastoisinite' || itemid === 'deltablastoisinite') abilityid = 'megalauncher' as ID;
+		if (itemid === 'aerodactylite' || itemid === 'feraligatite' || itemid === 'spiritombite') abilityid = 'toughclaws' as ID;
 		if (itemid === 'glalitite') abilityid = 'refrigerate' as ID;
+		if (itemid === 'shiftrite') abilityid = 'shadowdance' as ID;
+		if (itemid === 'deltacharizardite') abilityid = 'noctem' as ID;
+		if (itemid === 'deltabisharpite') abilityid = 'technician' as ID;
+		if (itemid === 'golurkite') abilityid = 'sheerforce' as ID;
 
 		switch (id) {
 		case 'fakeout': case 'flamecharge': case 'nuzzle': case 'poweruppunch':
 			return abilityid !== 'sheerforce';
 		case 'solarbeam': case 'solarblade':
 			return ['desolateland', 'drought', 'chlorophyll'].includes(abilityid) || itemid === 'powerherb';
+		case 'lunarcannon':
+			return ['noctem', 'shadowdance'].includes(abilityid) || itemid === 'powerherb';
 		case 'dynamicpunch': case 'grasswhistle': case 'inferno': case 'sing': case 'zapcannon':
 			return abilityid === 'noguard';
 		case 'heatcrash': case 'heavyslam':
@@ -1310,6 +1316,8 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 			return species.baseSpecies === 'Unown';
 		case 'hyperspacefury':
 			return species.id === 'hoopaunbound';
+		case 'spiritaway':
+			return species.id === 'hoopadeltaunbound';
 		case 'hypnosis':
 			return (dex.gen < 4 && !moves.includes('sleeppowder')) || (dex.gen > 6 && abilityid === 'baddreams');
 		case 'icywind':
@@ -1333,12 +1341,16 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 			return !moves.includes('crunch') && !(moves.includes('knockoff') && dex.gen >= 6);
 		case 'petaldance':
 			return abilityid === 'owntempo';
+		case 'shadowforce':
+			return (!moves.includes('poltergeist') && !moves.includes('shadowclaw') && !moves.includes('zombiestrike')) || this.formatType === 'doubles'
+			|| ['noctem', 'shadowdance'].includes(abilityid) || itemid === 'powerherb';
 		case 'phantomforce':
-			return (!moves.includes('poltergeist') && !moves.includes('shadowclaw')) || this.formatType === 'doubles';
+			return !moves.includes('shadowforce') && ((!moves.includes('poltergeist') && !moves.includes('shadowclaw') && !moves.includes('zombiestrike'))
+			|| this.formatType === 'doubles' || ['noctem', 'shadowdance'].includes(abilityid) || itemid === 'powerherb');
 		case 'poisonfang':
 			return species.types.includes('Poison') && !moves.includes('gunkshot') && !moves.includes('poisonjab');
 		case 'relicsong':
-			return species.id === 'meloetta';
+			return species.num === 648;
 		case 'refresh':
 			return !moves.includes('aromatherapy') && !moves.includes('healbell');
 		case 'risingvoltage':
@@ -1395,15 +1407,19 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 	}
 	static readonly GOOD_STATUS_MOVES = [
 		'acidarmor', 'agility', 'aromatherapy', 'auroraveil', 'autotomize', 'banefulbunker', 'batonpass', 'bellydrum', 'bulkup', 'calmmind', 'clangoroussoul', 'coil', 'cottonguard', 'courtchange', 'curse', 'defog', 'destinybond', 'detect', 'disable', 'dragondance', 'drainingkiss', 'encore', 'extremeevoboost', 'geomancy', 'glare', 'haze', 'healbell', 'healingwish', 'healorder', 'heartswap', 'honeclaws', 'kingsshield', 'leechseed', 'lightscreen', 'lovelykiss', 'lunardance', 'magiccoat', 'maxguard', 'memento', 'milkdrink', 'moonlight', 'morningsun', 'nastyplot', 'naturesmadness', 'noretreat', 'obstruct', 'painsplit', 'partingshot', 'perishsong', 'protect', 'quiverdance', 'recover', 'reflect', 'reflecttype', 'rest', 'roar', 'rockpolish', 'roost', 'shellsmash', 'shiftgear', 'shoreup', 'slackoff', 'sleeppowder', 'sleeptalk', 'softboiled', 'spikes', 'spikyshield', 'spore', 'stealthrock', 'stickyweb', 'strengthsap', 'substitute', 'switcheroo', 'swordsdance', 'synthesis', 'tailglow', 'tailwind', 'taunt', 'thunderwave', 'toxic', 'toxicspikes', 'transform', 'trick', 'whirlwind', 'willowisp', 'wish', 'yawn',
+		'livewire', 'nanorepair', 'permafrost', 'retrograde',
 	] as ID[] as readonly ID[];
 	static readonly GOOD_WEAK_MOVES = [
 		'accelerock', 'acrobatics', 'aquajet', 'avalanche', 'bonemerang', 'bouncybubble', 'bulletpunch', 'buzzybuzz', 'circlethrow', 'clearsmog', 'doubleironbash', 'dragondarts', 'dragontail', 'endeavor', 'facade', 'firefang', 'flipturn', 'freezedry', 'frustration', 'geargrind', 'grassknot', 'gyroball', 'hex', 'icefang', 'iceshard', 'iciclespear', 'knockoff', 'lowkick', 'machpunch', 'nightshade', 'nuzzle', 'pikapapow', 'psychocut', 'pursuit', 'quickattack', 'rapidspin', 'return', 'rockblast', 'scorchingsands', 'seismictoss', 'shadowclaw', 'shadowsneak', 'sizzlyslide', 'storedpower', 'stormthrow', 'suckerpunch', 'superfang', 'surgingstrikes', 'tailslap', 'tripleaxel', 'uturn', 'veeveevolley', 'voltswitch', 'watershuriken', 'weatherball',
+		'achillesheel', 'corrode', 'crystalrush', 'dracojet', 'wormhole',
 	] as ID[] as readonly ID[];
 	static readonly BAD_STRONG_MOVES = [
 		'beakblast', 'belch', 'burnup', 'crushclaw', 'doomdesire', 'dragonrush', 'dreameater', 'eggbomb', 'firepledge', 'flyingpress', 'futuresight', 'grasspledge', 'hyperbeam', 'hyperfang', 'hyperspacehole', 'jawlock', 'landswrath', 'lastresort', 'megakick', 'megapunch', 'mistyexplosion', 'muddywater', 'nightdaze', 'pollenpuff', 'rockclimb', 'selfdestruct', 'shelltrap', 'skyuppercut', 'slam', 'strength', 'submission', 'synchronoise', 'takedown', 'thrash', 'uproar', 'waterpledge',
+		'darkmatter',
 	] as ID[] as readonly ID[];
 	static readonly GOOD_DOUBLES_MOVES = [
 		'allyswitch', 'bulldoze', 'coaching', 'electroweb', 'faketears', 'fling', 'followme', 'healpulse', 'helpinghand', 'junglehealing', 'lifedew', 'muddywater', 'pollenpuff', 'psychup', 'ragepowder', 'safeguard', 'skillswap', 'snipeshot', 'wideguard',
+		'brushfire',
 	] as ID[] as readonly ID[];
 	getBaseResults() {
 		if (!this.species) return this.getDefaultResults();
