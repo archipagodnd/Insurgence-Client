@@ -116,7 +116,7 @@ export const BattleSound = new class {
 		try {
 			const sound = document.createElement('audio');
 			//sound.src = 'https://' + Config.routes.client + '/' + url;
-			const unDeltaUrl = url.includes('meloettadelta') ? url.replace('meloettadeltamime', 'meloetta-pirouette') : url.replace(/-?delta.*?(?=-mega|-unbound|-crystal|\.)/, '');
+			const unDeltaUrl = url.includes('meloettadeltamime') ? url.replace('meloettadeltamime', 'meloetta-pirouette') : url.replace(/-?delta.*?(?=-mega|-unbound|-crystal|\.)/, '');
 			sound.src = 'https://raw.githubusercontent.com/Poilerwags/Sprites/master/play.pokemonshowdown.com/' + unDeltaUrl;
 			sound.volume = this.effectVolume / 100;
 			this.soundCache[url] = sound;
