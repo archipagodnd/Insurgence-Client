@@ -576,8 +576,8 @@ break;
 case'hail':
 zMove=this.battle.dex.moves.get(BattleTooltips.zMoveTable['Ice']);
 break;
-case'darkness':
-zMove=this.battle.dex.getMove(BattleTooltips.zMoveTable['Dark']);
+case'newmoon':
+zMove=this.battle.dex.moves.get(BattleTooltips.zMoveTable['Dark']);
 break;}
 
 }
@@ -1103,7 +1103,7 @@ if(ability==='slushrush'&&weather==='hail'){
 speedModifiers.push(2);
 }
 if(ability==='shadowdance'&&weather==='newmoon'){
-stats.spe*=2;
+speedModifiers.push(2);
 }
 if(item!=='utilityumbrella'){
 if(weather==='sunnyday'||weather==='desolateland'){
@@ -1122,11 +1122,8 @@ stats.spd=Math.floor(stats.spd*1.5);
 }
 }
 }
-if(ability==='supercell'&&(weather==='raindance'||weather==='primordialsea'||weather==='darkness')){
-stats.spa*=1.5;
-}
-if(ability==='absolution'&&weather==='darkness'){
-stats.spa*=1.5;
+if(ability==='supercell'&&(weather==='raindance'||weather==='primordialsea'||weather==='newmoon')){
+stats.spa=Math.floor(stats.spa*1.5);
 }
 if(ability==='chlorophyll'&&(weather==='sunnyday'||weather==='desolateland')){
 speedModifiers.push(2);
@@ -1134,6 +1131,11 @@ speedModifiers.push(2);
 if(ability==='swiftswim'&&(weather==='raindance'||weather==='primordialsea')){
 speedModifiers.push(2);
 }
+}else if(ability==='supercell'&&weather==='newmoon'){
+stats.spa=Math.floor(stats.spa*1.5);
+}
+if(ability==='absolution'&&weather==='newmoon'){
+stats.spa=Math.floor(stats.spa*1.5);
 }
 }
 if(ability==='defeatist'&&serverPokemon.hp<=serverPokemon.maxhp/2){
@@ -1152,7 +1154,7 @@ speedModifiers.push(2);
 if(ability==='marvelscale'&&pokemon.status){
 stats.def=Math.floor(stats.def*1.5);
 }
-if(item==='eviolite'&&Dex.species.get(pokemon.speciesForme).evos){
+if(item==='eviolite'&&(Dex.species.get(pokemon.speciesForme).evos||species==='Eevee-Pre-Mega')){
 stats.def=Math.floor(stats.def*1.5);
 stats.spd=Math.floor(stats.spd*1.5);
 }
@@ -1165,8 +1167,11 @@ speedModifiers.push(2);
 if(item==='choicespecs'&&!(clientPokemon!=null&&clientPokemon.volatiles['dynamax'])){
 stats.spa=Math.floor(stats.spa*1.5);
 }
-if(item==='deepseatooth'&&species==='Clamperl'){
+if(item==='deepseatooth'&&serverPokemon.speciesForme==='Clamperl'){
 stats.spa*=2;
+}
+if(item==='dragonfang'&&serverPokemon.speciesForme==='Clamperl-Delta'){
+stats.atk*=2;
 }
 if(item==='souldew'&&this.battle.gen<=6&&(species==='Latios'||species==='Latias')){
 stats.spa=Math.floor(stats.spa*1.5);
@@ -1189,8 +1194,11 @@ break;
 if(item==='assaultvest'){
 stats.spd=Math.floor(stats.spd*1.5);
 }
-if(item==='deepseascale'&&species==='Clamperl'){
+if(item==='deepseascale'&&serverPokemon.speciesForme==='Clamperl'){
 stats.spd*=2;
+}
+if(item==='dragonscale'&&serverPokemon.speciesForme==='Clamperl-Delta'){
+stats.def*=2;
 }
 if(item==='choicescarf'&&!(clientPokemon!=null&&clientPokemon.volatiles['dynamax'])){
 speedModifiers.push(1.5);
@@ -1396,7 +1404,7 @@ break;
 case'hail':
 moveType='Ice';
 break;
-case'darkness':
+case'newmoon':
 moveType='Dark';
 break;}
 
@@ -1470,7 +1478,9 @@ if(move.id==='hurricane'||move.id==='thunder'){
 value.weatherModify(0,'Rain Dance');
 value.weatherModify(0,'Primordial Sea');
 }
+if(!move.ohko){
 value.abilityModify(0,'No Guard');
+}
 if(!value.value)return value;
 
 

@@ -925,7 +925,7 @@ primordialsea:'Heavy Rain',
 sandstorm:'Sandstorm',
 hail:'Hail',
 deltastream:'Strong Winds',
-darkness:'Darkness'};
+newmoon:'Darkness'};
 
 weatherhtml=""+(weatherNameTable[this.battle.weather]||this.battle.weather);
 if(this.battle.weatherMinTimeLeft!==0){
@@ -38804,6 +38804,8 @@ BattleMoveAnims['darkmatter']={anim:BattleMoveAnims['darkpulse'].anim};
 BattleMoveAnims['wildfire']={anim:BattleMoveAnims['shelltrap'].anim};
 BattleMoveAnims['livewire']={anim:BattleMoveAnims['electroweb'].anim};
 BattleMoveAnims['permafrost']={anim:BattleMoveAnims['freezedry'].anim};
+BattleMoveAnims['zombiestrike']={anim:BattleMoveAnims['shadowclaw'].anim};
+BattleMoveAnims['morph']={anim:BattleMoveAnims['transform'].anim};
 
 BattleMoveAnims['lunarcannon']={
 anim:BattleMoveAnims['moongeistbeam'].anim,

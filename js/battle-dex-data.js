@@ -757,7 +757,16 @@ ufi:1380+225,
 
 poliwrathmega:1608+0,
 marowakmega:1608+1,
-eeveepremegamegabase:1608+2,
+eeveemega:1608+2,
+eeveemegabase:1608+2,
+eeveemegav:1608+2,
+eeveemegaj:1608+2,
+eeveemegaf:1608+2,
+eeveemegae:1608+2,
+eeveemegau:1608+2,
+eeveemegal:1608+2,
+eeveemegag:1608+2,
+eeveemegas:1608+2,
 meganiummega:1608+3,
 typhlosionmega:1608+4,
 feraligatrmega:1608+5,
@@ -787,6 +796,11 @@ haxorusmega:1608+28,
 stunfiskmega:1608+29,
 bisharpmega:1608+30,
 hydreigonmega:1608+31,
+hydreigonmegafive:1608+31,
+hydreigonmegasix:1608+31,
+hydreigonmegaseven:1608+31,
+hydreigonmegaeight:1608+31,
+hydreigonmeganine:1608+31,
 sunflorafmega:1608+32,
 venusaurdeltamegaf:1608+33,
 
@@ -797,7 +811,7 @@ mewspace:1644+3,
 tyranitararmor:1644+4,
 flygonarmor:1644+5,
 castformsandy:1644+6,
-castformdarkness:1644+7,
+castformcloudy:1644+7,
 regigigasprimal:1644+8,
 giratinaprimal:1644+9,
 arceusprimal:1644+10,
@@ -1665,7 +1679,8 @@ Species=
 
 
 
-function Species(id,name,data){this.effectType='Species';this.id=void 0;this.name=void 0;this.gen=void 0;this.exists=void 0;this.baseSpecies=void 0;this.forme=void 0;this.formeid=void 0;this.spriteid=void 0;this.baseForme=void 0;this.num=void 0;this.types=void 0;this.abilities=void 0;this.baseStats=void 0;this.weightkg=void 0;this.heightm=void 0;this.gender=void 0;this.color=void 0;this.genderRatio=void 0;this.eggGroups=void 0;this.tags=void 0;this.otherFormes=void 0;this.cosmeticFormes=void 0;this.evos=void 0;this.prevo=void 0;this.evoType=void 0;this.evoLevel=void 0;this.evoMove=void 0;this.evoItem=void 0;this.evoCondition=void 0;this.requiredItems=void 0;this.tier=void 0;this.isTotem=void 0;this.isMega=void 0;this.canGigantamax=void 0;this.isPrimal=void 0;this.battleOnly=void 0;this.isNonstandard=void 0;this.unreleasedHidden=void 0;this.changesFrom=void 0;
+
+function Species(id,name,data){this.effectType='Species';this.id=void 0;this.name=void 0;this.gen=void 0;this.exists=void 0;this.baseSpecies=void 0;this.forme=void 0;this.formeid=void 0;this.spriteid=void 0;this.baseForme=void 0;this.num=void 0;this.types=void 0;this.abilities=void 0;this.baseStats=void 0;this.bst=void 0;this.weightkg=void 0;this.heightm=void 0;this.gender=void 0;this.color=void 0;this.genderRatio=void 0;this.eggGroups=void 0;this.tags=void 0;this.otherFormes=void 0;this.cosmeticFormes=void 0;this.evos=void 0;this.prevo=void 0;this.evoType=void 0;this.evoLevel=void 0;this.evoMove=void 0;this.evoItem=void 0;this.evoCondition=void 0;this.requiredItems=void 0;this.tier=void 0;this.isTotem=void 0;this.isMega=void 0;this.canGigantamax=void 0;this.isPrimal=void 0;this.battleOnly=void 0;this.isNonstandard=void 0;this.unreleasedHidden=void 0;this.changesFrom=void 0;
 if(!data||typeof data!=='object')data={};
 if(data.name)name=data.name;
 this.name=Dex.sanitizeName(name);
@@ -1685,6 +1700,8 @@ this.num=data.num||0;
 this.types=data.types||['???'];
 this.abilities=data.abilities||{0:"No Ability"};
 this.baseStats=data.baseStats||{hp:0,atk:0,def:0,spa:0,spd:0,spe:0};
+this.bst=this.baseStats.hp+this.baseStats.atk+this.baseStats.def+
+this.baseStats.spa+this.baseStats.spd+this.baseStats.spe;
 this.weightkg=data.weightkg||0;
 
 this.heightm=data.heightm||0;

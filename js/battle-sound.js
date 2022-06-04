@@ -115,7 +115,9 @@ if(!window.HTMLAudioElement)return;
 if(this.soundCache[url])return this.soundCache[url];
 try{
 var sound=document.createElement('audio');
-sound.src='https://'+Config.routes.client+'/'+url;
+
+var unDeltaUrl=url.includes('meloettadeltamime')?url.replace('meloettadeltamime','meloetta-pirouette'):url.replace(/-?delta.*?(?=-mega|-unbound|-crystal|\.)/,'');
+sound.src='https://raw.githubusercontent.com/Poilerwags/Sprites/master/play.pokemonshowdown.com/'+unDeltaUrl;
 sound.volume=this.effectVolume/100;
 this.soundCache[url]=sound;
 return sound;
