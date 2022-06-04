@@ -1033,7 +1033,7 @@ var BattleAvatarNumbers={
 92:'palmer',
 93:'thorton',
 94:'buck',
-95:'darach',
+95:'darach-caitlin',
 96:'marley',
 97:'mira',
 98:'cheryl',

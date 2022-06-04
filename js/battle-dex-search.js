@@ -1243,7 +1243,7 @@ case'submission':return!moves.includes('highjumpkick');}
 }
 
 if(this.formatType==='letsgo'){
-if(id==='megadrain')return true;
+if(['megadrain','teleport'].includes(id))return true;
 }
 
 if(this.formatType==='metronome'){
