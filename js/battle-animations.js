@@ -967,18 +967,7 @@ weather='';
 }
 var terrain='';for(var _i11=0,_this$battle$pseudoWe2=
 this.battle.pseudoWeather;_i11<_this$battle$pseudoWe2.length;_i11++){var pseudoWeatherData=_this$battle$pseudoWe2[_i11];
-var pwid=toID(pseudoWeatherData[0]);
-switch(pwid){
-case'electricterrain':
-case'grassyterrain':
-case'mistyterrain':
-case'psychicterrain':
-terrain=pwid;
-break;
-default:
-if(!terrain)terrain='pseudo';
-break;}
-
+terrain=toID(pseudoWeatherData[0]);
 }
 if(weather==='desolateland'||weather==='primordialsea'||weather==='deltastream'){
 isIntense=true;
