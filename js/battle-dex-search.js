@@ -358,7 +358,7 @@ if(query.length===1&&typeIndex!==(searchType?searchTypeIndex:1))continue;
 
 
 if(searchType==='pokemon'&&(typeIndex===5||typeIndex>7))continue;
-if(searchType==='pokemon'&&typeIndex===3&&this.dex.gen<8)continue;
+if(searchType==='pokemon'&&typeIndex===3&&this.dex.gen<9)continue;
 
 if(searchType==='move'&&(typeIndex!==8&&typeIndex>4||typeIndex===3))continue;
 
@@ -607,6 +607,7 @@ format=format.slice(4);
 this.dex=Dex.mod('gen8bdsp');
 }
 if(format.includes('doubles')&&this.dex.gen>4&&!this.formatType)this.formatType='doubles';
+if(format==='partnersincrime')this.formatType='doubles';
 if(format.startsWith('ffa')||format==='freeforall')this.formatType='doubles';
 if(format.includes('letsgo')){
 this.formatType='letsgo';
@@ -754,9 +755,12 @@ if(
 this.format.startsWith('vgc')||
 this.format.startsWith('battlespot')||
 this.format.startsWith('battlestadium')||
-this.format.startsWith('battlefestival'))
+this.format.startsWith('battlefestival')||
+this.dex.gen===9&&this.formatType!=='natdex')
 {
-if(gen===8){
+if(gen===9){
+genChar='a';
+}else if(gen===8){
 genChar='g';
 }else if(gen===7){
 genChar='q';
@@ -792,6 +796,7 @@ this.formatType==='bdspdoubles'?'gen8bdspdoubles':
 this.formatType==='nfe'?"gen"+gen+"nfe":
 this.formatType==='dlc1'?'gen8dlc1':
 this.formatType==='dlc1doubles'?'gen8dlc1doubles':
+this.formatType==='natdex'?"gen"+gen+"natdex":
 this.formatType==='stadium'?"gen"+gen+"stadium"+(gen>1?gen:''):"gen"+
 gen;
 if(table&&table[tableKey]){
@@ -853,6 +858,9 @@ break;
 case'grookey':
 results.push(['header',"Generation 8"]);
 break;
+case'sprigatito':
+results.push(['header',"Generation 9"]);
+break;
 case'missingno':
 results.push(['header',"Glitch"]);
 break;
@@ -874,7 +882,7 @@ var isDoublesOrBS=isVGCOrBS||((_this$formatType3=this.formatType)==null?void 0:_
 var dex=this.dex;
 
 var table=BattleTeambuilderTable;
-if((format.endsWith('cap')||format.endsWith('caplc'))&&dex.gen<8){
+if((format.endsWith('cap')||format.endsWith('caplc'))&&dex.gen<9){
 table=table['gen'+dex.gen];
 }else if(isVGCOrBS){
 table=table['gen'+dex.gen+'vgc'];
@@ -883,21 +891,22 @@ table['gen'+dex.gen+'doubles']&&dex.gen>4&&
 this.formatType!=='letsgo'&&this.formatType!=='bdspdoubles'&&this.formatType!=='dlc1doubles'&&(
 
 format.includes('doubles')||format.includes('triples')||
-format==='freeforall'||format.startsWith('ffa')))
+format==='freeforall'||format.startsWith('ffa')||
+format==='partnersincrime'))
 
 {
 table=table['gen'+dex.gen+'doubles'];
 isDoublesOrBS=true;
-}else if(dex.gen<8&&!this.formatType){
+}else if(dex.gen<9&&!this.formatType){
 table=table['gen'+dex.gen];
 }else if((_this$formatType4=this.formatType)!=null&&_this$formatType4.startsWith('bdsp')){
 table=table['gen8'+this.formatType];
 }else if(this.formatType==='letsgo'){
 table=table['gen7letsgo'];
 }else if(this.formatType==='natdex'){
-table=table['natdex'];
+table=table['gen'+this.dex.gen+'natdex'];
 }else if(this.formatType==='metronome'){
-table=table['metronome'];
+table=table['gen'+dex.gen+'metronome'];
 }else if(this.formatType==='nfe'){
 table=table['gen'+dex.gen+'nfe'];
 }else if((_this$formatType5=this.formatType)!=null&&_this$formatType5.startsWith('dlc1')){
@@ -1077,7 +1086,7 @@ if(species.abilities['S']){
 abilitySet.push(['header',"Special Event Ability"]);
 abilitySet.push(['ability',toID(species.abilities['S'])]);
 }
-if(isAAA||format==='metronomebattle'||isHackmons){
+if(isAAA||format.includes('metronomebattle')||isHackmons){
 var abilities=[];
 for(var i in this.getTable()){
 var ability=dex.abilities.get(i);
@@ -1137,10 +1146,10 @@ var table=BattleTeambuilderTable;
 if((_this$formatType7=this.formatType)!=null&&_this$formatType7.startsWith('bdsp')){
 table=table['gen8bdsp'];
 }else if(this.formatType==='natdex'){
-table=table['natdex'];
+table=table['gen'+this.dex.gen+'natdex'];
 }else if(this.formatType==='metronome'){
-table=table['metronome'];
-}else if(this.dex.gen<8){
+table=table['gen'+this.dex.gen+'metronome'];
+}else if(this.dex.gen<9){
 table=table['gen'+this.dex.gen];
 }
 if(!table.itemSet){
@@ -1442,8 +1451,9 @@ var format=this.format;
 var isHackmons=format.includes('hackmons')||format.endsWith('bh');
 var isSTABmons=format.includes('stabmons')||format==='staaabmons';
 var isTradebacks=format.includes('tradebacks');
-var galarBornLegality=(/^battle(stadium|festival)/.test(format)||format.startsWith('vgc'))&&
-this.dex.gen===8;
+var regionBornLegality=dex.gen>=6&&
+/^battle(spot|stadium|festival)/.test(format)||format.startsWith('vgc')||
+dex.gen===9&&this.formatType!=='natdex';
 
 var abilityid=this.set?toID(this.set.ability):'';
 var itemid=this.set?toID(this.set.item):'';
@@ -1463,10 +1473,8 @@ if(learnset){
 for(var moveid in learnset){var _this$formatType10,_BattleTeambuilderTab;
 var learnsetEntry=learnset[moveid];
 var move=dex.moves.get(moveid);
-
-
-
-if(galarBornLegality&&!learnsetEntry.includes('g')){
+var minGenCode={6:'p',7:'q',8:'g',9:'a'};
+if(regionBornLegality&&!learnsetEntry.includes(minGenCode[dex.gen])){
 continue;
 }
 if(
@@ -1510,6 +1518,7 @@ sketchMoves.push(_move.id);
 }else{
 if(!(dex.gen<8||this.formatType==='natdex')&&_move.isZ)continue;
 if(typeof _move.isMax==='string')continue;
+if(_move.isMax&&dex.gen>8)continue;
 if(_move.isNonstandard==='Past'&&this.formatType!=='natdex')continue;
 if(_move.isNonstandard==='LGPE'&&this.formatType!=='letsgo')continue;
 moves.push(_move.id);
@@ -1522,7 +1531,7 @@ for(var _id11 in this.getTable()){
 var _move2=dex.moves.get(_id11);
 if(moves.includes(_move2.id))continue;
 if(_move2.gen>dex.gen)continue;
-if(_move2.isZ||_move2.isMax||_move2.isNonstandard)continue;
+if(_move2.isZ||_move2.isMax||_move2.isNonstandard&&_move2.isNonstandard!=='Unobtainable')continue;
 
 var speciesTypes=[];
 var moveTypes=[];
@@ -1542,7 +1551,9 @@ prevo=prevoSpecies.prevo;
 if(pokemon.battleOnly&&typeof pokemon.battleOnly==='string'){
 species=dex.species.get(pokemon.battleOnly);
 }
-var excludedForme=function(s){return['Alola','Alola-Totem','Galar','Galar-Zen','Hisui'].includes(s.forme);};
+var excludedForme=function(s){return[
+'Alola','Alola-Totem','Galar','Galar-Zen','Hisui','Paldea','Paldea-Fire','Paldea-Water'].
+includes(s.forme);};
 if(baseSpecies.otherFormes&&!['Wormadam','Urshifu'].includes(baseSpecies.baseSpecies)){
 if(!excludedForme(species))speciesTypes.push.apply(speciesTypes,baseSpecies.types);for(var _i10=0,_baseSpecies$otherFor=
 baseSpecies.otherFormes;_i10<_baseSpecies$otherFor.length;_i10++){var formeName=_baseSpecies$otherFor[_i10];

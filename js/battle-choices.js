@@ -101,6 +101,8 @@
 
 
 
+
+
 BattleChoiceBuilder=function(){
 
 
@@ -121,7 +123,9 @@ BattleChoiceBuilder=function(){
 
 
 
-function BattleChoiceBuilder(request){this.request=void 0;this.choices=[];this.current={choiceType:'move',move:0,targetLoc:0,mega:false,ultra:false,z:false,max:false};this.alreadySwitchingIn=[];this.alreadyMega=false;this.alreadyMax=false;this.alreadyZ=false;
+
+
+function BattleChoiceBuilder(request){this.request=void 0;this.choices=[];this.current={choiceType:'move',move:0,targetLoc:0,mega:false,ultra:false,z:false,max:false,tera:false};this.alreadySwitchingIn=[];this.alreadyMega=false;this.alreadyMax=false;this.alreadyZ=false;this.alreadyTera=false;
 this.request=request;
 this.fillPasses();
 }var _proto=BattleChoiceBuilder.prototype;_proto.
@@ -186,17 +190,20 @@ this.current.mega=choice.mega;
 this.current.ultra=choice.ultra;
 this.current.z=choice.z;
 this.current.max=choice.max;
+this.current.tera=choice.tera;
 return null;
 }
 }
 if(choice.mega)this.alreadyMega=true;
 if(choice.z)this.alreadyZ=true;
 if(choice.max)this.alreadyMax=true;
+if(choice.tera)this.alreadyTera=true;
 this.current.move=0;
 this.current.mega=false;
 this.current.ultra=false;
 this.current.z=false;
 this.current.max=false;
+this.current.tera=false;
 }else if(choice.choiceType==='switch'||choice.choiceType==='team'){
 if(this.alreadySwitchingIn.includes(choice.targetPokemon)){
 if(choice.choiceType==='switch'){
@@ -280,7 +287,8 @@ targetLoc:0,
 mega:false,
 ultra:false,
 z:false,
-max:false};
+max:false,
+tera:false};
 
 while(true){
 
@@ -306,6 +314,12 @@ choice=choice.slice(0,-8);
 }else if(choice.endsWith(' max')){
 current.max=true;
 choice=choice.slice(0,-4);
+}else if(choice.endsWith(' terastallize')){
+current.tera=true;
+choice=choice.slice(0,-13);
+}else if(choice.endsWith(' terastal')){
+current.tera=true;
+choice=choice.slice(0,-9);
 }else{
 break;
 }
@@ -416,7 +430,7 @@ if(!choice)return"pass";
 switch(choice.choiceType){
 case'move':
 var target=choice.targetLoc?" "+(choice.targetLoc>0?'+':'')+choice.targetLoc:"";
-var boost=""+(choice.max?' max':'')+(choice.mega?' mega':'')+(choice.z?' zmove':'');
+var boost=""+(choice.max?' max':'')+(choice.mega?' mega':'')+(choice.z?' zmove':'')+(choice.tera?' terastallize':'');
 return"move "+choice.move+boost+target;
 case'switch':
 case'team':
