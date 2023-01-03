@@ -2819,7 +2819,6 @@ case'-singlemove':{
 var _poke35=this.getPokemon(args[1]);
 var _effect18=Dex.getEffect(args[2]);
 _poke35.addMovestatus(_effect18.id);
-
 switch(_effect18.id){
 case'grudge':
 this.scene.resultAnim(_poke35,'Grudge','neutral');
@@ -2828,6 +2827,7 @@ case'destinybond':
 this.scene.resultAnim(_poke35,'Destiny Bond','neutral');
 break;}
 
+this.scene.updateStatbar(_poke35);
 this.log(args,kwArgs);
 break;
 }
