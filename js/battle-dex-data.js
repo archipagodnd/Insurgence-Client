@@ -138,7 +138,7 @@ spe:'Spe'};
 
 
 var BattleBaseSpeciesChart=[
-"unown","burmy","shellos","gastrodon","deerling","sawsbuck","vivillon","flabebe","floette","florges","furfrou","minior","alcremie","tatsugiri","pokestarufo","pokestarbrycenman","pokestarmt","pokestarmt2","pokestartransport","pokestargiant","pokestarhumanoid","pokestarmonster","pokestarf00","pokestarf002","pokestarspirit","pokestarblackdoor","pokestarwhitedoor","pokestarblackbelt","snorlaxdelta","mew"];
+"unown","burmy","shellos","gastrodon","deerling","sawsbuck","vivillon","flabebe","floette","florges","furfrou","minior","alcremie","tatsugiri","pokestarufo","pokestarbrycenman","pokestarmt","pokestarmt2","pokestartransport","pokestargiant","pokestarhumanoid","pokestarmonster","pokestarf00","pokestarf002","pokestarspirit","pokestarblackdoor","pokestarwhitedoor","pokestarblackbelt","snorlaxdelta","mukdelta","mew"];
 
 
 var BattlePokemonIconIndexes={
@@ -807,7 +807,7 @@ typhlosionmega:1752+4,
 feraligatrmega:1752+5,
 sudowoodomega:1752+6,
 politoedmega:1752+7,
-sunflorammega:1752+8,
+sunfloramegam:1752+8,
 girafarigmega:1752+9,
 steelixmegafire:1752+10,
 magcargomega:1752+11,
@@ -836,7 +836,7 @@ hydreigonmegasix:1752+31,
 hydreigonmegaseven:1752+31,
 hydreigonmegaeight:1752+31,
 hydreigonmeganine:1752+31,
-sunflorafmega:1752+32,
+sunfloramegaf:1752+32,
 venusaurdeltamegaf:1752+33,
 
 mewtwoarmor:1788+0,
