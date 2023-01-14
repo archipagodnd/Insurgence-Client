@@ -1084,6 +1084,7 @@ Storage.importTeam = function (buffer, teams) {
 				}
 				line = $.trim(line.substr(bracketIndex + 1));
 			}
+			var gen = parseInt(format[3], 10) || 6;
 			if (teams.length && typeof teams[teams.length - 1].team !== 'string') {
 				teams[teams.length - 1].team = Storage.packTeam(teams[teams.length - 1].team);
 			}
@@ -1096,6 +1097,7 @@ Storage.importTeam = function (buffer, teams) {
 			teams.push({
 				name: line,
 				format: format,
+				gen: gen,
 				team: team,
 				capacity: capacity,
 				folder: folder,

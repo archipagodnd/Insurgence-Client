@@ -2692,6 +2692,10 @@ yscale:0,
 xscale:0,
 opacity:0},
 sp));
+if(speciesid==='palafinhero'){
+this.$el.replaceWith($newEl);
+this.$el=$newEl;
+}else{
 this.$el.animate(this.scene.pos({
 x:this.x,
 y:this.y,
@@ -2713,6 +2717,7 @@ opacity:1},
 sp),300);
 });
 this.scene.wait(500);
+}
 
 this.scene.updateSidebar(pokemon.side);
 if(isPermanent){

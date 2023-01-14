@@ -117,6 +117,7 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 		this.shiny = data.shiny;
 		this.gender = data.gender || 'N';
 		this.ident = data.ident;
+		this.terastallized = data.terastallized || '';
 		this.searchid = data.searchid;
 
 		this.sprite = side.battle.scene.addPokemonSprite(this);
@@ -437,26 +438,16 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 		this.volatiles = pokemon.volatiles;
 		// this.lastMove = pokemon.lastMove; // I think
 		if (!copySource) {
-			delete this.volatiles['airballoon'];
-			delete this.volatiles['attract'];
-			delete this.volatiles['autotomize'];
-			delete this.volatiles['disable'];
-			delete this.volatiles['encore'];
-			delete this.volatiles['foresight'];
-			delete this.volatiles['gmaxchistrike'];
-			delete this.volatiles['imprison'];
-			delete this.volatiles['laserfocus'];
-			delete this.volatiles['mimic'];
-			delete this.volatiles['miracleeye'];
-			delete this.volatiles['nightmare'];
-			delete this.volatiles['smackdown'];
-			delete this.volatiles['stockpile1'];
-			delete this.volatiles['stockpile2'];
-			delete this.volatiles['stockpile3'];
-			delete this.volatiles['torment'];
-			delete this.volatiles['typeadd'];
-			delete this.volatiles['typechange'];
-			delete this.volatiles['yawn'];
+			const volatilesToRemove = [
+				'airballoon', 'attract', 'autotomize', 'disable', 'encore', 'foresight', 'gmaxchistrike', 'imprison', 'laserfocus', 'mimic', 'miracleeye', 'nightmare', 'saltcure', 'smackdown', 'stockpile1', 'stockpile2', 'stockpile3', 'torment', 'typeadd', 'typechange', 'yawn',
+			];
+			for (const statName of Dex.statNamesExceptHP) {
+				volatilesToRemove.push('protosynthesis' + statName);
+				volatilesToRemove.push('quarkdrive' + statName);
+			}
+			for (const volatile of volatilesToRemove) {
+				delete this.volatiles[volatile];
+			}
 		}
 		if (copySource === 'shedtail') {
 			for (let i in this.volatiles) {
@@ -880,6 +871,7 @@ export class Side {
 			pokemon.maxhp = oldpokemon.maxhp;
 			pokemon.hpcolor = oldpokemon.hpcolor;
 			pokemon.status = oldpokemon.status;
+			pokemon.terastallized = oldpokemon.terastallized;
 			pokemon.copyVolatileFrom(oldpokemon, true);
 			pokemon.statusData = {...oldpokemon.statusData};
 			// we don't know anything about the illusioned pokemon except that it's not fainted
@@ -887,6 +879,7 @@ export class Side {
 			oldpokemon.fainted = false;
 			oldpokemon.hp = oldpokemon.maxhp;
 			oldpokemon.status = '???';
+			oldpokemon.terastallized = '';
 		}
 		this.active[slot] = pokemon;
 		pokemon.slot = slot;
@@ -958,6 +951,8 @@ export class Side {
 		pokemon.fainted = true;
 		pokemon.hp = 0;
 		pokemon.terastallized = '';
+		pokemon.details = pokemon.details.replace(/, tera:[a-z]+/i, '');
+		pokemon.searchid = pokemon.searchid.replace(/, tera:[a-z]+/i, '');
 		if (pokemon.side.faintCounter < 100) pokemon.side.faintCounter++;
 
 		this.battle.scene.animFaint(pokemon);
@@ -977,6 +972,7 @@ export interface PokemonDetails {
 	shiny: boolean;
 	gender: GenderName | '';
 	ident: string;
+	terastallized: string;
 	searchid: string;
 }
 export interface PokemonHealth {
@@ -2000,7 +1996,11 @@ export class Battle {
 			let effect = Dex.getEffect(args[2]);
 			let fromeffect = Dex.getEffect(kwArgs.from);
 			let ofpoke = this.getPokemon(kwArgs.of);
-			this.activateAbility(ofpoke || poke, fromeffect);
+			if (fromeffect.id === 'clearamulet') {
+				ofpoke!.item = 'Clear Amulet';
+			} else {
+				this.activateAbility(ofpoke || poke, fromeffect);
+			}
 			switch (effect.id) {
 			case 'brn':
 				this.scene.resultAnim(poke, 'Already burned', 'neutral');
@@ -2063,6 +2063,9 @@ export class Battle {
 				break;
 			case 'protectivepads':
 				poke.item = 'Protective Pads';
+				break;
+			case 'abilityshield':
+				poke.item = 'Ability Shield';
 				break;
 			}
 			this.log(args, kwArgs);
@@ -2413,15 +2416,8 @@ export class Battle {
 			poke.details = args[2];
 			poke.searchid = args[1].substr(0, 2) + args[1].substr(3) + '|' + args[2];
 
-			if (poke.getSpeciesForme() === 'Palafin-Hero') {
-				poke.sprite.sp = Dex.getSpriteData(poke, poke.sprite.isFrontSprite, {
-					gen: poke.sprite.scene.gen,
-					mod: poke.sprite.scene.mod,
-				});
-				poke.sprite.oldsp = null;
-			} else {
-				this.scene.animTransform(poke, true, true);
-			}
+			let isCustomAnim = species.id !== 'palafinhero';
+			this.scene.animTransform(poke, isCustomAnim, true);
 			this.log(args, kwArgs);
 			break;
 		}
@@ -3132,6 +3128,10 @@ export class Battle {
 		output.ident = (!isTeamPreview ? pokemonid : '');
 		output.searchid = (!isTeamPreview ? `${pokemonid}|${details}` : '');
 		let splitDetails = details.split(', ');
+		if (splitDetails[splitDetails.length - 1].startsWith('tera:')) {
+			output.terastallized = splitDetails[splitDetails.length - 1].slice(5);
+			splitDetails.pop();
+		}
 		if (splitDetails[splitDetails.length - 1] === 'shiny') {
 			output.shiny = true;
 			splitDetails.pop();
@@ -3549,6 +3549,7 @@ export class Battle {
 			let slot = poke.slot;
 			poke.healthParse(args[3]);
 			poke.removeVolatile('itemremoved' as ID);
+			poke.terastallized = args[2].match(/tera:([a-z]+)$/i)?.[1] || '';
 			if (args[0] === 'switch') {
 				if (poke.side.active[slot]) {
 					poke.side.switchOut(poke.side.active[slot]!, kwArgs);
