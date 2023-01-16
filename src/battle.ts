@@ -78,7 +78,7 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 	fainted = false;
 	hp = 0;
 	maxhp = 1000;
-	level = 100;
+	level = 120;
 	gender: GenderName = 'N';
 	shiny = false;
 
@@ -3122,7 +3122,7 @@ export class Battle {
 		output.details = details;
 		output.name = name;
 		output.speciesForme = name;
-		output.level = 100;
+		output.level = 120;
 		output.shiny = false;
 		output.gender = '';
 		output.ident = (!isTeamPreview ? pokemonid : '');
