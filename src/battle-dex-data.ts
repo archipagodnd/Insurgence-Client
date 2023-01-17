@@ -413,7 +413,7 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	mewtwomegax: 1260 + 13,
 	mewtwomegay: 1260 + 14,
 	ampharosmega: 1260 + 15,
-	steelixmega: 1260 + 16,
+	steelixmegasteel: 1260 + 16,
 	scizormega: 1260 + 17,
 	heracrossmega: 1260 + 18,
 	houndoommega: 1260 + 19,
@@ -785,7 +785,7 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	meloettadeltamime: 1524 + 221,
 	meloettadeltamagician: 1524 + 222,
 	hoopadelta: 1524 + 223,
-	hoopadeltaunbound: 1524 + 224,
+	hoopadeltaunleashed: 1524 + 224,
 	ufi: 1524 + 225,
 	//For some reason, changing MissingNo's icon also changes the 'empty slot' icon in doubles battles. Pokémon with no icon still use the ? icon.
 	//missingno: 1524 + 226,

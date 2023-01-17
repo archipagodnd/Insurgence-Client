@@ -1350,7 +1350,7 @@ class BattleMoveSearch extends BattleTypedSearch<'move'> {
 		case 'hyperspacefury':
 			return species.id === 'hoopaunbound';
 		case 'spiritaway':
-			return species.id === 'hoopadeltaunbound';
+			return species.id === 'hoopadeltaunleashed';
 		case 'hypnosis':
 			return (dex.gen < 4 && !moves.includes('sleeppowder')) || (dex.gen > 6 && abilityid === 'baddreams');
 		case 'icepunch':
