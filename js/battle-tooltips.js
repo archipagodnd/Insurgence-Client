@@ -792,7 +792,7 @@ if(pokemon.speciesForme!==pokemon.name){
 name+=' <small>('+BattleLog.escapeHTML(pokemon.speciesForme)+')</small>';
 }
 
-var levelBuf=pokemon.level!==100?" <small>L"+pokemon.level+"</small>":"";
+var levelBuf=pokemon.level!==120?" <small>L"+pokemon.level+"</small>":"";
 if(!illusionIndex||illusionIndex===1){
 text+="<h2>"+name+genderBuf+(illusionIndex?'':levelBuf)+"<br />";
 
@@ -1245,17 +1245,25 @@ speedModifiers.push(0.5);
 if(ability==='furcoat'){
 stats.def*=2;
 }
-if(this.battle.abilityActive('Vessel of Ruin',pokemon)){
+if(this.battle.abilityActive('Vessel of Ruin')){
+if(ability!=='vesselofruin'){
 stats.spa=Math.floor(stats.spa*0.75);
 }
-if(this.battle.abilityActive('Sword of Ruin',pokemon)){
+}
+if(this.battle.abilityActive('Sword of Ruin')){
+if(ability!=='swordofruin'){
 stats.def=Math.floor(stats.def*0.75);
 }
-if(this.battle.abilityActive('Tablets of Ruin',pokemon)){
+}
+if(this.battle.abilityActive('Tablets of Ruin')){
+if(ability!=='tabletsofruin'){
 stats.atk=Math.floor(stats.atk*0.75);
 }
-if(this.battle.abilityActive('Beads of Ruin',pokemon)){
+}
+if(this.battle.abilityActive('Beads of Ruin')){
+if(ability!=='beadsofruin'){
 stats.spd=Math.floor(stats.spd*0.75);
+}
 }
 var sideConditions=this.battle.mySide.sideConditions;
 if(sideConditions['tailwind']){
@@ -1579,7 +1587,7 @@ value.set(0,"FAILS: target's level is higher");
 value.set(value.value+pokemon.level-target.level,"+1% per level above target");
 }
 }else{
-if(pokemon.level<100)value.set(value.value,"fails if target's level is higher");
+if(pokemon.level<120)value.set(value.value,"fails if target's level is higher");
 if(pokemon.level>1)value.set(value.value,"+1% per level above target");
 }
 return value;
@@ -2812,7 +2820,7 @@ getStat=function getStat(stat,set,evOverride,natureOverride){var _BattleNatures,
 var species=this.dex.species.get(set.species);
 if(!species.exists)return 0;
 
-var level=set.level||100;
+var level=set.level||120;
 
 var baseStat=species.baseStats[stat];
 

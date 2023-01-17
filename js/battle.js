@@ -107,7 +107,7 @@ Pokemon=function(){
 
 
 
-function Pokemon(data,side){this.name='';this.speciesForme='';this.ident='';this.details='';this.searchid='';this.side=void 0;this.slot=0;this.fainted=false;this.hp=0;this.maxhp=1000;this.level=100;this.gender='N';this.shiny=false;this.hpcolor='g';this.moves=[];this.ability='';this.baseAbility='';this.item='';this.itemEffect='';this.prevItem='';this.prevItemEffect='';this.terastallized='';this.boosts={};this.status='';this.statusStage=0;this.volatiles={};this.turnstatuses={};this.movestatuses={};this.lastMove='';this.moveTrack=[];this.statusData={sleepTurns:0,toxicTurns:0};this.timesAttacked=0;this.sprite=void 0;
+function Pokemon(data,side){this.name='';this.speciesForme='';this.ident='';this.details='';this.searchid='';this.side=void 0;this.slot=0;this.fainted=false;this.hp=0;this.maxhp=1000;this.level=120;this.gender='N';this.shiny=false;this.hpcolor='g';this.moves=[];this.ability='';this.baseAbility='';this.item='';this.itemEffect='';this.prevItem='';this.prevItemEffect='';this.terastallized='';this.boosts={};this.status='';this.statusStage=0;this.volatiles={};this.turnstatuses={};this.movestatuses={};this.lastMove='';this.moveTrack=[];this.statusData={sleepTurns:0,toxicTurns:0};this.timesAttacked=0;this.sprite=void 0;
 this.side=side;
 this.speciesForme=data.speciesForme;
 
@@ -1207,18 +1207,13 @@ return true;
 }
 return false;
 };_proto3.
-abilityActive=function abilityActive(abilities,excludePokemon){var _this=this;
+abilityActive=function abilityActive(abilities){var _this=this;
 if(typeof abilities==='string')abilities=[abilities];
 if(this.ngasActive()){
 abilities=abilities.filter(function(a){return _this.dex.abilities.get(a).isPermanent;});
 if(!abilities.length)return false;
 }for(var _i10=0,_this$getAllActive2=
 this.getAllActive();_i10<_this$getAllActive2.length;_i10++){var active=_this$getAllActive2[_i10];
-if(active===excludePokemon)continue;
-if(excludePokemon&&this.pokemonControlled===1&&
-active.ident.slice(0,2)===excludePokemon.ident.slice(0,2)){
-continue;
-}
 if(abilities.includes(active.ability)&&!active.volatiles['gastroacid']){
 return true;
 }
@@ -3122,7 +3117,7 @@ var isTeamPreview=!name;
 output.details=details;
 output.name=name;
 output.speciesForme=name;
-output.level=100;
+output.level=120;
 output.shiny=false;
 output.gender='';
 output.ident=!isTeamPreview?pokemonid:'';

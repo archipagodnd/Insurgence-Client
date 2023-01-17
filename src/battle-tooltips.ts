@@ -792,7 +792,7 @@ class BattleTooltips {
 			name += ' <small>(' + BattleLog.escapeHTML(pokemon.speciesForme) + ')</small>';
 		}
 
-		let levelBuf = (pokemon.level !== 100 ? ` <small>L${pokemon.level}</small>` : ``);
+		let levelBuf = (pokemon.level !== 120 ? ` <small>L${pokemon.level}</small>` : ``);
 		if (!illusionIndex || illusionIndex === 1) {
 			text += `<h2>${name}${genderBuf}${illusionIndex ? '' : levelBuf}<br />`;
 
@@ -1245,17 +1245,25 @@ class BattleTooltips {
 		if (ability === 'furcoat') {
 			stats.def *= 2;
 		}
-		if (this.battle.abilityActive('Vessel of Ruin', pokemon)) {
-			stats.spa = Math.floor(stats.spa * 0.75);
+		if (this.battle.abilityActive('Vessel of Ruin')) {
+			if (ability !== 'vesselofruin') {
+				stats.spa = Math.floor(stats.spa * 0.75);
+			}
 		}
-		if (this.battle.abilityActive('Sword of Ruin', pokemon)) {
-			stats.def = Math.floor(stats.def * 0.75);
+		if (this.battle.abilityActive('Sword of Ruin')) {
+			if (ability !== 'swordofruin') {
+				stats.def = Math.floor(stats.def * 0.75);
+			}
 		}
-		if (this.battle.abilityActive('Tablets of Ruin', pokemon)) {
-			stats.atk = Math.floor(stats.atk * 0.75);
+		if (this.battle.abilityActive('Tablets of Ruin')) {
+			if (ability !== 'tabletsofruin') {
+				stats.atk = Math.floor(stats.atk * 0.75);
+			}
 		}
-		if (this.battle.abilityActive('Beads of Ruin', pokemon)) {
-			stats.spd = Math.floor(stats.spd * 0.75);
+		if (this.battle.abilityActive('Beads of Ruin')) {
+			if (ability !== 'beadsofruin') {
+				stats.spd = Math.floor(stats.spd * 0.75);
+			}
 		}
 		const sideConditions = this.battle.mySide.sideConditions;
 		if (sideConditions['tailwind']) {
@@ -1579,7 +1587,7 @@ class BattleTooltips {
 					value.set(value.value + pokemon.level - target.level, "+1% per level above target");
 				}
 			} else {
-				if (pokemon.level < 100) value.set(value.value, "fails if target's level is higher");
+				if (pokemon.level < 120) value.set(value.value, "fails if target's level is higher");
 				if (pokemon.level > 1) value.set(value.value, "+1% per level above target");
 			}
 			return value;
@@ -2812,7 +2820,7 @@ class BattleStatGuesser {
 		let species = this.dex.species.get(set.species);
 		if (!species.exists) return 0;
 
-		let level = set.level || 100;
+		let level = set.level || 120;
 
 		let baseStat = species.baseStats[stat];
 

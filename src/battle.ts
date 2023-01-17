@@ -78,7 +78,7 @@ export class Pokemon implements PokemonDetails, PokemonHealth {
 	fainted = false;
 	hp = 0;
 	maxhp = 1000;
-	level = 100;
+	level = 120;
 	gender: GenderName = 'N';
 	shiny = false;
 
@@ -1207,18 +1207,13 @@ export class Battle {
 		}
 		return false;
 	}
-	abilityActive(abilities: string | string[], excludePokemon?: Pokemon | ServerPokemon | null) {
+	abilityActive(abilities: string | string[]) {
 		if (typeof abilities === 'string') abilities = [abilities];
 		if (this.ngasActive()) {
 			abilities = abilities.filter(a => this.dex.abilities.get(a).isPermanent);
 			if (!abilities.length) return false;
 		}
 		for (const active of this.getAllActive()) {
-			if (active === excludePokemon) continue;
-			if (excludePokemon && this.pokemonControlled === 1 &&
-				active.ident.slice(0, 2) === excludePokemon.ident.slice(0, 2)) {
-				continue;
-			}
 			if (abilities.includes(active.ability) && !active.volatiles['gastroacid']) {
 				return true;
 			}
@@ -3122,7 +3117,7 @@ export class Battle {
 		output.details = details;
 		output.name = name;
 		output.speciesForme = name;
-		output.level = 100;
+		output.level = 120;
 		output.shiny = false;
 		output.gender = '';
 		output.ident = (!isTeamPreview ? pokemonid : '');

@@ -274,7 +274,7 @@ class PSTeambuilder {
 		}
 
 		// details
-		if (set.level && set.level !== 100) {
+		if (set.level && set.level !== 120) {
 			text += `Level: ${set.level}  \n`;
 		}
 		if (set.shiny) {
