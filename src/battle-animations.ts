@@ -833,7 +833,7 @@ export class BattleScene implements BattleSceneStub {
 				if (gender === 'M' || gender === 'F') {
 					buf2 += `<img src="${Dex.fxPrefix}gender-${gender.toLowerCase()}.png" alt="${gender}" width="7" height="10" class="pixelated" style="margin-bottom:-1px" /> `;
 				}
-				if (pokemon.level !== 100) {
+				if (pokemon.level !== 120) {
 					buf2 += '<span style="text-shadow:#000 1px 1px 0,#000 1px -1px 0,#000 -1px 1px 0,#000 -1px -1px 0"><small>L</small>' + pokemon.level + '</span>';
 				}
 				if (pokemon.item === '(mail)') {
@@ -2848,7 +2848,7 @@ export class PokemonSprite extends Sprite {
 		if (gender === 'M' || gender === 'F') {
 			buf += ` <img src="${Dex.fxPrefix}gender-${gender.toLowerCase()}.png" alt="${gender}" width="7" height="10" class="pixelated" />`;
 		}
-		buf += (pokemon.level === 100 ? `` : ` <small>L${pokemon.level}</small>`);
+		buf += (pokemon.level === 120 ? `` : ` <small>L${pokemon.level}</small>`);
 
 		let symbol = '';
 		if (pokemon.speciesForme.indexOf('-Mega') >= 0) symbol = 'mega';
