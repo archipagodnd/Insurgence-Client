@@ -722,7 +722,7 @@ Storage.packTeam = function (team) {
 		}
 
 		// level
-		if (set.level && set.level != 100) {
+		if (set.level && set.level != 120) {
 			buf += '|' + set.level;
 		} else {
 			buf += '|';
@@ -1266,7 +1266,7 @@ Storage.exportTeam = function (team, gen, hidestats) {
 		if (curSet.ability) {
 			text += 'Ability: ' + curSet.ability + "  \n";
 		}
-		if (curSet.level && curSet.level != 100) {
+		if (curSet.level && curSet.level != 120) {
 			text += 'Level: ' + curSet.level + "  \n";
 		}
 		if (curSet.shiny) {
