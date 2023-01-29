@@ -24,12 +24,12 @@ function ThemeHeaderTemplate() {
 <?php } ?>
 
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
-	<link rel="stylesheet" href="//insurgence-battle-sim.nl/style/font-awesome.css?0.0766701726003769" />
-	<link rel="stylesheet" href="//pokemonshowdown.com/theme/panels.css?0.8893998733188222" />
-	<link rel="stylesheet" href="//pokemonshowdown.com/theme/main.css?0.40527267367104125" />
-	<link rel="stylesheet" href="//insurgence-battle-sim.nl/style/battle.css?0.565617809472889" />
-	<link rel="stylesheet" href="//insurgence-battle-sim.nl/style/replay.css?0.619208742849269" />
-	<link rel="stylesheet" href="//insurgence-battle-sim.nl/style/utilichart.css?0.9085378529812984" />
+	<link rel="stylesheet" href="//insurgence-battle-sim.nl/style/font-awesome.css?0.8759383787169344" />
+	<link rel="stylesheet" href="//pokemonshowdown.com/theme/panels.css?0.12889161065052424" />
+	<link rel="stylesheet" href="//pokemonshowdown.com/theme/main.css?0.17338084272474452" />
+	<link rel="stylesheet" href="//insurgence-battle-sim.nl/style/battle.css?0.5984831553279464" />
+	<link rel="stylesheet" href="//insurgence-battle-sim.nl/style/replay.css?0.42541442518121486" />
+	<link rel="stylesheet" href="//insurgence-battle-sim.nl/style/utilichart.css?0.4316592939731503" />
 
 	<!-- Workarounds for IE bugs to display trees correctly. -->
 	<!--[if lte IE 6]><style> li.tree { height: 1px; } </style><![endif]-->
@@ -53,11 +53,11 @@ function ThemeHeaderTemplate() {
 	<div class="pfx-topbar">
 		<div class="header">
 			<ul class="nav">
-				<li><a class="button nav-first<?php if ($panels->tab === 'home') echo ' cur'; ?>" href="//pokemonshowdown.com/?0.21420219576309774"><img src="//pokemonshowdown.com/images/pokemonshowdownbeta.png?0.8660210389425229" alt="Pok&eacute;mon Showdown! (beta)" /> Home</a></li>
-				<li><a class="button<?php if ($panels->tab === 'pokedex') echo ' cur'; ?>" href="//dex.pokemonshowdown.com/?0.6841556151682477">Pok&eacute;dex</a></li>
-				<li><a class="button<?php if ($panels->tab === 'replay') echo ' cur'; ?>" href="/?0.7219145048148226">Replays</a></li>
-				<li><a class="button<?php if ($panels->tab === 'ladder') echo ' cur'; ?>" href="//pokemonshowdown.com/ladder/?0.3075063644555942">Ladder</a></li>
-				<li><a class="button nav-last" href="//pokemonshowdown.com/forums/?0.9385938673223393">Forum</a></li>
+				<li><a class="button nav-first<?php if ($panels->tab === 'home') echo ' cur'; ?>" href="//pokemonshowdown.com/?0.6861300085456246"><img src="//pokemonshowdown.com/images/pokemonshowdownbeta.png?0.6410007948285148" alt="Pok&eacute;mon Showdown! (beta)" /> Home</a></li>
+				<li><a class="button<?php if ($panels->tab === 'pokedex') echo ' cur'; ?>" href="//dex.pokemonshowdown.com/?0.7116610694537904">Pok&eacute;dex</a></li>
+				<li><a class="button<?php if ($panels->tab === 'replay') echo ' cur'; ?>" href="/?0.504058429618877">Replays</a></li>
+				<li><a class="button<?php if ($panels->tab === 'ladder') echo ' cur'; ?>" href="//pokemonshowdown.com/ladder/?0.7797899174161531">Ladder</a></li>
+				<li><a class="button nav-last" href="//pokemonshowdown.com/forums/?0.9569211836521614">Forum</a></li>
 			</ul>
 			<ul class="nav nav-play">
 				<li><a class="button greenbutton nav-first nav-last" href="http://play.pokemonshowdown.com/">Play</a></li>
@@ -74,10 +74,10 @@ function ThemeHeaderTemplate() {
 
 function ThemeScriptsTemplate() {
 ?>
-	<script src="//insurgence-battle-sim.nl/js/lib/jquery-1.11.0.min.js?0.8319554822598658"></script>
-	<script src="//insurgence-battle-sim.nl/js/lib/lodash.core.js?0.022024646924840408"></script>
-	<script src="//insurgence-battle-sim.nl/js/lib/backbone.js?0.8107558632431875"></script>
-	<script src="//dex.pokemonshowdown.com/js/panels.js?0.35351795734931435"></script>
+	<script src="//insurgence-battle-sim.nl/js/lib/jquery-1.11.0.min.js?0.8144355877998835"></script>
+	<script src="//insurgence-battle-sim.nl/js/lib/lodash.core.js?0.39926853901207204"></script>
+	<script src="//insurgence-battle-sim.nl/js/lib/backbone.js?0.48063418886547904"></script>
+	<script src="//dex.pokemonshowdown.com/js/panels.js?0.6228221069576036"></script>
 <?php
 }
 
@@ -86,21 +86,21 @@ function ThemeFooterTemplate() {
 ?>
 <?php $panels->scripts(); ?>
 
-	<script src="//insurgence-battle-sim.nl/js/lib/jquery-cookie.js?0.5320946114270959"></script>
-	<script src="//insurgence-battle-sim.nl/js/lib/html-sanitizer-minified.js?0.9526516354379604"></script>
-	<script src="//insurgence-battle-sim.nl/js/battle-sound.js?0.2457696521839745"></script>
-	<script src="//insurgence-battle-sim.nl/config/config.js?0.05604025876341545"></script>
-	<script src="//insurgence-battle-sim.nl/js/battledata.js?0.36578147721894205"></script>
-	<script src="//insurgence-battle-sim.nl/data/pokedex-mini.js?0.2876222256359746"></script>
-	<script src="//insurgence-battle-sim.nl/data/pokedex-mini-bw.js?0.585680902901714"></script>
-	<script src="//insurgence-battle-sim.nl/data/graphics.js?0.6561183313488339"></script>
-	<script src="//insurgence-battle-sim.nl/data/pokedex.js?0.5305952680309909"></script>
-	<script src="//insurgence-battle-sim.nl/data/items.js?0.23033787069509226"></script>
-	<script src="//insurgence-battle-sim.nl/data/moves.js?0.7380820521227047"></script>
-	<script src="//insurgence-battle-sim.nl/data/abilities.js?0.489252565069328"></script>
-	<script src="//insurgence-battle-sim.nl/data/teambuilder-tables.js?0.18514155533985965"></script>
-	<script src="//insurgence-battle-sim.nl/js/battle-tooltips.js?0.5254583157921973"></script>
-	<script src="//insurgence-battle-sim.nl/js/battle.js?0.5308516239832739"></script>
+	<script src="//insurgence-battle-sim.nl/js/lib/jquery-cookie.js?0.8105678763140589"></script>
+	<script src="//insurgence-battle-sim.nl/js/lib/html-sanitizer-minified.js?0.925247995264729"></script>
+	<script src="//insurgence-battle-sim.nl/js/battle-sound.js?0.6436073219502965"></script>
+	<script src="//insurgence-battle-sim.nl/config/config.js?0.5851011117182872"></script>
+	<script src="//insurgence-battle-sim.nl/js/battledata.js?0.46633711756222307"></script>
+	<script src="//insurgence-battle-sim.nl/data/pokedex-mini.js?0.31359168278694294"></script>
+	<script src="//insurgence-battle-sim.nl/data/pokedex-mini-bw.js?0.6271474993172559"></script>
+	<script src="//insurgence-battle-sim.nl/data/graphics.js?0.935220733113838"></script>
+	<script src="//insurgence-battle-sim.nl/data/pokedex.js?0.5891727028397276"></script>
+	<script src="//insurgence-battle-sim.nl/data/items.js?0.7960217830087406"></script>
+	<script src="//insurgence-battle-sim.nl/data/moves.js?0.8678181782405219"></script>
+	<script src="//insurgence-battle-sim.nl/data/abilities.js?0.11652267361413271"></script>
+	<script src="//insurgence-battle-sim.nl/data/teambuilder-tables.js?0.26147288134002555"></script>
+	<script src="//insurgence-battle-sim.nl/js/battle-tooltips.js?0.4068167466294237"></script>
+	<script src="//insurgence-battle-sim.nl/js/battle.js?0.5190475798055962"></script>
 	<script src="/js/replay.js?51e024e3"></script>
 
 </body></html>

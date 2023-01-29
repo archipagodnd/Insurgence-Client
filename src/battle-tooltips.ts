@@ -1108,7 +1108,7 @@ class BattleTooltips {
 			if (ability === 'sandrush' && weather === 'sandstorm') {
 				speedModifiers.push(2);
 			}
-			if (ability === 'slushrush' && (weather === 'hail' || weather === 'snow')) {
+			if ((ability === 'slushrush' || ability === 'icecleats') && (weather === 'hail' || weather === 'snow')) {
 				speedModifiers.push(2);
 			}
 			if (ability === 'shadowdance' && weather === 'newmoon') {

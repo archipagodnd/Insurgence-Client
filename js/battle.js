@@ -1207,18 +1207,13 @@ return true;
 }
 return false;
 };_proto3.
-abilityActive=function abilityActive(abilities,excludePokemon){var _this=this;
+abilityActive=function abilityActive(abilities){var _this=this;
 if(typeof abilities==='string')abilities=[abilities];
 if(this.ngasActive()){
 abilities=abilities.filter(function(a){return _this.dex.abilities.get(a).isPermanent;});
 if(!abilities.length)return false;
 }for(var _i10=0,_this$getAllActive2=
 this.getAllActive();_i10<_this$getAllActive2.length;_i10++){var active=_this$getAllActive2[_i10];
-if(active===excludePokemon)continue;
-if(excludePokemon&&this.pokemonControlled===1&&
-active.ident.slice(0,2)===excludePokemon.ident.slice(0,2)){
-continue;
-}
 if(abilities.includes(active.ability)&&!active.volatiles['gastroacid']){
 return true;
 }
@@ -2489,7 +2484,8 @@ var type=Dex.types.get(args[2]).name;
 _poke31.terastallized=type;
 _poke31.details+=", tera:"+type;
 _poke31.searchid+=", tera:"+type;
-this.scene.animTransform(_poke31,true,true);
+this.scene.animTransform(_poke31,true);
+this.scene.resetStatbar(_poke31);
 this.log(args,kwArgs);
 break;
 }

@@ -1108,7 +1108,7 @@ stats.def=Math.floor(stats.def*1.5);
 if(ability==='sandrush'&&weather==='sandstorm'){
 speedModifiers.push(2);
 }
-if(ability==='slushrush'&&(weather==='hail'||weather==='snow')){
+if((ability==='slushrush'||ability==='icecleats')&&(weather==='hail'||weather==='snow')){
 speedModifiers.push(2);
 }
 if(ability==='shadowdance'&&weather==='newmoon'){
@@ -1489,13 +1489,13 @@ moveType='Dark';
 
 if(move.id==='ragingbull'){
 switch(pokemon.getSpeciesForme()){
-case'Tauros-Paldea':
+case'Tauros-Paldea-Combat':
 moveType='Fighting';
 break;
-case'Tauros-Paldea-Fire':
+case'Tauros-Paldea-Blaze':
 moveType='Fire';
 break;
-case'Tauros-Paldea-Water':
+case'Tauros-Paldea-Aqua':
 moveType='Water';
 break;}
 
