@@ -602,7 +602,7 @@ Storage.unpackAllTeams = function (buffer) {
 	if (buffer.charAt(0) === '[' && $.trim(buffer).indexOf('\n') < 0) {
 		// old format
 		return JSON.parse(buffer).map(function (oldTeam) {
-			var format = oldTeam.format || 'gen8';
+			var format = oldTeam.format || 'gen9';
 			var capacity = 6;
 			if (format && format.slice(0, 3) !== 'gen') format = 'gen6' + format;
 			if (format && format.endsWith('-box')) {
@@ -612,6 +612,7 @@ Storage.unpackAllTeams = function (buffer) {
 			return {
 				name: oldTeam.name || '',
 				format: format,
+				gen: parseInt(format[3], 10) || 6,
 				team: Storage.packTeam(oldTeam.team),
 				capacity: capacity,
 				folder: '',
@@ -631,11 +632,12 @@ Storage.unpackLine = function (line) {
 	var isBox = line.slice(0, bracketIndex).endsWith('-box');
 	var slashIndex = line.lastIndexOf('/', pipeIndex);
 	if (slashIndex < 0) slashIndex = bracketIndex; // line.slice(slashIndex + 1, pipeIndex) will be ''
-	var format = bracketIndex > 0 ? line.slice(0, isBox ? bracketIndex - 4 : bracketIndex) : 'gen8';
+	var format = bracketIndex > 0 ? line.slice(0, isBox ? bracketIndex - 4 : bracketIndex) : 'gen9';
 	if (format && format.slice(0, 3) !== 'gen') format = 'gen6' + format;
 	return {
 		name: line.slice(slashIndex + 1, pipeIndex),
 		format: format,
+		gen: parseInt(format[3], 10) || 6,
 		team: line.slice(pipeIndex + 1),
 		capacity: isBox ? 24 : 6,
 		folder: line.slice(bracketIndex + 1, slashIndex > 0 ? slashIndex : bracketIndex + 1),
@@ -1072,7 +1074,7 @@ Storage.importTeam = function (buffer, teams) {
 		} else if (line.substr(0, 3) === '===' && teams) {
 			team = [];
 			line = $.trim(line.substr(3, line.length - 6));
-			var format = 'gen8';
+			var format = 'gen9';
 			var capacity = 6;
 			var bracketIndex = line.indexOf(']');
 			if (bracketIndex >= 0) {
@@ -1084,7 +1086,6 @@ Storage.importTeam = function (buffer, teams) {
 				}
 				line = $.trim(line.substr(bracketIndex + 1));
 			}
-			var gen = parseInt(format[3], 10) || 6;
 			if (teams.length && typeof teams[teams.length - 1].team !== 'string') {
 				teams[teams.length - 1].team = Storage.packTeam(teams[teams.length - 1].team);
 			}
@@ -1097,7 +1098,7 @@ Storage.importTeam = function (buffer, teams) {
 			teams.push({
 				name: line,
 				format: format,
-				gen: gen,
+				gen: parseInt(format[3], 10) || 6,
 				team: team,
 				capacity: capacity,
 				folder: folder,
@@ -1522,7 +1523,7 @@ Storage.nwLoadTeamFile = function (filename, localApp) {
 		return;
 	}
 
-	var format = 'gen8';
+	var format = 'gen9';
 	var capacity = 6;
 	var bracketIndex = line.indexOf(']');
 	if (bracketIndex >= 0) {
@@ -1540,6 +1541,7 @@ Storage.nwLoadTeamFile = function (filename, localApp) {
 			self.teams.push({
 				name: line,
 				format: format,
+				gen: parseInt(format[3], 10) || 6,
 				team: Storage.packTeam(Storage.importTeam('' + data)),
 				capacity: capacity,
 				folder: folder,

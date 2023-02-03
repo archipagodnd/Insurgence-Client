@@ -1108,7 +1108,7 @@ stats.def=Math.floor(stats.def*1.5);
 if(ability==='sandrush'&&weather==='sandstorm'){
 speedModifiers.push(2);
 }
-if(ability==='slushrush'&&(weather==='hail'||weather==='snow')){
+if((ability==='slushrush'||ability==='icecleats')&&(weather==='hail'||weather==='snow')){
 speedModifiers.push(2);
 }
 if(ability==='shadowdance'&&weather==='newmoon'){
@@ -1489,13 +1489,13 @@ moveType='Dark';
 
 if(move.id==='ragingbull'){
 switch(pokemon.getSpeciesForme()){
-case'Tauros-Paldea':
+case'Tauros-Paldea-Combat':
 moveType='Fighting';
 break;
-case'Tauros-Paldea-Fire':
+case'Tauros-Paldea-Blaze':
 moveType='Fire';
 break;
-case'Tauros-Paldea-Water':
+case'Tauros-Paldea-Aqua':
 moveType='Water';
 break;}
 
@@ -1889,9 +1889,6 @@ value.abilityModify(1.3,"Sheer Force");
 if(move.flags['contact']){
 value.abilityModify(1.3,"Tough Claws");
 }
-if(moveType==='Steel'){
-value.abilityModify(1.5,"Steely Spirit");
-}
 if(move.flags['sound']){
 value.abilityModify(1.3,"Punk Rock");
 }
@@ -1948,22 +1945,20 @@ auraBoosted='Fairy Aura';
 auraBoosted='Dark Aura';
 }else if(allyAbility==='Aura Break'){
 auraBroken=true;
-}else if(allyAbility==='Battery'){
-if(ally!==pokemon&&move.category==='Special'){
+}else if(allyAbility==='Battery'&&ally!==pokemon&&move.category==='Special'){
 value.modify(1.3,'Battery');
-}
-}else if(allyAbility==='Power Spot'){
-if(ally!==pokemon){
+}else if(allyAbility==='Power Spot'&&ally!==pokemon){
 value.modify(1.3,'Power Spot');
-}
+}else if(allyAbility==='Steely Spirit'&&moveType==='Steel'){
+value.modify(1.5,'Steely Spirit');
 }
 }for(var _i24=0,_pokemon$side$foe$act=
 pokemon.side.foe.active;_i24<_pokemon$side$foe$act.length;_i24++){var foe=_pokemon$side$foe$act[_i24];
 if(!foe||foe.fainted)continue;
-if(foe.ability==='Fairy Aura'){
-if(moveType==='Fairy')auraBoosted='Fairy Aura';
-}else if(foe.ability==='Dark Aura'){
-if(moveType==='Dark')auraBoosted='Dark Aura';
+if(foe.ability==='Fairy Aura'&&moveType==='Fairy'){
+auraBoosted='Fairy Aura';
+}else if(foe.ability==='Dark Aura'&&moveType==='Dark'){
+auraBoosted='Dark Aura';
 }else if(foe.ability==='Aura Break'){
 auraBroken=true;
 }

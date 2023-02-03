@@ -1575,7 +1575,7 @@ if(pokemon.battleOnly&&typeof pokemon.battleOnly==='string'){
 species=dex.species.get(pokemon.battleOnly);
 }
 var excludedForme=function(s){return[
-'Alola','Alola-Totem','Galar','Galar-Zen','Hisui','Paldea','Paldea-Fire','Paldea-Water'].
+'Alola','Alola-Totem','Galar','Galar-Zen','Hisui','Paldea','Paldea-Combat','Paldea-Blaze','Paldea-Aqua'].
 includes(s.forme);};
 if(baseSpecies.otherFormes&&!['Wormadam','Urshifu'].includes(baseSpecies.baseSpecies)){
 if(!excludedForme(species))speciesTypes.push.apply(speciesTypes,baseSpecies.types);for(var _i10=0,_baseSpecies$otherFor=

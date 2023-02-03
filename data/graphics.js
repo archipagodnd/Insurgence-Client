@@ -1647,6 +1647,9 @@ return pokemon.sprite.animDragIn(pokemon,slot);
 animDragOut=function animDragOut(pokemon){
 return pokemon.sprite.animDragOut(pokemon);
 };_proto.
+resetStatbar=function resetStatbar(pokemon,startHidden){
+return pokemon.sprite.resetStatbar(pokemon,startHidden);
+};_proto.
 updateStatbar=function updateStatbar(pokemon,updatePrevhp,updateHp){
 return pokemon.sprite.updateStatbar(pokemon,updatePrevhp,updateHp);
 };_proto.
