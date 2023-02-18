@@ -1,7 +1,7 @@
 {
     "root": "pokemonshowdown.com",
-    "client": "battlingtest.p-insurgence.com",
+    "client": "battling.p-insurgence.com",
     "dex": "dex.pokemonshowdown.com",
-    "replays": "battlingtest.p-insurgence.com/replays",
+    "replays": "battling.p-insurgence.com/replays",
     "users": "pokemonshowdown.com/users"
 }
