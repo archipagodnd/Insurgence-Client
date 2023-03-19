@@ -11,9 +11,9 @@ Replays
 
 Getting a replay:
 
-https://replay.pokemonshowdown.com/gen8doublesubers-1097585496.json
+https://battling.p-insurgence.com/replays/gen8doublesubers-1097585496.json
 
-https://replay.pokemonshowdown.com/gen8doublesubers-1097585496.log
+https://battling.p-insurgence.com/replays/gen8doublesubers-1097585496.log
 
 
 Replay search
@@ -21,27 +21,27 @@ Replay search
 
 List recent replays:
 
-https://replay.pokemonshowdown.com/search.json
+https://battling.p-insurgence.com/replays/search.json
 
 Search by user:
 
-https://replay.pokemonshowdown.com/search.json?user=zarel
+https://battling.p-insurgence.com/replays/search.json?user=zarel
 
 Search by multiple users:
 
-https://replay.pokemonshowdown.com/search.json?user=zarel&user2=yuyuko
+https://battling.p-insurgence.com/replays/search.json?user=zarel&user2=yuyuko
 
 Search by format:
 
-https://replay.pokemonshowdown.com/search.json?format=gen8ou
+https://battling.p-insurgence.com/replays/search.json?format=gen8ou
 
 Combined searching:
 
-https://replay.pokemonshowdown.com/search.json?user=zarel&user2=yuyuko&format=gen7randombattle
+https://battling.p-insurgence.com/replays/search.json?user=zarel&user2=yuyuko&format=gen7randombattle
 
 Paginate searches:
 
-https://replay.pokemonshowdown.com/search.json?user=zarel&page=2
+https://battling.p-insurgence.com/replays/search.json?user=zarel&page=2
 
 Searches are limited to 51 results, and pages are offset by 50 each, so the existence of a 51st result means that there's at least one more page available.
 
