@@ -139,8 +139,8 @@ return choices.join(', ').replace(/, team /g,', ');
 isDone=function isDone(){
 return this.choices.length>=this.requestLength();
 };_proto.
-isEmpty=function isEmpty(){for(var _i=0,_this$choices=
-this.choices;_i<_this$choices.length;_i++){var choice=_this$choices[_i];
+isEmpty=function isEmpty(){for(var _i2=0,_this$choices2=
+this.choices;_i2<_this$choices2.length;_i2++){var choice=_this$choices2[_i2];
 if(choice!=='pass')return false;
 }
 if(this.current.move)return false;
@@ -163,8 +163,8 @@ case'team':
 if(request.maxTeamSize)return request.maxTeamSize;
 return 1;
 case'wait':
-return 0;}
-
+return 0;
+}
 };_proto.
 currentMoveRequest=function currentMoveRequest(){
 if(this.request.requestType!=='move')return null;
@@ -246,8 +246,8 @@ break;
 case'switch':
 while(this.choices.length<request.forceSwitch.length&&!request.forceSwitch[this.choices.length]){
 this.choices.push('pass');
-}}
-
+}
+}
 };_proto.
 
 getChosenMove=function getChosenMove(choice,pokemonIndex){
@@ -288,8 +288,8 @@ mega:false,
 ultra:false,
 z:false,
 max:false,
-tera:false};
-
+tera:false
+};
 while(true){
 
 
@@ -341,19 +341,19 @@ break;
 }
 }
 if(!current.move&&moveRequest.zMoves){
-for(var _i2=0;_i2<moveRequest.zMoves.length;_i2++){
-if(!moveRequest.zMoves[_i2])continue;
-if(moveid===moveRequest.zMoves[_i2].id){
-current.move=_i2+1;
+for(var _i3=0;_i3<moveRequest.zMoves.length;_i3++){
+if(!moveRequest.zMoves[_i3])continue;
+if(moveid===moveRequest.zMoves[_i3].id){
+current.move=_i3+1;
 current.z=true;
 break;
 }
 }
 }
 if(!current.move&&moveRequest.maxMoves){
-for(var _i3=0;_i3<moveRequest.maxMoves.length;_i3++){
-if(moveid===moveRequest.maxMoves[_i3].id){
-current.move=_i3+1;
+for(var _i4=0;_i4<moveRequest.maxMoves.length;_i4++){
+if(moveid===moveRequest.maxMoves[_i4].id){
+current.move=_i4+1;
 current.max=true;
 break;
 }
@@ -369,8 +369,8 @@ choice=choice.slice(choice.startsWith('team ')?5:7);
 var isTeamPreview=request.requestType==='team';
 var _current={
 choiceType:isTeamPreview?'team':'switch',
-targetPokemon:0};
-
+targetPokemon:0
+};
 if(/^[0-9]+$/.test(choice)){
 
 _current.targetPokemon=parseInt(choice,10);
@@ -380,8 +380,8 @@ var lowerChoice=choice.toLowerCase();
 var choiceid=toID(choice);
 var matchLevel=0;
 var match=0;
-for(var _i4=0;_i4<request.side.pokemon.length;_i4++){
-var serverPokemon=request.side.pokemon[_i4];
+for(var _i5=0;_i5<request.side.pokemon.length;_i5++){
+var serverPokemon=request.side.pokemon[_i5];
 var curMatchLevel=0;
 if(choice===serverPokemon.name){
 curMatchLevel=10;
@@ -395,7 +395,7 @@ curMatchLevel=7;
 curMatchLevel=6;
 }
 if(curMatchLevel>matchLevel){
-match=_i4+1;
+match=_i5+1;
 matchLevel=curMatchLevel;
 }
 }
@@ -436,8 +436,8 @@ case'switch':
 case'team':
 return choice.choiceType+" "+choice.targetPokemon;
 case'shift':
-return"shift";}
-
+return"shift";
+}
 };BattleChoiceBuilder.
 
 
@@ -464,8 +464,8 @@ request.requestType='wait';
 }
 
 if(request.requestType==='wait')request.noCancel=true;
-if(request.side){for(var _i5=0,_request$side$pokemon=
-request.side.pokemon;_i5<_request$side$pokemon.length;_i5++){var serverPokemon=_request$side$pokemon[_i5];
+if(request.side){for(var _i7=0,_request$side$pokemon2=
+request.side.pokemon;_i7<_request$side$pokemon2.length;_i7++){var serverPokemon=_request$side$pokemon2[_i7];
 battle.parseDetails(serverPokemon.ident.substr(4),serverPokemon.ident,serverPokemon.details,serverPokemon);
 battle.parseHealth(serverPokemon.condition,serverPokemon);
 }
@@ -473,11 +473,11 @@ battle.parseHealth(serverPokemon.condition,serverPokemon);
 
 if(request.active){
 request.active=request.active.map(
-function(active,i){return request.side.pokemon[i].fainted?null:active;});for(var _i6=0,_request$active=
-
-request.active;_i6<_request$active.length;_i6++){var active=_request$active[_i6];
-if(!active)continue;for(var _i7=0,_active$moves=
-active.moves;_i7<_active$moves.length;_i7++){var move=_active$moves[_i7];
+function(active,i){return request.side.pokemon[i].fainted?null:active;}
+);for(var _i9=0,_request$active2=
+request.active;_i9<_request$active2.length;_i9++){var active=_request$active2[_i9];
+if(!active)continue;for(var _i11=0,_active$moves2=
+active.moves;_i11<_active$moves2.length;_i11++){var move=_active$moves2[_i11];
 if(move.move)move.name=move.move;
 move.id=toID(move.name);
 }
@@ -485,15 +485,15 @@ if(active.maxMoves){
 if(active.maxMoves.maxMoves){
 active.canGigantamax=active.maxMoves.gigantamax;
 active.maxMoves=active.maxMoves.maxMoves;
-}for(var _i8=0,_active$maxMoves=
-active.maxMoves;_i8<_active$maxMoves.length;_i8++){var _move=_active$maxMoves[_i8];
+}for(var _i13=0,_active$maxMoves2=
+active.maxMoves;_i13<_active$maxMoves2.length;_i13++){var _move=_active$maxMoves2[_i13];
 if(_move.move)_move.name=Dex.moves.get(_move.move).name;
 _move.id=toID(_move.name);
 }
 }
 if(active.canZMove){
-active.zMoves=active.canZMove;for(var _i9=0,_active$zMoves=
-active.zMoves;_i9<_active$zMoves.length;_i9++){var _move2=_active$zMoves[_i9];
+active.zMoves=active.canZMove;for(var _i15=0,_active$zMoves2=
+active.zMoves;_i15<_active$zMoves2.length;_i15++){var _move2=_active$zMoves2[_i15];
 if(!_move2)continue;
 if(_move2.move)_move2.name=_move2.move;
 _move2.id=toID(_move2.name);
