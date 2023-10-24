@@ -182,7 +182,7 @@ pokeballs=null;this.
 resourcePrefix=function(_window$document){
 var prefix='';
 if(((_window$document=window.document)==null||(_window$document=_window$document.location)==null?void 0:_window$document.protocol)!=='http:')prefix='https:';
-return prefix+"//raw.githubusercontent.com/Poilerwags/Sprites/master/play.pokemonshowdown.com/";
+return prefix+"//raw.githubusercontent.com/archipagodnd/Sprites/master/play.pokemonshowdown.com/";
 }();this.
 
 fxPrefix=function(_window$document2){
@@ -1901,7 +1901,8 @@ ivysaurdeltaf:1788+19,
 venusaurdeltaf:1788+20,
 deinodeltaf:1788+21,
 zweilousdeltaf:1788+22,
-hydreigondeltaf:1788+23
+hydreigondeltaf:1788+23,
+dunseraph:1788+24
 };
 
 var BattlePokemonIconIndexesLeft={

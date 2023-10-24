@@ -216,7 +216,7 @@ function toId() {
 		 * domain in order to have access to the correct cookies.
 		 */
 		 getActionPHP: function () {
-		     var ret = 'https://battling.p-insurgence.com/login/action.php';
+		     var ret = 'https://play.pokemonshowdown.com/action.php';
 		     return (this.getActionPHP = function () {
 		         return ret;
 		     })();

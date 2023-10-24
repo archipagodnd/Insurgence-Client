@@ -866,7 +866,8 @@ ivysaurdeltaf:1788+19,
 venusaurdeltaf:1788+20,
 deinodeltaf:1788+21,
 zweilousdeltaf:1788+22,
-hydreigondeltaf:1788+23
+hydreigondeltaf:1788+23,
+dunseraph: 1788+24,
 };
 
 var BattlePokemonIconIndexesLeft={

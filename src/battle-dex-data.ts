@@ -867,6 +867,7 @@ const BattlePokemonIconIndexes: {[id: string]: number} = {
 	deinodeltaf: 1788 + 21,
 	zweilousdeltaf: 1788 + 22,
 	hydreigondeltaf: 1788 + 23,
+	dunseraph: 1788+24,
 };
 
 const BattlePokemonIconIndexesLeft: {[id: string]: number} = {

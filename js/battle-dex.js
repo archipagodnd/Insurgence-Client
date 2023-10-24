@@ -182,7 +182,7 @@ pokeballs=null;this.
 resourcePrefix=function(_window$document){
 var prefix='';
 if(((_window$document=window.document)==null||(_window$document=_window$document.location)==null?void 0:_window$document.protocol)!=='http:')prefix='https:';
-return prefix+"//raw.githubusercontent.com/Poilerwags/Sprites/master/play.pokemonshowdown.com/";
+return prefix+"//raw.githubusercontent.com/archipagodnd/Sprites/master/play.pokemonshowdown.com/";
 }();this.
 
 fxPrefix=function(_window$document2){

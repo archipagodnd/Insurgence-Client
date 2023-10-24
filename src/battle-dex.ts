@@ -182,7 +182,7 @@ const Dex = new class implements ModdedDex {
 	resourcePrefix = (() => {
 		let prefix = '';
 		if (window.document?.location?.protocol !== 'http:') prefix = 'https:';
-		return `${prefix}//raw.githubusercontent.com/Poilerwags/Sprites/master/play.pokemonshowdown.com/`;
+		return `${prefix}//raw.githubusercontent.com/archipagodnd/Sprites/master/play.pokemonshowdown.com/`;
 	})();
 
 	fxPrefix = (() => {
