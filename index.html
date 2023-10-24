@@ -1,128 +1,134 @@
 ﻿<!DOCTYPE html>
-<!--
-           .............
-       ,...................
-     ,..................========
-    ....~=##############=======+
-   ...##################=======.
-  ..=######+...,    +##=======,..
-  ..=###### ., .....  +=====+,....
-     ###########~,..  ======
-  .....##############~=====+....., pokemonshowdown.com
-  ..........###########====......
-    ............#######,==......
-  =###.,........+#####+ .......
-  ####################~......,
-  #################+======,
-     ++++++++++++ =======+
-
-Viewing source? We're open source! Check us out on GitHub!
-https://github.com/Zarel/Pokemon-Showdown
-https://github.com/Zarel/Pokemon-Showdown-Client (you are here)
-
-Also visit us in the Dev chatroom:
-https://psim.us/dev
-
--->
-<meta charset="UTF-8" />
-<meta id="viewport" name="viewport" content="width=device-width" />
-<title>Showdown!</title>
-<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-<link rel="shortcut icon" href="//battling.p-insurgence.com/favicon.ico" id="dynamic-favicon" />
-<link rel="icon" sizes="128x128" href="//battling.p-insurgence.com/favicon-128.png" />
-<link rel="stylesheet" href="//battling.p-insurgence.com/style/battle.css?a9974565" />
-<link rel="stylesheet" href="//battling.p-insurgence.com/style/client.css?df81c11c" />
-<link rel="stylesheet" href="//battling.p-insurgence.com/style/sim-types.css?5e314bd0" />
-<link rel="stylesheet" href="//battling.p-insurgence.com/style/utilichart.css?dbb7f7f2" />
-<link rel="stylesheet" href="//battling.p-insurgence.com/style/font-awesome.css?95545b00" />
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<link rel="manifest" href="/manifest.json" />
-<!--[if lte IE 8]><script>document.location.replace('http://pokemonshowdown.com/autodownload/win');</script><![endif]-->
-
-<!-- head custom -->
-
-<div id="header" class="header">
-	<img class="logo" src="//battling.p-insurgence.com/pokemonshowdownbeta.png" srcset="//play.pokemonshowdown.com/pokemonshowdownbeta@2x.png 2x" alt="Pok&eacute;mon Showdown! (beta)" width="146" height="44" /><div class="maintabbarbottom"></div>
-</div>
-<div class="ps-room scrollable" id="mainmenu"><div class="mainmenuwrapper">
-	<div class="leftmenu">
-		<div class="activitymenu">
-			<div class="pmbox">
-				<div class="pm-window news-embed" data-newsid="<!-- newsid -->">
-					<h3><button class="closebutton" tabindex="-1"><i class="fa fa-times-circle"></i></button><button class="minimizebutton" tabindex="-1"><i class="fa fa-minus-circle"></i></button>News</h3>
-					<div class="pm-log" style="max-height:none">
-						<!-- news -->
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<meta id="viewport" name="viewport" content="width=device-width" />
+		<title>Showdown?!</title>
+		<link rel="shortcut icon" href="favicon.ico" id="dynamic-favicon" />
+		<link rel="stylesheet" href="style/battle.css" />
+		<link rel="stylesheet" href="style/client.css" />
+		<link rel="stylesheet" href="style/sim-types.css" />
+		<link rel="stylesheet" href="style/utilichart.css" />
+		<link rel="stylesheet" href="style/font-awesome.css" />
+		<meta name="robots" content="noindex" />
+		<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+		<script src="config/config.js"></script>
+		<script>
+			function loadRemoteData(src) {
+				var scriptEl = document.createElement('script');
+				scriptEl.src = src.replace(/.*\/?data\//g, 'https://play.pokemonshowdown.com/data/');
+				document.head.appendChild(scriptEl);
+			}
+			Config.testclient = true;
+			(function() {
+				if (location.search !== '') {
+					var m = /\?~~(([^:\/]*)(:[0-9]*)?)/.exec(location.search);
+					if (m) {
+						Config.server = {
+							id: m[1],
+							host: m[2],
+							port: (m[3] && parseInt(m[3].substr(1))) || 8000
+						};
+					} else {
+						alert('Unrecognised query string syntax: ' + location.search);
+					}
+				}
+			})();
+		</script>
+		<!--[if lte IE 8]><script>
+			Config.oldie = true;
+		</script><![endif]-->
+	</head>
+	<body>
+		<div id="header" class="header">
+			<img class="logo" src="pokemonshowdownbeta.png" alt="Pok&eacute;mon Showdown! (beta)" width="146" height="44" /><div class="maintabbarbottom"></div>
+		</div>
+		<div class="ps-room scrollable" id="mainmenu"><div class="mainmenuwrapper">
+			<div class="leftmenu">
+				<div class="activitymenu">
+					<div class="pmbox">
+						<div class="pm-window news-embed">
+							<h3><button class="closebutton" tabindex="-1" aria-label="Close"><i class="fa fa-times-circle"></i></button><button class="minimizebutton" tabindex="-1" aria-label="Minimize"><i class="fa fa-minus-circle"></i></button>Latest News</h3>
+							<div class="pm-log" style="max-height:none">
+								<div class="newsentry"><h4>Test client</h4><p>Welcome to the test client! You can test client changes here!</p><p>&mdash;<strong>Zarel</strong> <small class="date">on Sep 25, 2015</small></p></div>
+							</div>
+						</div>
 					</div>
 				</div>
+				<div class="mainmenu">
+					<div id="loading-message" class="mainmessage">Initializing... <noscript>FAILED<br /><br />Pok&eacute;mon Showdown requires JavaScript.</noscript></div>
+				</div>
 			</div>
-		</div>
-		<div class="mainmenu">
-			<div id="loading-message" class="mainmessage">Initializing... <noscript>FAILED<br /><br />Pok&eacute;mon Showdown requires JavaScript.</noscript></div>
-		</div>
-	</div>
-	<div class="rightmenu">
-	</div>
-	<div class="mainmenufooter">
-		<div class="bgcredit"></div>
-		<small><a href="//dex.pokemonshowdown.com/" target="_blank">Pok&eacute;dex</a> | <a href="//battling.p-insurgence.com/replays/" target="_blank">Replays</a> | <a href="//pokemonshowdown.com/rules" target="_blank">Rules</a> | <a href="//pokemonshowdown.com/credits" target="_blank">Credits</a> | <a href="http://smogon.com/forums/" target="_blank">Forum</a></small>
-	</div>
-</div></div>
-<script>
-	var LM = document.getElementById('loading-message');
-	LM.innerHTML += ' DONE<br />Loading libraries...';
-</script>
-<script nomodule src="//battling.p-insurgence.com/js/lib/ps-polyfill.js"></script>
-<script src="//battling.p-insurgence.com/config/config.js?4f820511"></script>
-<script src="//battling.p-insurgence.com/config/testclient-key.js?704f19f1"></script>
-<script src="//battling.p-insurgence.com/js/lib/jquery-2.1.4.min.js"></script>
-<script src="//battling.p-insurgence.com/js/lib/jquery-cookie.js"></script>
-<script src="//battling.p-insurgence.com/js/lib/autoresize.jquery.min.js?52413642"></script>
-<script src="//battling.p-insurgence.com/js/battle-sound.js?68142292"></script>
-<script src="//battling.p-insurgence.com/js/lib/html-css-sanitizer-minified.js?38f3f7d3"></script>
-<script src="//battling.p-insurgence.com/js/lib/lodash.core.js?f87de26d"></script>
-<script src="//battling.p-insurgence.com/js/lib/backbone.js?aab1840b"></script>
-<script src="//battling.p-insurgence.com/js/lib/d3.v3.min.js"></script>
+			<div class="rightmenu">
+			</div>
+			<div class="mainmenufooter">
+				<small><a href="//pokemonshowdown.com/" target="_blank"><strong>Pok&eacute;mon Showdown</strong></a> | <a href="http://smogon.com/" target="_blank"><strong>Smogon</strong></a><br><a href="//pokemonshowdown.com/dex/" target="_blank">Pokédex</a> | <a href="//pokemonshowdown.com/replay/" target="_blank">Replays</a> | <a href="//pokemonshowdown.com/rules" target="_blank">Rules</a></small> | <small><a href="//pokemonshowdown.com/forums/" target="_blank">Forum</a></small>
+			</div>
+		</div></div>
+		<script>
+			document.getElementById('loading-message').innerHTML += ' DONE<br />Loading libraries...';
+		</script>
+		<script nomodule src="/js/lib/ps-polyfill.js"></script>
+		<script src="js/lib/jquery-2.1.4.min.js"></script>
+		<script src="js/lib/jquery-cookie.js"></script>
+		<script src="js/lib/autoresize.jquery.min.js"></script>
+		<script src="js/battle-sound.js"></script>
+		<script src="config/testclient-key.js"></script>
+		<script src="js/lib/html-css-sanitizer-minified.js"></script>
+		<script src="js/lib/lodash.core.js"></script>
+		<script src="js/lib/backbone.js"></script>
+		<script src="js/lib/d3.v3.min.js"></script>
 
-<script>
-	LM.innerHTML += ' DONE<br />Loading data...';
-</script>
+		<script>
+			document.getElementById('loading-message').innerHTML += ' DONE<br />Loading data...';
+			window.exports = window;
+		</script>
 
-<script src="//battling.p-insurgence.com/js/battledata.js?503a3a85"></script>
-<script src="//battling.p-insurgence.com/js/storage.js?c1d676b4"></script>
-<script src="//battling.p-insurgence.com/data/pokedex-mini.js?223dc155"></script>
-<script src="//battling.p-insurgence.com/data/typechart.js?fa25b619"></script>
-<script src="//battling.p-insurgence.com/js/battle.js?1e7559e4"></script>
-<script src="//battling.p-insurgence.com/js/lib/sockjs-1.4.0-nwjsfix.min.js"></script>
-<script src="//battling.p-insurgence.com/js/lib/color-thief.min.js"></script>
+		<!-- fallback for if you've never done a full build -->
+		<script src="js/server/chat-formatter.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="js/battledata.js" onerror="alert('You must build the client with `node build` before using testclient.html')"></script>
+		<script src="data/text.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="data/pokedex-mini.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="data/pokedex-mini-bw.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="data/typechart.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="js/battle.js"></script>
+		<script src="js/lib/sockjs-1.4.0-nwjsfix.min.js"></script>
+		<script src="js/lib/color-thief.min.js"></script>
 
-<script>
-	LM.innerHTML += ' DONE<br />Loading client...';
-</script>
+		<script>
+			document.getElementById('loading-message').innerHTML += ' DONE<br />Loading client...';
+		</script>
 
-<script src="//battling.p-insurgence.com/js/client.js?f35fbbdf"></script>
-<script src="//battling.p-insurgence.com/js/client-topbar.js?3be4e2bd"></script>
-<script src="//battling.p-insurgence.com/js/client-mainmenu.js?f3cc185e"></script>
-<script src="//battling.p-insurgence.com/js/client-teambuilder.js?ee303886"></script>
-<script src="//battling.p-insurgence.com/js/client-ladder.js?07314358"></script>
-<script src="//battling.p-insurgence.com/js/client-chat.js?8659f268"></script>
-<script src="//battling.p-insurgence.com/js/client-chat-tournament.js?87141ce2"></script>
-<script src="//battling.p-insurgence.com/js/battle-tooltips.js?d6f06d14"></script>
-<script src="//battling.p-insurgence.com/js/client-battle.js?5df200b5"></script>
-<script src="//battling.p-insurgence.com/js/client-rooms.js?d30f4067"></script>
-<script src="//battling.p-insurgence.com/data/graphics.js?3d68a264"></script>
+		<script src="js/client.js"></script>
+		<script src="js/client-topbar.js"></script>
+		<script src="js/client-mainmenu.js"></script>
+		<script src="js/client-teambuilder.js"></script>
+		<script src="js/client-ladder.js"></script>
+		<script src="js/client-chat.js"></script>
+		<script src="js/client-chat-tournament.js"></script>
+		<script src="js/battle-tooltips.js"></script>
+		<script src="js/client-battle.js"></script>
+		<script src="js/client-rooms.js"></script>
+		<script src="js/storage.js"></script>
+		<script src="data/graphics.js" onerror="loadRemoteData(this.src)"></script>
 
-<script>
-	var app = new App();
-</script>
+		<script src="data/pokedex.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="data/moves.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="data/items.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="data/abilities.js" onerror="loadRemoteData(this.src)"></script>
 
-<script src="//battling.p-insurgence.com/data/pokedex.js?a98de3cb"></script>
-<script src="//battling.p-insurgence.com/data/moves.js?f929102d"></script>
-<script src="//battling.p-insurgence.com/data/items.js?ff8582e0"></script>
-<script src="//battling.p-insurgence.com/data/abilities.js?469a4d92"></script>
+		<script src="data/search-index.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="data/teambuilder-tables.js" onerror="loadRemoteData(this.src)"></script>
+		<script src="js/battle-dex-search.js"></script>
+		<script src="js/search.js"></script>
 
-<script src="//battling.p-insurgence.com/data/search-index.js?4802e63d"></script>
-<script src="//battling.p-insurgence.com/data/teambuilder-tables.js?21f74fc5"></script>
-<script src="//battling.p-insurgence.com/js/battle-dex-search.js?c96631c1"></script>
-<script src="//battling.p-insurgence.com/js/search.js?cc2d2685"></script>
+		<script src="data/aliases.js" async="async" onerror="loadRemoteData(this.src)"></script>
 
-<script src="//battling.p-insurgence.com/data/aliases.js?e4e6f7c2" async="async"></script>
+		<script>
+			window.onload = () => {
+				window.app = new App();
+			}
+		</script>
+
+	</body>
+</html>
