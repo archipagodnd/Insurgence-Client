@@ -1196,6 +1196,13 @@ class BattleTooltips {
 					// Pokemon with Hisui evolutions
 					evoSpecies.isNonstandard === "Unobtainable";
 		});
+		if (item === 'everite' && (isNFE || species === 'Eevee-Pre-Mega')) {
+			stats.atk = Math.floor(stats.atk * 10);
+			stats.spa = Math.floor(stats.spa * 10);
+			stats.def = Math.floor(stats.def * 10);
+			stats.spd = Math.floor(stats.spd * 10);
+			stats.spe = Math.floor(stats.spe * 10);
+		}
 		if (item === 'eviolite' && (isNFE || species === 'Eevee-Pre-Mega')) {
 			stats.def = Math.floor(stats.def * 1.5);
 			stats.spd = Math.floor(stats.spd * 1.5);
