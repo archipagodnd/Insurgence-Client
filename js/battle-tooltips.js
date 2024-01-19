@@ -1197,11 +1197,11 @@ evoSpecies.isNonstandard===((_this4$battle$dex$spe=_this4.battle.dex.species.get
 evoSpecies.isNonstandard==="Unobtainable";
 });
 if(item==='everite'&&(isNFE||species==='Eevee-Pre-Mega')){
-stats.atk=Math.floor(stats.atk*1.15);
-stats.spa=Math.floor(stats.spa*1.15);
-stats.def=Math.floor(stats.def*1.15);
-stats.spd=Math.floor(stats.spd*1.15);
-stats.spe=Math.floor(stats.spe*1.15);
+stats.atk=Math.floor(stats.atk*1.25);
+stats.spa=Math.floor(stats.spa*1.25);
+stats.def=Math.floor(stats.def*1.25);
+stats.spd=Math.floor(stats.spd*1.25);
+stats.spe=Math.floor(stats.spe*1.25);
 }
 if(item==='eviolite'&&(isNFE||species==='Eevee-Pre-Mega')){
 stats.def=Math.floor(stats.def*1.5);
