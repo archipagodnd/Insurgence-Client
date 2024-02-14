@@ -1472,11 +1472,5 @@ exports.BattleLearnsets = {
 	stalacpace:{learnset:{jawlock:[]}},
 	stalagoliath:{learnset:{crunch:[],megahorn:[],rockwrecker:[]}},
 	dormie:{learnset:{bounce:[],fairywind:[],headbutt:[],healingwish:[],hypnosis:[],moonblast:[],moonlight:[],rest:[],sandattack:[],sandtomb:[],sleeppowder:[],sleeptalk:[],swift:[],whirlwind:[],wish:[],yawn:[]}},
-	dreamie:{learnset:{healbell:[]}},
-	playmight:{learnset:{armthrust:[],autotomize:[],block:[],bodypress:[],brickbreak:[],circlethrow:[],cometpunch:[],hammerarm:[],harden:[],irondefense:[],mudslap:[],mudsport:[],recover:[],rockblast:[],rocktomb:[],selfdestruct:[],stealthrock:[],stomp:[],stoneedge:[]}},
-	khanstruct:{learnset:{counter:[],knockoff:[],spikes:[]}},
-	florcoon:{learnset:{bodyslam:[],doubleedge:[],energyball:[],grasswhistle:[],growl:[],hornattack:[],leafstorm:[],leechseed:[],quickattack:[],razorleaf:[],solarbeam:[],sweetscent:[],tackle:[]}},
-	bufaroon:{learnset:{crunch:[],poisonpowder:[],spore:[]}},
-	grandaroon:{learnset:{frustration:[],magicalleaf:[],rage:[],woodhammer:[]}},
-	matriwi:{learnset:{acupressure:[],agility:[],bounce:[],doublehit:[],drillpeck:[],endeavor:[],furyattack:[],growl:[],headbutt:[],peck:[],quickattack:[],reversal:[],substitute:[],tackle:[]}}
+	dreamie:{learnset:{healbell:[]}}
 };
