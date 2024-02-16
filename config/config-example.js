@@ -21,7 +21,7 @@ Config.defaultserver = {
 	id: 'showdown',
 	host: '46.11.37.1195',
 	port: 443,
-	httpport: 8000,
+	httpport: 4000,
 	altport: 80,
 	registered: true
 };
