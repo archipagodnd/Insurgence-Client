@@ -1478,5 +1478,8 @@ exports.BattleLearnsets = {
 	florcoon:{learnset:{bodyslam:[],doubleedge:[],energyball:[],grasswhistle:[],growl:[],hornattack:[],leafstorm:[],leechseed:[],quickattack:[],razorleaf:[],solarbeam:[],sweetscent:[],tackle:[]}},
 	bufaroon:{learnset:{crunch:[],poisonpowder:[],spore:[]}},
 	grandaroon:{learnset:{frustration:[],magicalleaf:[],rage:[],woodhammer:[]}},
-	matriwi:{learnset:{acupressure:[],agility:[],bounce:[],doublehit:[],drillpeck:[],endeavor:[],furyattack:[],growl:[],headbutt:[],peck:[],quickattack:[],reversal:[],substitute:[],tackle:[]}}
+	matriwi:{learnset:{acupressure:[],agility:[],bounce:[],doublehit:[],drillpeck:[],endeavor:[],furyattack:[],growl:[],headbutt:[],peck:[],quickattack:[],reversal:[],substitute:[],tackle:[]}},
+	pawdingus:{learnset:{assist:[],babydolleyes:[],endure:[],frustration:[],metronome:[],nuzzle:[],protect:[],"return":[],substitute:[]}},
+	linkite:{learnset:{assist:[],babydolleyes:[],curse:[],destinybond:[],endure:[],frustration:[],grudge:[],imprison:[],meanlook:[],memento:[],metronome:[],nightshade:[],nuzzle:[],painsplit:[],phantomforce:[],protect:[],pursuit:[],"return":[],shadowclaw:[],shadowsneak:[],spite:[],substitute:[]}},
+	chainite:{learnset:{assist:[],babydolleyes:[],curse:[],destinybond:[],endure:[],frustration:[],grudge:[],imprison:[],meanlook:[],memento:[],metronome:[],nightshade:[],nightslash:[],nuzzle:[],painsplit:[],phantomforce:[],protect:[],pursuit:[],"return":[],shadowclaw:[],shadowsneak:[],spite:[],substitute:[]}}
 };
