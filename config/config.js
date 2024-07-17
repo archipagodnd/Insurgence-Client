@@ -19,8 +19,8 @@ Config.whitelist = [
 // address bar is `Config.routes.client`.
 Config.defaultserver = {
 	id: 'showdown',
-	host: '85.232.197.53',
-	port: 80,
+	host: '195.158.88.131',
+	port: 25565,
 	httpport: 4000,
 	altport: 80,
 	registered: true
@@ -33,11 +33,11 @@ Config.customcolors = {
 	'zarel': 'aeo'
 };
 /*** Begin automatically generated configuration ***/
-Config.version = "0.11.2 (e47c9a7e)";
+Config.version = "0.11.2 (391ce8a2)";
 
 Config.routes = {
 	root: 'pokemonshowdown.com',
-	client: 'battling.p-insurgence.com',
+	client: 'gianbart.org',
 	dex: 'dex.pokemonshowdown.com',
 	replays: 'battling.p-insurgence.com/replays',
 	users: 'pokemonshowdown.com/users',
